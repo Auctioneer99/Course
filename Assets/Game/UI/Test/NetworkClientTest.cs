@@ -12,7 +12,7 @@ public class NetworkClientTest : MonoBehaviour
 
     private void Start()
     {
-        _client = new Client(new UnityLogger("NetworkClient", "#6aec18"));
+        _client = new Client(LoggerManager.NetworkClient);
 
         _threadManager = new ThreadManager();
         _packetConverter = new PacketConverter(_threadManager);

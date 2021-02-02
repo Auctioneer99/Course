@@ -24,18 +24,18 @@
     public Client(ILogger logger) 
     {
         _logger = logger;
-        _logger?.Log("initialized");
+        _logger?.Log("Initialized");
     }
 
     public void HandleCommand(int id, ICommand command)
     {
-        _logger?.Log("command received");
-        command.Execute();
+        _logger?.Log("Command received");
+        command.Execute(id);
     }
 
     public void Send(ICommand command)
     {
-        _logger?.Log("sending command");
+        _logger?.Log("Sending command");
         _gateway.Send(command);
     }
 }

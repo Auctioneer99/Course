@@ -38,7 +38,7 @@ public class Server
     private void HandleCommand(int id, ICommand command)
     {
         _logger.Log("Command received");
-        command.Execute();
+        command.Execute(id);
 
         ICommand response = new PrintCommand(id, "Hello from server");
         Send(id, response);

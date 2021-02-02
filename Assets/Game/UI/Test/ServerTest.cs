@@ -18,7 +18,7 @@ public class ServerTest : MonoBehaviour
     {
         _threadManager = new ThreadManager();
 
-        _server = new Server(50, new UnityLogger("Server", "#B42006"));
+        _server = new Server(50, LoggerManager.Server);
 
         _converter = new PacketConverter(_threadManager);
         _networkReceiver = new NetworkReceiver(_server, PORT, _converter);

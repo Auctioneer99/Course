@@ -9,9 +9,9 @@
         _message = message;
     }
 
-    public void Execute()
+    public void Execute(int hostId)
     {
-        new UnityLogger("PrintCommand", "white").Log($"id - {_clientId}, message - {_message}");
+        LoggerManager.Command.Log($"id - {_clientId}, message - {_message}");
     }
 
     public Packet ToPacket()

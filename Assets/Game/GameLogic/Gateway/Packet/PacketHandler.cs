@@ -7,4 +7,9 @@ public static class PacketHandler
     {
         return new PrintCommand(packet.ReadInt(), packet.ReadString());
     }
+
+    public static ICommand JoinAsSpectator(Packet packet)
+    {
+        return null;
+    }
 }

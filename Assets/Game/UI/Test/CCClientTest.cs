@@ -9,7 +9,7 @@ public class CCClientTest : MonoBehaviour
 
     void Start()
     {
-        _client = new Client(new UnityLogger("CCClient", "#ebbc62"));
+        _client = new Client(LoggerManager.CCClient);
         _connector = new CurrentContextConnector(_client);
 
         CurrentContextReceiver receiver = _server.GetComponent<ServerTest>().CCReceiver;
