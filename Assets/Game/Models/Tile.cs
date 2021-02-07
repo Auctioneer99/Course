@@ -19,10 +19,10 @@ public class Tile
     public Vector3 Position => _position;
     private Vector3 _position;
 
-    public IEnumerable<Tile> Connections => _connections.ToImmutableList();
-    private IEnumerable<Tile> _connections;
+    public IEnumerable<Vector3> Connections => _connections.ToImmutableList();
+    private IEnumerable<Vector3> _connections;
 
-    public Tile(Vector3 position, IEnumerable<Tile> connections)
+    public Tile(Vector3 position, IEnumerable<Vector3> connections)
     {
         _connections = connections;
         _position = position;

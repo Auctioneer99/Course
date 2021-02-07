@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
-public class PacketConverter
+public class PacketParser
 {
-    public event Action<ICommand> Parsed;
+    public event Action<Packet> Parsed;
 
-    private static Dictionary<int, Func<Packet, ICommand>> _packetHandlers;
     private ThreadManager _threadManager;
     private Packet _receivedPacket;
 
-    public PacketConverter(ThreadManager threadManager)
+    public PacketParser(ThreadManager threadManager)
     {
         _threadManager = threadManager;
         Initialize();
@@ -18,10 +16,6 @@ public class PacketConverter
     private void Initialize()
     {
         _receivedPacket = new Packet();
-        _packetHandlers = new Dictionary<int, Func<Packet, ICommand>>()
-        {
-            { (int)Packets.Print, PacketHandler.Print },
-        };
     }
 
     public void AddToParse(byte[] data)
@@ -79,12 +73,10 @@ public class PacketConverter
     private void CreatePacket(byte[] data)
     {
         //_threadManager.ExecuteOnMainThread(() =>
-       // {
+        // {
             using (Packet packet = new Packet(data))
             {
-                int packetId = packet.ReadInt();
-                ICommand parsedCommand = _packetHandlers[packetId](packet);
-                Parsed?.Invoke(parsedCommand);
+                Parsed?.Invoke(packet);
             }
         //});
     }

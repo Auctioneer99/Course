@@ -9,13 +9,13 @@ public class NetworkReceiver
     private int _port;
     private TcpListener _listener;
     private Server _server;
-    private PacketConverter _converter;
+    private PacketParser _parser;
 
-    public NetworkReceiver(Server server, int port, PacketConverter converter)
+    public NetworkReceiver(Server server, int port, PacketParser parser)
     {
         _port = port;
         _server = server;
-        _converter = converter;
+        _parser = parser;
         Initialize();
     }
 
@@ -36,7 +36,7 @@ public class NetworkReceiver
     {
         TcpClient socket = _listener.EndAcceptTcpClient(result);
 
-        IGateway gateway = new NetworkGateway(socket, _converter, new UnityLogger("NetworkGatewayServer", "#000000"));
+        IGateway gateway = new NetworkGateway(socket, _parser, ServerPacketHandler.Handlers, new UnityLogger("NetworkGatewayServer", "#000000"));
         int id = _server.AcceptConnection(gateway);
         if (id >= 0)
         {

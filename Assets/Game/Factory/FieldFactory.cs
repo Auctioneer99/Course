@@ -73,8 +73,8 @@ public static class FieldFactory
 
         foreach (var coord in rawCoordinates)
         {
-            field.Add(new Tile(coord, 
-                field.Where(tile => directions.Select(direction => direction + coord).Contains(tile.Position))));
+            field.Add(new Tile(coord,
+                rawCoordinates.Intersect(directions.Select(direction => direction + coord))));
         }
         return field;
     }

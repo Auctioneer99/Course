@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
-using UnityEngine;
-
-public enum Packets
-{
-    Print
-}
 
 public class Packet : IDisposable
 {
@@ -154,18 +149,9 @@ public class Packet : IDisposable
   /// <param name="_value">The Vector3 to add.</param>
   public void Write(Vector3 _value)
   {
-    Write(_value.x);
-    Write(_value.y);
-    Write(_value.z);
-  }
-  /// <summary>Adds a Quaternion to the packet.</summary>
-  /// <param name="_value">The Quaternion to add.</param>
-  public void Write(Quaternion _value)
-  {
-    Write(_value.x);
-    Write(_value.y);
-    Write(_value.z);
-    Write(_value.w);
+    Write(_value.X);
+    Write(_value.Y);
+    Write(_value.Z);
   }
   #endregion
 
@@ -344,13 +330,6 @@ public class Packet : IDisposable
   public Vector3 ReadVector3(bool _moveReadPos = true)
   {
     return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
-  }
-
-  /// <summary>Reads a Quaternion from the packet.</summary>
-  /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-  public Quaternion ReadQuaternion(bool _moveReadPos = true)
-  {
-    return new Quaternion(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
   }
   #endregion
 

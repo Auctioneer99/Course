@@ -2,27 +2,36 @@
 
 public class NetworkClientTest : MonoBehaviour
 {
+    public bool Enabled;
+
     private ThreadManager _threadManager;
     private Client _client;
     private NetworkConnector _networkConnector;
-    private PacketConverter _packetConverter;
+    private PacketParser _packetParser;
 
     private string ip = "127.0.0.1";
     private int port = 2000;
 
     private void Start()
     {
-        _client = new Client(LoggerManager.NetworkClient);
+        if (Enabled)
+        {
+            Playground playground = new Playground(new Tile[0]);
+            _client = new Client(playground, LoggerManager.NetworkClient);
 
-        _threadManager = new ThreadManager();
-        _packetConverter = new PacketConverter(_threadManager);
-        _networkConnector = new NetworkConnector(_client, _packetConverter);
+            _threadManager = new ThreadManager();
+            _packetParser = new PacketParser(_threadManager);
+            _networkConnector = new NetworkConnector(_client, _packetParser);
 
-        _networkConnector.Connect(ip, port);
+            _networkConnector.Connect(ip, port);
+        }
     }
 
     private void Update()
     {
-        _threadManager.Update();
+        if (Enabled)
+        {
+            _threadManager.Update();
+        }
     }
 }

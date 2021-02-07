@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class testing : MonoBehaviour
@@ -9,8 +10,8 @@ public class testing : MonoBehaviour
 
     void Start()
     {
-        Vector3 position = new Vector3(0, 0, 0);
+        var position = new System.Numerics.Vector3(0, 0, 0);
         IEnumerable<Tile> field = FieldFactory.CustomField3();
-        _builder.GetComponent<FieldBuilder>().Build(position, field);
+        _builder.GetComponent<FieldBuilder>().Build(position, field.Select(t => t.Position));
     }
 }

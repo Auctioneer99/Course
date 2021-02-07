@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ServerTest : MonoBehaviour
 {
@@ -11,17 +12,20 @@ public class ServerTest : MonoBehaviour
 
     private NetworkReceiver _networkReceiver;
 
-    private PacketConverter _converter;
+    private PacketParser _parser;
     private ThreadManager _threadManager;
 
     private void Awake()
     {
         _threadManager = new ThreadManager();
 
-        _server = new Server(50, LoggerManager.Server);
+        IEnumerable<Tile> field = FieldFactory.CustomField3();
+        Playground playground = new Playground(field);
 
-        _converter = new PacketConverter(_threadManager);
-        _networkReceiver = new NetworkReceiver(_server, PORT, _converter);
+        _server = new Server(playground, 50, LoggerManager.Server);
+
+        _parser = new PacketParser(_threadManager);
+        _networkReceiver = new NetworkReceiver(_server, PORT, _parser);
 
         _ccReceiver = new CurrentContextReceiver(_server);
     }

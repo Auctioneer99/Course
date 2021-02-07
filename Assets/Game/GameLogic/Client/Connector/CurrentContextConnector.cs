@@ -19,7 +19,9 @@ public class CurrentContextConnector
             gateway.Initialize(_id);
             _client.Gateway = gateway;
 
-            ICommand command = new PrintCommand(_id, "hello from client");
+            IServerCommand command = new JoinAsSpectator();
+
+            //ICommand command = new PrintCommand(_id, "hello from client");
             _client.Send(command);
         }
     }

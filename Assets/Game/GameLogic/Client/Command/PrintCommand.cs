@@ -1,4 +1,4 @@
-﻿public class PrintCommand : ICommand
+﻿public class PrintCommand : IServerCommand
 {
     private int _clientId;
     private string _message;
@@ -9,14 +9,14 @@
         _message = message;
     }
 
-    public void Execute(int hostId)
+    public void Execute(int hostId, Server server)
     {
         LoggerManager.Command.Log($"id - {_clientId}, message - {_message}");
     }
 
     public Packet ToPacket()
     {
-        Packet packet = new Packet((int)Packets.Print);
+        Packet packet = new Packet((int)ServerPackets.Print);
         packet.Write(_clientId);
         packet.Write(_message);
         return packet;

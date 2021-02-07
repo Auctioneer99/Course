@@ -62,7 +62,7 @@ namespace Tests
                 new Vector3(0, -1, 1),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(1, -1, 0));
             connections = new Vector3[3]
@@ -72,7 +72,7 @@ namespace Tests
                 new Vector3(0, -1, 1),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(1, 0, -1));
             connections = new Vector3[3]
@@ -82,7 +82,7 @@ namespace Tests
                 new Vector3(0, 1, -1),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(0, 1, -1));
             connections = new Vector3[3]
@@ -92,7 +92,7 @@ namespace Tests
                 new Vector3(0, 0, 0),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(-1, 1, 0));
             connections = new Vector3[3]
@@ -102,7 +102,7 @@ namespace Tests
                 new Vector3(0, 0, 0),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(-1, 0, 1));
             connections = new Vector3[3]
@@ -112,7 +112,7 @@ namespace Tests
                 new Vector3(0, 0, 0),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(0, -1, 1));
             connections = new Vector3[3]
@@ -122,7 +122,7 @@ namespace Tests
                 new Vector3(0, 0, 0),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace Tests
                 new Vector3(0, -1, 1),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
 
             tile = field.First(t => t.Position == new Vector3(1, -1, 0));
             connections = new Vector3[3]
@@ -153,7 +153,7 @@ namespace Tests
                 new Vector3(0, -1, 1),
             };
             Assert.AreEqual(connections.Count(), tile.Connections.Count());
-            Assert.IsTrue(connections.Except(tile.Connections.Select(t => t.Position)).Count() == 0);
+            Assert.IsTrue(connections.Except(tile.Connections).Count() == 0);
         }
     }
 }

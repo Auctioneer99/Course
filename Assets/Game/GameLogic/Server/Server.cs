@@ -8,14 +8,18 @@ public class Server
     private int _maxConnections;
     private ILogger _logger;
 
-    public Server(int maxConnections, ILogger logger)
+    public Playground Playground => _playground;
+    private Playground _playground;
+
+    public Server(Playground playground, int maxConnections, ILogger logger)
     {
+        _playground = playground;
         _maxConnections = maxConnections;
         _logger = logger;
         Initialize();
     }
 
-    public void Initialize()
+    private void Initialize()
     {
         _gateways = new Dictionary<int, IGateway>();
     }
@@ -24,7 +28,7 @@ public class Server
     {
         for(int i = 0; i < _maxConnections; i++)
         {
-            if (_gateways.TryGetValue(i, out var junk) == false)
+            if (_gateways.ContainsKey(i) == false)
             {
                 _gateways[i] = gateway;
                 gateway.Received += HandleCommand;
@@ -35,13 +39,10 @@ public class Server
         return -1;
     }
 
-    private void HandleCommand(int id, ICommand command)
+    private void HandleCommand(int id, ICommand command )
     {
         _logger.Log("Command received");
-        command.Execute(id);
-
-        ICommand response = new PrintCommand(id, "Hello from server");
-        Send(id, response);
+        ((IServerCommand)command).Execute(id, this);
     }
 
     public void Send(int id, ICommand command)

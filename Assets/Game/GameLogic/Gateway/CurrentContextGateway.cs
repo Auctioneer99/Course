@@ -16,6 +16,7 @@ public class CurrentContextGateway : IGateway
 
     }
 
+
     public void Initialize(int id)
     {
         _clientId = id;

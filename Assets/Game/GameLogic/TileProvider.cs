@@ -21,7 +21,7 @@ public class TileProvider
         _condition = condition;
     }
 
-    public IEnumerable<Tile> Provide(Tile origin)
+    public IEnumerable<Tile> Provide(Tile origin, Playground playground)
     {
         List<Tile> result = new List<Tile>();
 
@@ -45,7 +45,7 @@ public class TileProvider
             }
 
             toCheck = previous
-                .SelectMany(t => t.Connections)
+                .SelectMany(t => playground.TileConnections(t).Select(pair => pair.Value))
                 .Except(checkedTiles).ToList();
         }
         return result;

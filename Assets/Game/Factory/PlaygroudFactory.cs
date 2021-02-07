@@ -12,10 +12,10 @@ public static class PlaygroudFactory
         Playground pg = new Playground(field);
         Tile tile;
 
-        tile = pg.Tiles.First(t => t.Position == new Vector3(0, 0, 0));
+        tile = pg.TileAt(new Vector3(0, 0, 0));
         tile.Unit = UnitFactory.Warrior();
 
-        tile = pg.Tiles.First(t => t.Position == new Vector3(0, 1, -1));
+        tile = pg.TileAt(new Vector3(0, 1, -1));
         tile.Unit = UnitFactory.Warrior();
 
         return pg;

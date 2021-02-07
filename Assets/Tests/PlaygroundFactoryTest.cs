@@ -15,13 +15,13 @@ namespace Tests
             Playground pg = PlaygroudFactory.SimplePlayground();
             Tile tile;
 
-            int count = pg.Tiles.Where(t => t.Unit != null).Count();
+            int count = pg.Tiles.Where(t => t.Value.Unit != null).Count();
             Assert.AreEqual(2, count);
 
-            tile = pg.Tiles.First(t => t.Position == new Vector3(1, 0, -1));
+            tile = pg.TileAt(new Vector3(1, 0, -1));
             Assert.AreEqual(null, tile.Unit);
 
-            tile = pg.Tiles.First(t => t.Position == new Vector3(0, 0, 0));
+            tile = pg.TileAt(new Vector3(0, 0, 0));
             Assert.AreNotEqual(null, tile.Unit);
         }
     }

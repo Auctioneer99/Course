@@ -4,16 +4,16 @@ using System.Net.Sockets;
 public class NetworkConnector
 {
     private Client _client;
-    private PacketConverter _packetConverter;
+    private PacketParser _packetParser;
 
     private int _id = -1;
 
     private ILogger _logger = LoggerManager.NetworkConnector;
 
-    public NetworkConnector(Client client, PacketConverter packetConverter) 
+    public NetworkConnector(Client client, PacketParser packetParser) 
     {
         _client = client;
-        _packetConverter = packetConverter;
+        _packetParser = packetParser;
     }
 
     public void Connect(string ip, int port)
@@ -29,11 +29,13 @@ public class NetworkConnector
             if (socket.Connected == true)
             {
                 _logger.Log("Connected");
-                NetworkGateway gateway = new NetworkGateway(socket, _packetConverter, LoggerManager.NetworkGatewayClient);
+                NetworkGateway gateway = new NetworkGateway(socket, _packetParser, ServerPacketHandler.Handlers, LoggerManager.NetworkGatewayClient);
                 gateway.Initialize(_id);
                 _client.Gateway = gateway;
 
-                ICommand command = new PrintCommand(_id, "hello from client");
+                IServerCommand command = new JoinAsSpectator();
+
+                //IServerCommand command = new PrintCommand(_id, "hello from client");
                 _client.Send(command);
             }
         }

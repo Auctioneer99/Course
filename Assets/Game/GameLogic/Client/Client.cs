@@ -1,5 +1,8 @@
 ﻿public class Client
 {
+    public Playground Playground => _playground;
+    private Playground _playground;
+
     public IGateway Gateway
     {
         get
@@ -21,16 +24,17 @@
 
     private ILogger _logger;
 
-    public Client(ILogger logger) 
+    public Client(Playground playground, ILogger logger) 
     {
+        _playground = playground;
         _logger = logger;
         _logger?.Log("Initialized");
     }
 
-    public void HandleCommand(int id, ICommand command)
+    private void HandleCommand(int id, ICommand command)
     {
         _logger?.Log("Command received");
-        command.Execute(id);
+        ((IClientCommand)command).Execute(this);
     }
 
     public void Send(ICommand command)

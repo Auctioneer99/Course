@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 public class NetworkGateway : IGateway
@@ -7,21 +8,24 @@ public class NetworkGateway : IGateway
 
     public event Action<int, ICommand> Received;
 
+    private Dictionary<int, Func<Packet, ICommand>> _packetHandlers;
+
     public int ClientId => _clientId;
     private int _clientId;
 
     private TcpClient _socket;
-    private PacketConverter _packetConverter;
+    private PacketParser _packetParser;
 
     private NetworkStream _stream;
     private byte[] _receiveBuffer;
 
     private ILogger _logger;
 
-    public NetworkGateway(TcpClient client, PacketConverter packetConverter, ILogger logger)
+    public NetworkGateway(TcpClient client, PacketParser packetParser, Dictionary<int, Func<Packet, ICommand>> packetHandlers, ILogger logger)
     {
         _socket = client;
-        _packetConverter = packetConverter;
+        _packetParser = packetParser;
+        _packetHandlers = packetHandlers;
         _logger = logger;
     }
 
@@ -31,14 +35,16 @@ public class NetworkGateway : IGateway
         _socket.ReceiveBufferSize = DATA_BUFFER_SIZE;
         _socket.SendBufferSize = DATA_BUFFER_SIZE;
 
-        _packetConverter.Parsed += CommandParsed;
+        _packetParser.Parsed += CommandParsed;
         _receiveBuffer = new byte[DATA_BUFFER_SIZE];
         _stream = _socket.GetStream();
         BeginRead();
     }
 
-    private void CommandParsed(ICommand command)
+    private void CommandParsed(Packet packet)
     {
+        int packetId = packet.ReadInt();
+        ICommand command = _packetHandlers[packetId](packet);
         Received?.Invoke(_clientId, command);
     }
 
@@ -59,7 +65,7 @@ public class NetworkGateway : IGateway
                 byte[] data = new byte[byteLength];
                 Array.Copy(_receiveBuffer, data, byteLength);
 
-                _packetConverter.AddToParse(data);
+                _packetParser.AddToParse(data);
 
                 BeginRead();
             }
