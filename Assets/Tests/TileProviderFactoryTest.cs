@@ -13,7 +13,7 @@ namespace Tests
         public void Move()
         {
             TileProvider move = TileProviderFactory.ForMove(2);
-            Playground pg = PlaygroudFactory.SimplePlayground();
+            IPlayground pg = PlaygroudFactory.SimplePlayground();
             Tile origin = pg.TileAt(new Vector3(1, 0, -1));
             IEnumerable<Vector3> expected = new List<Vector3>()
             {
@@ -32,7 +32,7 @@ namespace Tests
         public void MeleeAttack()
         {
             TileProvider attack = TileProviderFactory.ForMeleeAttack();
-            Playground pg = PlaygroudFactory.SimplePlayground();
+            IPlayground pg = PlaygroudFactory.SimplePlayground();
             Tile origin = pg.TileAt(new Vector3(1, 0, -1));
             IEnumerable<Vector3> expected = new List<Vector3>()
             {

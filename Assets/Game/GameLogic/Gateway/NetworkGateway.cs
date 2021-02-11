@@ -69,9 +69,10 @@ public class NetworkGateway : IGateway
 
                 BeginRead();
             }
-            catch
+            catch (Exception ex)
             {
                 _logger.Log("Error serializing packet");
+                _logger.Log(ex.ToString());
             }
         }
     }

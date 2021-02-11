@@ -6,17 +6,18 @@ public static class ServerPacketHandler
 {
     public static Dictionary<int, Func<Packet, ICommand>> Handlers = new Dictionary<int, Func<Packet, ICommand>>
     {
-        { (int)ServerPackets.JoinAsSpectator, JoinAsSpectator },
+        { (int)ServerPackets.GetInitialData, GetInitialData },
+        { (int)ServerPackets.JoinAsPlayer, JoinAsPlayer },
 
     };
 
-    private static IServerCommand Print(Packet packet)
+    private static IServerCommand GetInitialData(Packet packet)
     {
-        return new PrintCommand(packet.ReadInt(), packet.ReadString());
+        return new GetInitialData();
     }
 
-    private static IServerCommand JoinAsSpectator(Packet packet)
+    private static IServerCommand JoinAsPlayer(Packet packet)
     {
-        return new JoinAsSpectator();
+        return new JoinAsPlayer(packet.ReadString(), packet.ReadString(), (Team)packet.ReadInt());
     }
 }

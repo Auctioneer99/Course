@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class RoundProvider
 {
-    private Playground _playground;
+    private IPlayground _playground;
 
     public IEnumerable<Unit> Provide()
     {

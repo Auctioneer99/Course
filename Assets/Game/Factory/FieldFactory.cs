@@ -15,6 +15,11 @@ public static class FieldFactory
             new Vector3(0, -1, 1),
     };
 
+    public static IEnumerable<Tile> NullField()
+    {
+        return new Tile[0];
+    }
+
     public static IEnumerable<Tile> SimpleField1()
     {
         return RadialCreation(1);

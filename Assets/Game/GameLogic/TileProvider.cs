@@ -21,7 +21,7 @@ public class TileProvider
         _condition = condition;
     }
 
-    public IEnumerable<Tile> Provide(Tile origin, Playground playground)
+    public IEnumerable<Tile> Provide(Tile origin, IPlayground playground)
     {
         List<Tile> result = new List<Tile>();
 

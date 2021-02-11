@@ -12,7 +12,7 @@ namespace Tests
         [Test]
         public void PlaygroundFactoryTestSimplePasses()
         {
-            Playground pg = PlaygroudFactory.SimplePlayground();
+            IPlayground pg = PlaygroudFactory.SimplePlayground();
             Tile tile;
 
             int count = pg.Tiles.Where(t => t.Value.Unit != null).Count();

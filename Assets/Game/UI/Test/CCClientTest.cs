@@ -23,8 +23,9 @@ public class CCClientTest : MonoBehaviour
     {
         if (Enabled)
         {
-            Playground playground = new PlaygroundDecorator(new Tile[0], _builder);
-            _client = new Client(playground, LoggerManager.CCClient);
+            IPlayground playground = new Playground(FieldFactory.NullField());
+            IPlayground playgroundDecor = new PlaygroundDecorator(playground, new System.Numerics.Vector3(0, 0, 0), _builder);
+            _client = new Client(playgroundDecor, LoggerManager.CCClient);
             _connector = new CurrentContextConnector(_client);
 
             CurrentContextReceiver receiver = _server.GetComponent<ServerTest>().CCReceiver;

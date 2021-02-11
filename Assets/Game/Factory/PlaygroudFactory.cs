@@ -6,10 +6,10 @@ using System.Numerics;
 
 public static class PlaygroudFactory
 {
-    public static Playground SimplePlayground()
+    public static IPlayground SimplePlayground()
     {
         IEnumerable<Tile> field = FieldFactory.SimpleField2();
-        Playground pg = new Playground(field);
+        IPlayground pg = new Playground(field);
         Tile tile;
 
         tile = pg.TileAt(new Vector3(0, 0, 0));

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-public class JoinAsSpectator : IServerCommand
+public class GetInitialData : IServerCommand
 {
     public void Execute(int id, Server server)
     {
@@ -10,7 +10,7 @@ public class JoinAsSpectator : IServerCommand
 
     public Packet ToPacket()
     {
-        Packet packet = new Packet((int)ServerPackets.JoinAsSpectator);
+        Packet packet = new Packet((int)ServerPackets.GetInitialData);
         return packet;
     }
 }

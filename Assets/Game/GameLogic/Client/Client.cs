@@ -1,7 +1,7 @@
 ﻿public class Client
 {
-    public Playground Playground => _playground;
-    private Playground _playground;
+    public IPlayground Playground => _playground;
+    private IPlayground _playground;
 
     public IGateway Gateway
     {
@@ -24,7 +24,7 @@
 
     private ILogger _logger;
 
-    public Client(Playground playground, ILogger logger) 
+    public Client(IPlayground playground, ILogger logger) 
     {
         _playground = playground;
         _logger = logger;

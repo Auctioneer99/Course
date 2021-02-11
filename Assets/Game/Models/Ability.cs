@@ -1,7 +1,7 @@
 ﻿public class Ability
 {
-    public Playground Playground => _playground;
-    private Playground _playground;
+    public IPlayground Playground => _playground;
+    private IPlayground _playground;
     public string Name => "";
 
     public int Reload => _reload;

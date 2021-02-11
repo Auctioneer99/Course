@@ -8,10 +8,10 @@ public class Server
     private int _maxConnections;
     private ILogger _logger;
 
-    public Playground Playground => _playground;
-    private Playground _playground;
+    public IPlayground Playground => _playground;
+    private IPlayground _playground;
 
-    public Server(Playground playground, int maxConnections, ILogger logger)
+    public Server(IPlayground playground, int maxConnections, ILogger logger)
     {
         _playground = playground;
         _maxConnections = maxConnections;

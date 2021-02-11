@@ -4,9 +4,10 @@ using System.Numerics;
 
 public static class ClientPacketHandler
 {
-    public static Dictionary<int, Func<Packet, IClientCommand>> Handlers = new Dictionary<int, Func<Packet, IClientCommand>>
+    public static Dictionary<int, Func<Packet, ICommand>> Handlers = new Dictionary<int, Func<Packet, ICommand>>
     {
         { (int)ClientPackets.Initialize, Initialize },
+        { (int)ClientPackets.PlayerConnected, PlayerConnected },
 
     };
 
@@ -26,5 +27,10 @@ public static class ClientPacketHandler
             tiles.Add(tile);
         }
         return new InitializeCommand(tiles);
+    }
+
+    private static IClientCommand PlayerConnected(Packet packet)
+    {
+        return new PlayerConnected(packet.ReadInt(), packet.ReadString(), (Team)packet.ReadInt());
     }
 }

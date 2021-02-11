@@ -1,6 +1,5 @@
 ﻿public enum ServerPackets
 {
-    JoinAsSpectator,
+    GetInitialData,
     JoinAsPlayer,
-    Print,
 }

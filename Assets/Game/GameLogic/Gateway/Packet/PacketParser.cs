@@ -72,12 +72,12 @@ public class PacketParser
 
     private void CreatePacket(byte[] data)
     {
-        //_threadManager.ExecuteOnMainThread(() =>
-        // {
+        _threadManager.ExecuteOnMainThread(() =>
+        {
             using (Packet packet = new Packet(data))
             {
                 Parsed?.Invoke(packet);
             }
-        //});
+        });
     }
 }

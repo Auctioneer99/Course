@@ -29,13 +29,12 @@ public class NetworkConnector
             if (socket.Connected == true)
             {
                 _logger.Log("Connected");
-                NetworkGateway gateway = new NetworkGateway(socket, _packetParser, ServerPacketHandler.Handlers, LoggerManager.NetworkGatewayClient);
+                NetworkGateway gateway = new NetworkGateway(socket, _packetParser, ClientPacketHandler.Handlers, LoggerManager.NetworkGatewayClient);
                 gateway.Initialize(_id);
                 _client.Gateway = gateway;
 
-                IServerCommand command = new JoinAsSpectator();
+                IServerCommand command = new GetInitialData();
 
-                //IServerCommand command = new PrintCommand(_id, "hello from client");
                 _client.Send(command);
             }
         }

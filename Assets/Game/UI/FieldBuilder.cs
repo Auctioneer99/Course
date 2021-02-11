@@ -6,6 +6,8 @@ public class FieldBuilder : MonoBehaviour
 {
     [SerializeField]
     private GameObject _tile;
+    [SerializeField]
+    private float _distanceBetween = 0;
 
     public void Build(System.Numerics.Vector3 originPosition, IEnumerable<System.Numerics.Vector3> field)
     {
@@ -24,7 +26,7 @@ public class FieldBuilder : MonoBehaviour
             Vector3 rawPosition = new Vector3(tile.X, tile.Y, tile.Z);
             Vector3 position = rotation * rawPosition;
             position.y = -0.3f;
-            tileModel.transform.position = position * 40;
+            tileModel.transform.position = position * _distanceBetween;
             tileModel.transform.position += origin;
             StartCoroutine(MoveCoroutine(tileModel));
             yield return new WaitForSeconds(0.1f);
@@ -35,8 +37,8 @@ public class FieldBuilder : MonoBehaviour
     private IEnumerator MoveCoroutine(GameObject tile)
     {
         Vector3 origin = tile.transform.position;
-        Vector3 target = new Vector3(origin.x, 0, origin.z);
-        for (float i = 0; i < 5; i +=Time.deltaTime)
+        Vector3 target = new Vector3(origin.x, 0.1f, origin.z);
+        for (float i = 0; i < 1; i +=Time.deltaTime)
         {
             tile.transform.position = Vector3.Lerp(origin, target, i);
             yield return null;

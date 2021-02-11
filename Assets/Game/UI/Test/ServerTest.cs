@@ -20,7 +20,7 @@ public class ServerTest : MonoBehaviour
         _threadManager = new ThreadManager();
 
         IEnumerable<Tile> field = FieldFactory.CustomField3();
-        Playground playground = new Playground(field);
+        IPlayground playground = new Playground(field);
 
         _server = new Server(playground, 50, LoggerManager.Server);
 
