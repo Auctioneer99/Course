@@ -35,6 +35,11 @@ public static class FieldFactory
         return RadialCreation(3);
     }
 
+    public static IEnumerable<Tile> SimpleField6()
+    {
+        return RadialCreation(6);
+    }
+
     public static IEnumerable<Tile> CustomField3()
     {
         IEnumerable<Vector3> exclude = new[]{

@@ -8,9 +8,9 @@ public static class PlaygroudFactory
 {
     public static IPlayground SimplePlayground()
     {
-        IEnumerable<Tile> field = FieldFactory.SimpleField2();
+        IEnumerable<ITile> field = FieldFactory.SimpleField2();
         IPlayground pg = new Playground(field);
-        Tile tile;
+        ITile tile;
 
         tile = pg.TileAt(new Vector3(0, 0, 0));
         tile.Unit = UnitFactory.Warrior();

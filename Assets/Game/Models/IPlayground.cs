@@ -5,17 +5,17 @@ public interface IPlayground
 {
     IDictionary<int, Player> Players { get; }
 
-    IDictionary<Vector3, Tile> Tiles { get; }
+    IDictionary<Vector3, ITile> Tiles { get; }
 
-    IEnumerable<Unit> Units { get; }
+    IEnumerable<IUnit> Units { get; }
 
     bool JoinPlayer(int id, Player player);
 
-    Tile TileAt(Vector3 position);
+    ITile TileAt(Vector3 position);
 
-    IDictionary<Vector3, Tile> TileConnections(Vector3 position);
+    IDictionary<Vector3, ITile> TileConnections(Vector3 position);
 
-    IDictionary<Vector3, Tile> TileConnections(Tile tile);
+    IDictionary<Vector3, ITile> TileConnections(ITile tile);
 
-    void SetField(IEnumerable<Tile> tiles);
+    void SetField(IEnumerable<ITile> tiles);
 }

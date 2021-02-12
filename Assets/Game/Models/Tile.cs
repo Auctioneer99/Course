@@ -2,9 +2,12 @@
 using System.Collections.Immutable;
 using System.Numerics;
 
-public class Tile
+public class Tile : ITile
 {
-    public Unit Unit {
+    public Team SpawnSide => _spawnSide;
+    private Team _spawnSide;
+
+    public IUnit Unit {
         get
         {
             return _unit;
@@ -14,7 +17,7 @@ public class Tile
             _unit = value;
         }
     }
-    private Unit _unit;
+    private IUnit _unit;
 
     public Vector3 Position => _position;
     private Vector3 _position;
@@ -22,8 +25,9 @@ public class Tile
     public IEnumerable<Vector3> Connections => _connections.ToImmutableList();
     private IEnumerable<Vector3> _connections;
 
-    public Tile(Vector3 position, IEnumerable<Vector3> connections)
+    public Tile(Vector3 position, IEnumerable<Vector3> connections, Team spawnSide = Team.Neutral)
     {
+        _spawnSide = spawnSide;
         _connections = connections;
         _position = position;
     }

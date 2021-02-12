@@ -10,9 +10,9 @@ public class PlaygroundDecorator : IPlaygroundDecorator
     public IPlayground Playground => _playground;
     private IPlayground _playground;
 
-    public IDictionary<Vector3, Tile> Tiles => _playground.Tiles;
+    public IDictionary<Vector3, ITile> Tiles => _playground.Tiles;
 
-    public IEnumerable<Unit> Units => _playground.Units;
+    public IEnumerable<IUnit> Units => _playground.Units;
 
     public IDictionary<int, Player> Players => _playground.Players;
 
@@ -29,23 +29,23 @@ public class PlaygroundDecorator : IPlaygroundDecorator
         _builder.Build(_position, Tiles.Select(pair => pair.Value.Position));
     }
 
-    public void SetField(IEnumerable<Tile> tiles)
+    public void SetField(IEnumerable<ITile> tiles)
     {
         _playground.SetField(tiles);
         BuildField();
     }
 
-    public Tile TileAt(Vector3 position)
+    public ITile TileAt(Vector3 position)
     {
         return _playground.TileAt(position);
     }
 
-    public IDictionary<Vector3, Tile> TileConnections(Vector3 position)
+    public IDictionary<Vector3, ITile> TileConnections(Vector3 position)
     {
         return _playground.TileConnections(position);
     }
 
-    public IDictionary<Vector3, Tile> TileConnections(Tile tile)
+    public IDictionary<Vector3, ITile> TileConnections(ITile tile)
     {
         return _playground.TileConnections(tile);
     }

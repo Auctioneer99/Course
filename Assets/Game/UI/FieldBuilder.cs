@@ -8,6 +8,10 @@ public class FieldBuilder : MonoBehaviour
     private GameObject _tile;
     [SerializeField]
     private float _distanceBetween = 0;
+    [SerializeField]
+    private float _perlinPower = 1;
+    [SerializeField]
+    private float _perlinDistance = 10;
 
     public void Build(System.Numerics.Vector3 originPosition, IEnumerable<System.Numerics.Vector3> field)
     {
@@ -20,6 +24,8 @@ public class FieldBuilder : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(anglex, 0, 45);
         Vector3 origin = new Vector3(originPosition.X, originPosition.Y, originPosition.Z);
 
+        Vector2 perlinPostion = new Vector2(Random.Range(0, 10000), Random.Range(0, 10000));
+
         foreach (var tile in field)
         {
             GameObject tileModel = Instantiate(_tile);
@@ -28,16 +34,18 @@ public class FieldBuilder : MonoBehaviour
             position.y = -0.3f;
             tileModel.transform.position = position * _distanceBetween;
             tileModel.transform.position += origin;
-            StartCoroutine(MoveCoroutine(tileModel));
+            StartCoroutine(MoveCoroutine(tileModel, perlinPostion));
             yield return new WaitForSeconds(0.1f);
         }
         yield break;
     }
 
-    private IEnumerator MoveCoroutine(GameObject tile)
+    private IEnumerator MoveCoroutine(GameObject tile, Vector2 perlinPosition)
     {
         Vector3 origin = tile.transform.position;
-        Vector3 target = new Vector3(origin.x, 0.1f, origin.z);
+        Vector3 forPerlin = tile.transform.position / _perlinDistance;
+        float y = Mathf.PerlinNoise(forPerlin.x + perlinPosition.x, forPerlin.z + perlinPosition.y) * _perlinPower;
+        Vector3 target = new Vector3(origin.x, y, origin.z);
         for (float i = 0; i < 1; i +=Time.deltaTime)
         {
             tile.transform.position = Vector3.Lerp(origin, target, i);

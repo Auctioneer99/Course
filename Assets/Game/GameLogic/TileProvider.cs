@@ -12,22 +12,22 @@ public class TileProvider
 
     private int _range;
     private ProviderMode _mode;
-    private Func<Tile, Tile, bool> _condition;
+    private Func<ITile, ITile, bool> _condition;
 
-    public TileProvider(int range, ProviderMode mode, Func<Tile, Tile, bool> condition)
+    public TileProvider(int range, ProviderMode mode, Func<ITile, ITile, bool> condition)
     {
         _range = range;
         _mode = mode;
         _condition = condition;
     }
 
-    public IEnumerable<Tile> Provide(Tile origin, IPlayground playground)
+    public IEnumerable<ITile> Provide(ITile origin, IPlayground playground)
     {
-        List<Tile> result = new List<Tile>();
+        List<ITile> result = new List<ITile>();
 
-        List<Tile> checkedTiles = new List<Tile>();
-        List<Tile> previous = new List<Tile>();
-        List<Tile> toCheck = new List<Tile>() { origin };
+        List<ITile> checkedTiles = new List<ITile>();
+        List<ITile> previous = new List<ITile>();
+        List<ITile> toCheck = new List<ITile>() { origin };
 
         for (int i = 0; i < _range; i++)
         {
@@ -51,7 +51,7 @@ public class TileProvider
         return result;
     }
 
-    public bool SatisfiesTheCondition(Tile origin, Tile tile)
+    public bool SatisfiesTheCondition(ITile origin, ITile tile)
     {
         return _condition(origin, tile);
     }

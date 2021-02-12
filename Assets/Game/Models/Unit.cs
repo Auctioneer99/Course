@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 
-public class Unit
+public class Unit : IUnit
 {
     public int Id => _id;
     private int _id;
@@ -9,10 +9,17 @@ public class Unit
     public Team Team => _team;
     private Team _team;
 
-    public Attribute Health;
-    public Attribute Attack;
-    public Attribute Moves;
-    public Attribute Initiative;
+    public Attribute Health => _health;
+    private Attribute _health;
+
+    public Attribute Attack => _attack;
+    private Attribute _attack;
+
+    public Attribute Moves => _moves;
+    private Attribute _moves;
+
+    public Attribute Initiative => _initiative;
+    private Attribute _initiative;
 
     public IEnumerable<Ability> Abilities => _abilities.ToImmutableList();
     private List<Ability> _abilities;
@@ -20,10 +27,10 @@ public class Unit
     public Unit(Team team, int health, int attack, int moves, int initiative, List<Ability> abilities)
     {
         _team = team;
-        Health = new Attribute(health);
-        Attack = new Attribute(attack);
-        Moves = new Attribute(moves);
-        Initiative = new Attribute(initiative);
+        _health = new Attribute(health);
+        _attack = new Attribute(attack);
+        _moves = new Attribute(moves);
+        _initiative = new Attribute(initiative);
         _abilities = abilities;
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 public class InitializeCommand : IClientCommand
 {
-    IEnumerable<Tile> _tiles;
+    IEnumerable<ITile> _tiles;
 
-    public InitializeCommand(IEnumerable<Tile> tiles)
+    public InitializeCommand(IEnumerable<ITile> tiles)
     {
         _tiles = tiles;
     }

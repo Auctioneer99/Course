@@ -12,14 +12,14 @@ public class Playground : IPlayground
     public IDictionary<int, Player> Players => _players;
     public IDictionary<int, Player> _players;
 
-    public IDictionary<Vector3, Tile> Tiles => _tiles;
-    private IDictionary<Vector3, Tile> _tiles;
+    public IDictionary<Vector3, ITile> Tiles => _tiles;
+    private IDictionary<Vector3, ITile> _tiles;
 
-    public IEnumerable<Unit> Units => _tiles.Where(t => t.Value.Unit != null).Select(t => t.Value.Unit);
+    public IEnumerable<IUnit> Units => _tiles.Where(t => t.Value.Unit != null).Select(t => t.Value.Unit);
 
-    public Playground(IEnumerable<Tile> field, int maxPlayers = 2)
+    public Playground(IEnumerable<ITile> field, int maxPlayers = 2)
     {
-        _maxPlayers = 2;
+        _maxPlayers = maxPlayers;
         _tiles = field.ToDictionary(tile => tile.Position).ToImmutableDictionary();
         _players = new Dictionary<int, Player>();
     }
@@ -42,24 +42,24 @@ public class Playground : IPlayground
         return true;
     }
 
-    public Tile TileAt(Vector3 position)
+    public ITile TileAt(Vector3 position)
     {
         return _tiles[position];
     }
 
-    public IDictionary<Vector3, Tile> TileConnections(Vector3 position)
+    public IDictionary<Vector3, ITile> TileConnections(Vector3 position)
     {
         IEnumerable<Vector3> connections = TileAt(position).Connections;
-        return (IDictionary<Vector3, Tile>)_tiles.Where(pair => connections.Contains(pair.Key));
+        return (IDictionary<Vector3, ITile>)_tiles.Where(pair => connections.Contains(pair.Key));
     }
 
-    public IDictionary<Vector3, Tile> TileConnections(Tile tile)
+    public IDictionary<Vector3, ITile> TileConnections(ITile tile)
     {
         IEnumerable<Vector3> connections = tile.Connections;
-        return (IDictionary<Vector3, Tile>)_tiles.Where(pair => connections.Contains(pair.Key));
+        return (IDictionary<Vector3, ITile>)_tiles.Where(pair => connections.Contains(pair.Key));
     }
 
-    public void SetField(IEnumerable<Tile> tiles)
+    public void SetField(IEnumerable<ITile> tiles)
     {
         _tiles = tiles.ToDictionary(value => value.Position);
     }
