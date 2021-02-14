@@ -235,8 +235,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862c7a241bf691e48b14dfe76b198696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tile: {fileID: 446841438579014333, guid: 833071d2e01cab945b60c3b9059ac878, type: 3}
+  _tile: {fileID: 9052608546302251846, guid: 35b139cbd170ef0439f5ef039778d9d1, type: 3}
   _distanceBetween: 30.5
+  _perlinPower: 14
+  _perlinDistance: 200
 --- !u!4 &305535696
 Transform:
   m_ObjectHideFlags: 0

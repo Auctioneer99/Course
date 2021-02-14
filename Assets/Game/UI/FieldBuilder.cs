@@ -35,7 +35,7 @@ public class FieldBuilder : MonoBehaviour
             tileModel.transform.position = position * _distanceBetween;
             tileModel.transform.position += origin;
             StartCoroutine(MoveCoroutine(tileModel, perlinPostion));
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
         }
         yield break;
     }
