@@ -14,7 +14,6 @@ public class PlaygroundDecorator : IPlaygroundDecorator
 
     public IEnumerable<IUnit> Units => _playground.Units;
 
-    public IDictionary<int, Player> Players => _playground.Players;
 
     public PlaygroundDecorator(IPlayground playground, Vector3 position, FieldBuilder builder)
     {
@@ -48,12 +47,5 @@ public class PlaygroundDecorator : IPlaygroundDecorator
     public IDictionary<Vector3, ITile> TileConnections(ITile tile)
     {
         return _playground.TileConnections(tile);
-    }
-
-    public bool JoinPlayer(int id, Player player)
-    {
-        bool connected = _playground.JoinPlayer(id, player);
-        //todo
-        return connected;
     }
 }

@@ -21,8 +21,9 @@ public class ServerTest : MonoBehaviour
 
         IEnumerable<Tile> field = FieldFactory.SimpleField6();
         IPlayground playground = new Playground(field);
+        GameDirector gameDirector = new GameDirector(playground, 2);
 
-        _server = new Server(playground, 50, LoggerManager.Server);
+        _server = new Server(gameDirector, 50, LoggerManager.Server);
 
         _parser = new PacketParser(_threadManager);
         _networkReceiver = new NetworkReceiver(_server, PORT, _parser);

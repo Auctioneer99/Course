@@ -13,8 +13,11 @@
 
     public void Execute(Client client)
     {
-        Player player = new Player(_name, _team);
-        client.Playground.JoinPlayer(_id, player);
+        if (client.GameDirector.GameState == GameState.WaitingPlayers)
+        {
+            Player player = new Player(_name, _team);
+            client.GameDirector.AddPlayer(_id, player);
+        }
     }
 
     public Packet ToPacket()

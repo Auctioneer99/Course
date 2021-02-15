@@ -13,10 +13,10 @@
 
     public void Execute(int invoker, Server server)
     {
-        Player player = new Player(_name, _team);
-        bool connected = server.Playground.JoinPlayer(invoker, player);
-        if (connected)
+        if (server.GameDirector.GameState == GameState.WaitingPlayers)
         {
+            Player player = new Player(_name, _team);
+            server.GameDirector.AddPlayer(invoker, player);
             IClientCommand command = new PlayerConnected(invoker, _name, _team);
             server.Send(command);
         }

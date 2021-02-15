@@ -8,12 +8,12 @@ public class Server
     private int _maxConnections;
     private ILogger _logger;
 
-    public IPlayground Playground => _playground;
-    private IPlayground _playground;
+    public GameDirector GameDirector => _gameDirector;
+    private GameDirector _gameDirector;
 
-    public Server(IPlayground playground, int maxConnections, ILogger logger)
+    public Server(GameDirector gameDirector, int maxConnections, ILogger logger)
     {
-        _playground = playground;
+        _gameDirector = gameDirector;
         _maxConnections = maxConnections;
         _logger = logger;
         Initialize();

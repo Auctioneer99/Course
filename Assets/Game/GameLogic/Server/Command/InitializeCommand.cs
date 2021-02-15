@@ -15,7 +15,12 @@ public class InitializeCommand : IClientCommand
 
     public void Execute(Client client)
     {
-        client.Playground.SetField(_tiles);
+        IPlayground playground = client.PlaygroundFactory.NullPlayground();
+
+        GameDirector gameDirector= new GameDirector(playground, 2);
+        client.GameDirector = gameDirector;
+
+        playground.SetField(_tiles);
     }
 
     public Packet ToPacket()

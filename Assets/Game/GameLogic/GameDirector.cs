@@ -4,11 +4,15 @@ using System.Linq;
 
 public class GameDirector
 {
-    public IEnumerable<Player> Players => _players;
-    private IEnumerable<Player> _players;
+    public GameState GameState => _gameState;
+    private GameState _gameState;
+
+    public IDictionary<int, Player> Players => _players;
+    public IDictionary<int, Player> _players;
 
     private int _playersCount;
 
+    public IPlayground Playground => _playground;
     private IPlayground _playground;
 
     private TurnProvider _turnProvider;
@@ -24,23 +28,41 @@ public class GameDirector
 
     private void Initialize()
     {
-        _players = new List<Player>();
+        _players = new Dictionary<int, Player>();
+        _gameState = GameState.WaitingPlayers;
     }
 
-    public Player AddPlayer()
+    public void AddPlayer(int id, Player player)
     {
+        if (_players.Count >= _playersCount)
+        {
+            return;
+        }
+        foreach (var pair in _players)
+        {
+            if (pair.Value.Team == player.Team)
+            {
+                return;
+            }
+        }
 
-        return null;
+        _players[id] = player;
+
+        if (_players.Count >= _playersCount)
+        {
+            StartGame();
+        }
+    }
+
+    public void StartGame()
+    {
+        _gameState = GameState.InProgress;
+        IEnumerable<Team> _teams = _players.Select(p => p.Value.Team);
+        _turnProvider = new TurnProvider(_teams);
     }
 
     public IUnit CurrentTurn()
     {
         return _turnProvider.Provide();
-    }
-
-    public void StartGame()
-    {
-        IEnumerable<Team> _teams = _players.Select(p => p.Team);
-        _turnProvider = new TurnProvider(_teams);
     }
 }

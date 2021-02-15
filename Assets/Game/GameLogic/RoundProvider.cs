@@ -52,8 +52,7 @@ public class TurnProvider
 
     public IUnit Provide()
     {
-
-        return null;
+        return _currentQueue.FirstOrDefault(u => u.Moves.Current != 0);
     }
 
     public List<IUnit> GetSequence()

@@ -6,40 +6,14 @@ using System.Collections.Immutable;
 
 public class Playground : IPlayground
 {
-    public int MaxPlayers => _maxPlayers;
-    private int _maxPlayers;
-
-    public IDictionary<int, Player> Players => _players;
-    public IDictionary<int, Player> _players;
-
     public IDictionary<Vector3, ITile> Tiles => _tiles;
     private IDictionary<Vector3, ITile> _tiles;
 
     public IEnumerable<IUnit> Units => _tiles.Where(t => t.Value.Unit != null).Select(t => t.Value.Unit);
 
-    public Playground(IEnumerable<ITile> field, int maxPlayers = 2)
+    public Playground(IEnumerable<ITile> field)
     {
-        _maxPlayers = maxPlayers;
         _tiles = field.ToDictionary(tile => tile.Position).ToImmutableDictionary();
-        _players = new Dictionary<int, Player>();
-    }
-
-    public bool JoinPlayer(int id, Player player)
-    {
-        if (_players.Count >= _maxPlayers)
-        {
-            return false;
-        }
-        foreach (var pair in _players)
-        {
-            if (pair.Value.Team == player.Team)
-            {
-                return false;
-            }
-        }
-
-        _players[id] = player;
-        return true;
     }
 
     public ITile TileAt(Vector3 position)

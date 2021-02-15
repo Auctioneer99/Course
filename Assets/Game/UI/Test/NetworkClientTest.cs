@@ -25,9 +25,9 @@ public class NetworkClientTest : MonoBehaviour
     {
         if (Enabled)
         {
-            IPlayground playground = new Playground(FieldFactory.NullField());
-            IPlayground playgroundDecor = new PlaygroundDecorator(playground, new System.Numerics.Vector3(0, 0, 500), _builder);
-            _client = new Client(playgroundDecor, LoggerManager.NetworkClient);
+            IPlaygroundFactory factory = new UnityPlaygroundFactory(new System.Numerics.Vector3(0, 0, 500), _builder);
+
+            _client = new Client(factory, LoggerManager.NetworkClient);
 
             _threadManager = new ThreadManager();
             _packetParser = new PacketParser(_threadManager);

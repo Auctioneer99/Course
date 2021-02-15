@@ -4,7 +4,7 @@ public class GetInitialData : IServerCommand
 {
     public void Execute(int id, Server server)
     {
-        InitializeCommand command = new InitializeCommand(server.Playground.Tiles.Select(pair => pair.Value));
+        InitializeCommand command = new InitializeCommand(server.GameDirector.Playground.Tiles.Select(pair => pair.Value));
         server.Send(id, command);
     }
 

@@ -1,7 +1,6 @@
 ﻿public class Client
 {
-    public IPlayground Playground => _playground;
-    private IPlayground _playground;
+    public GameDirector GameDirector { get; set; }
 
     public IGateway Gateway
     {
@@ -24,9 +23,12 @@
 
     private ILogger _logger;
 
-    public Client(IPlayground playground, ILogger logger) 
+    public IPlaygroundFactory PlaygroundFactory => _playgroundFactory;
+    private IPlaygroundFactory _playgroundFactory;
+
+    public Client(IPlaygroundFactory factory, ILogger logger) 
     {
-        _playground = playground;
+        _playgroundFactory = factory;
         _logger = logger;
         _logger?.Log("Initialized");
     }
