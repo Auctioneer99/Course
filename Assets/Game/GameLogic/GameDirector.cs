@@ -8,7 +8,7 @@ public class GameDirector
     private GameState _gameState;
 
     public IDictionary<int, Player> Players => _players;
-    public IDictionary<int, Player> _players;
+    private IDictionary<int, Player> _players;
 
     private int _playersCount;
 

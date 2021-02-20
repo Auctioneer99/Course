@@ -2,7 +2,7 @@
 
 public abstract class UnitDecorator : IUnit
 {
-    IUnit _unit;
+    protected IUnit _unit;
 
     public int Id => _unit.Id;
 
