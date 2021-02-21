@@ -12,11 +12,11 @@ public static class PlaygroudFactory
         IPlayground pg = new Playground(field);
         ITile tile;
 
-        tile = pg.TileAt(new Vector3(0, 0, 0));
-        tile.Unit = UnitFactory.Warrior();
+        //tile = pg.TileAt(new Vector3(0, 0, 0));
+        //tile.Unit = UnitFactory.Warrior();
 
-        tile = pg.TileAt(new Vector3(0, 1, -1));
-        tile.Unit = UnitFactory.Warrior();
+        //tile = pg.TileAt(new Vector3(0, 1, -1));
+        //tile.Unit = UnitFactory.Warrior();
 
         return pg;
     }

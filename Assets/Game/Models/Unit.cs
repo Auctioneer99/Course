@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 
-public class Unit : IUnit
+public class Unit
 {
     public int Id => _id;
     private int _id;
@@ -9,28 +9,34 @@ public class Unit : IUnit
     public Team Team => _team;
     private Team _team;
 
-    public Attribute Health => _health;
-    private Attribute _health;
+    public HealthComponent Health => _health;
+    private HealthComponent _health;
 
-    public Attribute Attack => _attack;
-    private Attribute _attack;
+    public AttackComponent Attack => _attack;
+    private AttackComponent _attack;
 
-    public Attribute Moves => _moves;
-    private Attribute _moves;
+    public MoveComponent Moves => _moves;
+    private MoveComponent _moves;
 
-    public Attribute Initiative => _initiative;
-    private Attribute _initiative;
+    public InitiativeComponent Initiative => _initiative;
+    private InitiativeComponent _initiative;
 
-    public IEnumerable<Ability> Abilities => _abilities.ToImmutableList();
-    private List<Ability> _abilities;
+    public IEnumerable<AbilityData> Abilities => _abilities.ToImmutableList();
+    private List<AbilityData> _abilities;
 
-    public Unit(Team team, int health, int attack, int moves, int initiative, List<Ability> abilities)
+    public Unit(Team team, int health, int attack, int moves, int initiative, List<AbilityData> abilities)
     {
         _team = team;
-        _health = new Attribute(health);
-        _attack = new Attribute(attack);
-        _moves = new Attribute(moves);
-        _initiative = new Attribute(initiative);
+        _health = new HealthComponent(health);
+        _attack = new AttackComponent(attack);
+        _moves = new MoveComponent(moves);
+        _initiative = new InitiativeComponent(initiative);
         _abilities = abilities;
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+
     }
 }

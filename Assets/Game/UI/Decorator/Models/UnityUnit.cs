@@ -19,11 +19,11 @@ public class UnityUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Hovered");
+        //Debug.Log("Hovered");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Unhovered");
+        //Debug.Log("Unhovered");
     }
 }

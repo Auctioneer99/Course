@@ -1,37 +1,16 @@
 ﻿using System;
-
-public class AbilityData
+public class MoveComponent
 {
-    public ReloadComponent Reload => _reload;
-    private ReloadComponent _reload;
+    public Health Current => _current;
+    private Health _current;
 
-    public Ability Ability => _ability;
-    private Ability _ability;
+    public MaxHealth Max => _max;
+    private MaxHealth _max;
 
-    public AbilityData(Ability ability, int reload)
+    public MoveComponent(int maxValue)
     {
-        _ability = ability;
-        _reload = new ReloadComponent(reload);
-    }
-}
-
-public class ReloadComponent
-{
-    public event Action<ReloadEvent> BeforeReload;
-    public event Action<ReloadEvent> AfterReload;
-
-    public event Action Unprepared;
-
-    public Reload Current => _current;
-    private Reload _current;
-
-    public MaxReload Max => _max;
-    private MaxReload _max;
-
-    public ReloadComponent(int maxValue)
-    {
-        _current = new Reload(maxValue);
-        _max = new MaxReload(maxValue, _current);
+        _current = new Health(maxValue);
+        _max = new MaxHealth(maxValue, _current);
         Initialize();
     }
 
@@ -39,38 +18,13 @@ public class ReloadComponent
     {
 
     }
-
-    public void Update()
-    {
-        ReloadEvent e = new ReloadEvent(Current.Amount, 1, this);
-        BeforeReload?.Invoke(e);
-        Current.Amount -= e.Amount;
-        AfterReload?.Invoke(e);
-    }
-
-    public void Unprepare()
-    {
-        _current.Amount = _max.Max;
-        Unprepared?.Invoke();
-    }
 }
 
-public class ReloadEvent
+public class Move
 {
-    public int InitialValue;
-    public int Amount;
-    public ReloadComponent Component;
+    public event Action<MoveEvent> BeforeMove;
+    public event Action<MoveEvent> AfterMove;
 
-    public ReloadEvent(int origin, int amount, ReloadComponent component)
-    {
-        InitialValue = origin;
-        Amount = amount;
-        Component = component;
-    }
-}
-
-public class Reload
-{
     public event Action<ChangeEvent> Changed;
 
     public int Amount
@@ -89,13 +43,31 @@ public class Reload
 
     private int _amount;
 
-    public Reload(int amount)
+    public Move(int amount)
     {
         _amount = amount;
     }
+
+    public void MakeMove(MoveEvent data)
+    {
+        BeforeMove?.Invoke(data);
+
+        Amount -= data.Amount;
+
+        AfterMove?.Invoke(data);
+    }
+
 }
 
-public class MaxReload
+public class MoveEvent
+{
+    public int Amount;
+    public Unit Owner;
+    public Tile Origin;
+    public Tile End;
+}
+
+public class MaxMove
 {
     public event Action<ChangeEvent> Changed;
 
@@ -126,20 +98,20 @@ public class MaxReload
     public int Origin => _value;
     private int _value;
 
-    public Reload Reload => _reload;
-    private Reload _reload;
+    public Move Move => _move;
+    private Move _move;
 
 
-    public MaxReload(int value, Reload reload)
+    public MaxMove(int value, Move move)
     {
         _value = value;
-        _reload = reload;
+        _move = move;
         Initialize();
     }
 
     private void Initialize()
     {
-        _reload.Changed += MaxMoveWatcher;
+        _move.Changed += MaxMoveWatcher;
         Changed += UpdateCurrentMove;
     }
 
@@ -154,13 +126,13 @@ public class MaxReload
 
         if (delta > 0)
         {
-            _reload.Amount += delta;
+            _move.Amount += delta;
         }
         else
         {
-            if (e.FinalValue < _reload.Amount)
+            if (e.FinalValue < _move.Amount)
             {
-                _reload.Amount = e.FinalValue;
+                _move.Amount = e.FinalValue;
             }
         }
     }
@@ -171,9 +143,4 @@ public class MaxReload
         _beforeGet?.Invoke(e);
         return e.FinalValue;
     }
-}
-
-public enum Ability
-{
-    MeleeAttack
 }

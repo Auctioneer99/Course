@@ -14,8 +14,9 @@ public class Health
         }
         set
         {
-            ChangeEvent e = new ChangeEvent(_amount, value);
+            int old = _amount;
             _amount = value;
+            ChangeEvent e = new ChangeEvent(old, _amount);
             Changed?.Invoke(e);
         }
     }
@@ -72,7 +73,7 @@ public class MaxHealth
 
     public MaxHealth(int value, Health health)
     {
-        _value = value;
+        _value = _max = value;
         _health = health;
         Initialize();
     }
