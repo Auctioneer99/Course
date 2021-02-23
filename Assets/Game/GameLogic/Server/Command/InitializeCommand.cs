@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 
 public class InitializeCommand : IClientCommand
 {
-    IEnumerable<ITile> _tiles;
+    IEnumerable<Tile> _tiles;
 
-    public InitializeCommand(IEnumerable<ITile> tiles)
+    public InitializeCommand(IEnumerable<Tile> tiles)
     {
         _tiles = tiles;
     }
 
-    public void Execute(Client client)
+    public void Execute(GameDirector gameDirector)
     {
-        IPlayground playground = client.PlaygroundFactory.NullPlayground();
+        Playground playground = new Playground(_tiles);
+        GameDirector toCopy = new GameDirector(playground, 2);
+
+        gameDirector.Copy(toCopy);
+        /*
+        Playground playground = client.PlaygroundFactory.NullPlayground();
 
         GameDirector gameDirector= new GameDirector(playground, 2);
         client.GameDirector = gameDirector;
 
-        playground.SetField(_tiles);
+        playground.SetField(_tiles);*/
     }
 
     public Packet ToPacket()

@@ -1,68 +1,106 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class GameDirector
 {
-    public GameState GameState => _gameState;
+    public event Action<GameState> GameStateChanged;
+    public event Action<Player> PlayerConnected;
+    public event Action<int> RoundChanged;
+
+    public GameState GameState
+    {
+        get => _gameState;
+        private set
+        {
+            _gameState = value;
+            GameStateChanged?.Invoke(_gameState);
+        }
+    }
     private GameState _gameState;
 
     public IDictionary<int, Player> Players => _players;
     private IDictionary<int, Player> _players;
 
+    public int PlayersCount => _playersCount;
     private int _playersCount;
 
-    public IPlayground Playground => _playground;
-    private IPlayground _playground;
+    public Playground Playground => _playground;
+    private Playground _playground;
 
+    public TurnProvider TurnProvider => _turnProvider;
     private TurnProvider _turnProvider;
 
-    private int _round = 0;
+    public int Round 
+    {
+        get => _round;
+        private set
+        {
+            _round = value;
+            RoundChanged?.Invoke(_round);
+        }
+    }
+    private int _round;
 
-    public GameDirector(IPlayground playground, int playersCount)
+    public GameDirector(Playground playground, int playersCount)
     {
         _playground = playground;
         _playersCount = playersCount;
-        Initialize();
-    }
-
-    private void Initialize()
-    {
         _players = new Dictionary<int, Player>();
         _gameState = GameState.WaitingPlayers;
+        _round = 0;
     }
 
-    public void AddPlayer(int id, Player player)
+    public GameDirector() 
+    {
+        _playground = SimplePlaygroundFactory.NullPlayground();
+    }
+
+    public void Copy(GameDirector director)
+    {
+        _playground.SetField(director.Playground.Tiles.Values);
+        _players = director.Players;
+        GameState = director.GameState;
+        _playersCount = director.PlayersCount;
+        Round = director.Round;
+
+        foreach(var p in _players)
+        {
+            PlayerConnected?.Invoke(p.Value);
+        }
+    }
+
+    public bool TryAddPlayer(int id, Player player)
     {
         if (_players.Count >= _playersCount)
         {
-            return;
+            return false;
         }
         foreach (var pair in _players)
         {
             if (pair.Value.Team == player.Team)
             {
-                return;
+                return false;
             }
         }
 
         _players[id] = player;
+        PlayerConnected?.Invoke(player);
+
 
         if (_players.Count >= _playersCount)
         {
             StartGame();
         }
+        return true;
     }
 
     public void StartGame()
     {
-        _gameState = GameState.InProgress;
-        IEnumerable<Team> _teams = _players.Select(p => p.Value.Team);
-        _turnProvider = new TurnProvider(_teams);
-    }
+        GameState = GameState.InProgress;
 
-    public IUnit CurrentTurn()
-    {
-        return _turnProvider.Provide();
+        //IEnumerable<Team> _teams = _players.Select(p => p.Value.Team);
+        //_turnProvider = new TurnProvider(_teams);
     }
 }

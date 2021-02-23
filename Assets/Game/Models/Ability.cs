@@ -175,5 +175,7 @@ public class MaxReload
 
 public enum Ability
 {
-    MeleeAttack
+    MeleeAttack,
+    Move,
+    MultiShot
 }

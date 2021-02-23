@@ -7,9 +7,9 @@ public class TurnProvider
     private Team _advantage;
     private Team[] _teams;
 
-    private List<IUnit> _originQueue;
-    private List<IUnit> _currentQueue;
-    private List<IUnit> _delayQueue;
+    private List<Unit> _originQueue;
+    private List<Unit> _currentQueue;
+    private List<Unit> _delayQueue;
 
     public TurnProvider(IEnumerable<Team> teams)
     {
@@ -26,14 +26,14 @@ public class TurnProvider
         _advantage = _teams[0];
     }
 
-    public void SetQueue(IEnumerable<IUnit> units)
+    public void SetQueue(IEnumerable<Unit> units)
     {
         _originQueue = units.ToList();
         _currentQueue = units.ToList();
-        _delayQueue = new List<IUnit>();
+        _delayQueue = new List<Unit>();
     }
 
-    public void SetDelay(IUnit unit)
+    public void SetDelay(Unit unit)
     {
         if (_delayQueue.Contains(unit))
         {
@@ -50,12 +50,12 @@ public class TurnProvider
         }
     }
 
-    public IUnit Provide()
+    public Unit Provide()
     {
-        return _currentQueue.FirstOrDefault(u => u.Moves.Current != 0);
+        return _currentQueue.FirstOrDefault(u => u.Moves.Current.Amount != 0);
     }
 
-    public List<IUnit> GetSequence()
+    public List<Unit> GetSequence()
     {
 
         return null;

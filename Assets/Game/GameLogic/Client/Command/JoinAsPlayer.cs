@@ -16,9 +16,19 @@
         if (server.GameDirector.GameState == GameState.WaitingPlayers)
         {
             Player player = new Player(_name, _team);
-            server.GameDirector.AddPlayer(invoker, player);
-            IClientCommand command = new PlayerConnected(invoker, _name, _team);
-            server.Send(command);
+            bool connected = server.GameDirector.TryAddPlayer(invoker, player);
+            if (connected)
+            {
+                CardFactory factory = new CardFactory();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    player.Hand.Add(factory.Token());
+                }
+                server.Clients.Add(new Server.Client(invoker));
+                IClientCommand command = new PlayerConnected(invoker, player);
+                server.Send(command);
+            }
         }
     }
 

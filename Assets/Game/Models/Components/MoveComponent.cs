@@ -1,16 +1,16 @@
 ﻿using System;
 public class MoveComponent
 {
-    public Health Current => _current;
-    private Health _current;
+    public Move Current => _current;
+    private Move _current;
 
-    public MaxHealth Max => _max;
-    private MaxHealth _max;
+    public MaxMove Max => _max;
+    private MaxMove _max;
 
     public MoveComponent(int maxValue)
     {
-        _current = new Health(maxValue);
-        _max = new MaxHealth(maxValue, _current);
+        _current = new Move(maxValue);
+        _max = new MaxMove(maxValue, _current);
         Initialize();
     }
 

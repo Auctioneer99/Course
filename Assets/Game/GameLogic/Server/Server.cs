@@ -3,6 +3,22 @@ using System.Collections.Generic;
 
 public class Server
 {
+    public class Client
+    {
+        public List<IClientCommand> IncludedCommands = new List<IClientCommand>();
+        public List<IClientCommand> ExcludedCommands = new List<IClientCommand>();
+
+        public int Id => _id;
+        private int _id;
+
+        public Client(int clientid) 
+        {
+            _id = clientid;
+        }
+    }
+
+    public List<Client> Clients = new List<Client>();
+
     private Dictionary<int, IGateway> _gateways;
 
     private int _maxConnections;

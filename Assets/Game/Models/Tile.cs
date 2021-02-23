@@ -2,12 +2,12 @@
 using System.Collections.Immutable;
 using System.Numerics;
 
-public class Tile : ITile
+public class Tile
 {
     public Team SpawnSide => _spawnSide;
     private Team _spawnSide;
 
-    public IUnit Unit {
+    public Unit Unit {
         get
         {
             return _unit;
@@ -17,7 +17,7 @@ public class Tile : ITile
             _unit = value;
         }
     }
-    private IUnit _unit;
+    private Unit _unit;
 
     public Vector3 Position => _position;
     private Vector3 _position;

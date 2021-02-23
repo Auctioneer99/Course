@@ -1,30 +1,30 @@
 ﻿public class PlayerConnected : IClientCommand
 {
     private int _id;
-    private string _name;
-    private Team _team;
+    private Player _player;
 
-    public PlayerConnected(int id, string name, Team team)
+    public PlayerConnected(int id, Player player)
     {
         _id = id;
-        _name = name;
-        _team = team;
+        _player = player;
     }
 
-    public void Execute(Client client)
+    public void Execute(GameDirector gameDirector)
     {
-        if (client.GameDirector.GameState == GameState.WaitingPlayers)
-        {
-            Player player = new Player(_name, _team);
-            client.GameDirector.AddPlayer(_id, player);
-        }
+        gameDirector.TryAddPlayer(_id, _player);
     }
 
     public Packet ToPacket()
     {
         Packet packet = new Packet((int)ClientPackets.PlayerConnected);
-        packet.Write(_name);
-        packet.Write((int)_team);
+        packet.Write(_player.Name);
+        packet.Write((int)_player.Team);
+        packet.Write(_player.Hand.Count);
+        foreach(var card in _player.Hand)
+        {
+            packet.Write((int)card.Unit);
+        }
+        packet.Write(_player.Deck.Count);
         return packet;
     }
 }

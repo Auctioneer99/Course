@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileDecorator : ITileDecorator
+public class TileDecorator
 {
     public Team SpawnSide => _tile.SpawnSide;
 
-    public ITile Tile => _tile;
-    private ITile _tile;
+    public Tile Tile => _tile;
+    private Tile _tile;
 
-    public IUnit Unit { get => _tile.Unit; set => _tile.Unit = value; }
+    public Unit Unit { get => _tile.Unit; set => _tile.Unit = value; }
 
     public System.Numerics.Vector3 Position => _tile.Position;
 
     public IEnumerable<System.Numerics.Vector3> Connections => _tile.Connections;
 
-    public TileDecorator(ITile tile)
+    public TileDecorator(Tile tile)
     {
         _tile = tile;
     }

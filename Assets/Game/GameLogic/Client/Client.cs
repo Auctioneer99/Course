@@ -23,20 +23,17 @@
 
     private ILogger _logger;
 
-    public IPlaygroundFactory PlaygroundFactory => _playgroundFactory;
-    private IPlaygroundFactory _playgroundFactory;
-
-    public Client(IPlaygroundFactory factory, ILogger logger) 
+    public Client(GameDirector director, ILogger logger) 
     {
-        _playgroundFactory = factory;
         _logger = logger;
         _logger?.Log("Initialized");
+        GameDirector = director;
     }
 
     private void HandleCommand(int id, ICommand command)
     {
         _logger?.Log("Command received");
-        ((IClientCommand)command).Execute(this);
+        ((IClientCommand)command).Execute(GameDirector);
     }
 
     public void Send(ICommand command)

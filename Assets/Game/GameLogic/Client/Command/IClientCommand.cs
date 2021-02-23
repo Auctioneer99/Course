@@ -1,4 +1,4 @@
 ﻿public interface IClientCommand : ICommand
 {
-    void Execute(Client client);
+    void Execute(GameDirector director);
 }

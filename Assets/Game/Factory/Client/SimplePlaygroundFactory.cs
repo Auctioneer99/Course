@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-public class SimplePlaygroundFactory : IPlaygroundFactory
+public static class SimplePlaygroundFactory
 {
-    public SimplePlaygroundFactory()
-    {
-
-    }
-
-    public IPlayground NullPlayground()
+    public static Playground NullPlayground()
     {
         IEnumerable<Tile> field = FieldFactory.NullField();
-        IPlayground playground = new Playground(field);
+        Playground playground = new Playground(field);
         return playground;
     }
 }

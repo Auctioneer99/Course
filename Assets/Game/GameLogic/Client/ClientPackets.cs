@@ -2,5 +2,6 @@
 {
     Initialize,
     PlayerConnected,
+    PlayCard,
 
 }
