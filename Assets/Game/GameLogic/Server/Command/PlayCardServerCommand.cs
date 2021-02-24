@@ -5,6 +5,8 @@ using System.Numerics;
 
 public class PlayCardServerCommand : IServerCommand
 {
+    public ServerPackets Command => ServerPackets.PlayCard;
+
     private int _cardNumber;
     private Vector3 _tile;
 
@@ -42,7 +44,7 @@ public class PlayCardServerCommand : IServerCommand
 
     public Packet ToPacket()
     {
-        Packet packet = new Packet((int)ServerPackets.PlayCard);
+        Packet packet = new Packet((int)Command);
         packet.Write(_cardNumber);
         packet.Write(_tile);
         return packet;

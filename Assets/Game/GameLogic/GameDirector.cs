@@ -12,7 +12,7 @@ public class GameDirector
     public GameState GameState
     {
         get => _gameState;
-        private set
+        set
         {
             _gameState = value;
             GameStateChanged?.Invoke(_gameState);
@@ -55,6 +55,7 @@ public class GameDirector
     public GameDirector() 
     {
         _playground = SimplePlaygroundFactory.NullPlayground();
+        _players = new Dictionary<int, Player>();
     }
 
     public void Copy(GameDirector director)
@@ -99,6 +100,14 @@ public class GameDirector
     public void StartGame()
     {
         GameState = GameState.InProgress;
+
+        /*
+        CardFactory factory = new CardFactory();
+
+        for (int i = 0; i < 5; i++)
+        {
+            player.Hand.Add(factory.Token());
+        }*/
 
         //IEnumerable<Team> _teams = _players.Select(p => p.Value.Team);
         //_turnProvider = new TurnProvider(_teams);

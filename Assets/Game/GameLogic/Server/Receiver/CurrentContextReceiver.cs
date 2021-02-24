@@ -10,9 +10,9 @@ public class CurrentContextReceiver
         _server = server;
     }
 
-    public bool Accept(CurrentContextGateway clientSide)
+    public bool Accept(CurrentContextGateway<IClientCommand, IServerCommand> clientSide)
     {
-        CurrentContextGateway serverSide = new CurrentContextGateway();
+        CurrentContextGateway<IServerCommand, IClientCommand> serverSide = new CurrentContextGateway<IServerCommand, IClientCommand>();
         int id = _server.AcceptConnection(serverSide);
         if (id >= 0)
         {

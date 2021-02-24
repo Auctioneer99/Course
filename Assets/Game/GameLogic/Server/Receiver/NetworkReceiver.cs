@@ -36,7 +36,7 @@ public class NetworkReceiver
     {
         TcpClient socket = _listener.EndAcceptTcpClient(result);
 
-        IGateway gateway = new NetworkGateway(socket, _parser, ServerPacketHandler.Handlers, new UnityLogger("NetworkGatewayServer", "#000000"));
+        IGateway<IServerCommand> gateway = new NetworkGateway<IServerCommand>(socket, _parser, ServerPacketHandler.Handlers, new UnityLogger("NetworkGatewayServer", "#000000"));
         int id = _server.AcceptConnection(gateway);
         if (id >= 0)
         {

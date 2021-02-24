@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 class MeleeAttackCommand : IClientCommand
 {
+    public ClientPackets Command => throw new NotImplementedException();
+
     public void Execute(GameDirector director)
     {
         throw new NotImplementedException();

@@ -1,12 +1,12 @@
 ﻿using System;
 
-public interface IGateway
+public interface IGateway<T> where T: IPacketable
 {
     int ClientId { get; }
 
-    event Action<int, ICommand> Received;
+    event Action<int, T> Received;
 
     void Initialize(int id);
 
-    void Send(ICommand command);
+    void Send(IPacketable packet);
 }

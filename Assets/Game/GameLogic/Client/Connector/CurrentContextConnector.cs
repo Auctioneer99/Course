@@ -13,7 +13,7 @@ public class CurrentContextConnector
 
     public void Connect(CurrentContextReceiver receiver)
     {
-        CurrentContextGateway gateway = new CurrentContextGateway();
+        CurrentContextGateway<IClientCommand, IServerCommand> gateway = new CurrentContextGateway<IClientCommand, IServerCommand>();
         if (receiver.Accept(gateway))
         {
             gateway.Initialize(_id);

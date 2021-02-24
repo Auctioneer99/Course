@@ -1,4 +1,6 @@
-﻿public interface IClientCommand : ICommand
+﻿public interface IClientCommand : IPacketable
 {
+    ClientPackets Command { get; }
+
     void Execute(GameDirector director);
 }

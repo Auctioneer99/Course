@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-public class NetworkGateway : IGateway
+public class NetworkGateway<T> : IGateway<T> where T: IPacketable
 {
     public const int DATA_BUFFER_SIZE = 4096;
 
-    public event Action<int, ICommand> Received;
+    public event Action<int, T> Received;
 
-    private Dictionary<int, Func<Packet, ICommand>> _packetHandlers;
+    private Dictionary<int, Func<Packet, T>> _packetHandlers;
 
     public int ClientId => _clientId;
     private int _clientId;
@@ -21,7 +21,7 @@ public class NetworkGateway : IGateway
 
     private ILogger _logger;
 
-    public NetworkGateway(TcpClient client, PacketParser packetParser, Dictionary<int, Func<Packet, ICommand>> packetHandlers, ILogger logger)
+    public NetworkGateway(TcpClient client, PacketParser packetParser, Dictionary<int, Func<Packet, T>> packetHandlers, ILogger logger)
     {
         _socket = client;
         _packetParser = packetParser;
@@ -44,7 +44,7 @@ public class NetworkGateway : IGateway
     private void CommandParsed(Packet packet)
     {
         int packetId = packet.ReadInt();
-        ICommand command = _packetHandlers[packetId](packet);
+        T command = _packetHandlers[packetId](packet);
         Received?.Invoke(_clientId, command);
     }
 
@@ -77,7 +77,7 @@ public class NetworkGateway : IGateway
         }
     }
 
-    public void Send(ICommand command)
+    public void Send(IPacketable command)
     {
         try
         {

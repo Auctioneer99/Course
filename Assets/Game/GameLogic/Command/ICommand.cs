@@ -1,4 +1,4 @@
-﻿public interface ICommand
+﻿public interface IPacketable
 {
     Packet ToPacket();
 }

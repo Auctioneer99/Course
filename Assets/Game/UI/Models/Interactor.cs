@@ -6,8 +6,6 @@ public class Interactor : MonoBehaviour
 {
     [SerializeField]
     private Camera _camera;
-    [SerializeField]
-    private UnitUI _unitUI;
 
     void Update()
     {
@@ -19,7 +17,7 @@ public class Interactor : MonoBehaviour
                 if (hit.collider.gameObject.TryGetComponent(out UnityUnit unit))
                 {
                     Debug.Log(unit.Unit);
-                    _unitUI.SetUnit(unit);
+                    UIProvider.Get(0).UnitUI.SetUnit(unit);
                 }
             }
         }

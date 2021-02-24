@@ -19,7 +19,7 @@ public class Server
 
     public List<Client> Clients = new List<Client>();
 
-    private Dictionary<int, IGateway> _gateways;
+    private Dictionary<int, IGateway<IServerCommand>> _gateways;
 
     private int _maxConnections;
     private ILogger _logger;
@@ -37,10 +37,10 @@ public class Server
 
     private void Initialize()
     {
-        _gateways = new Dictionary<int, IGateway>();
+        _gateways = new Dictionary<int, IGateway<IServerCommand>>();
     }
 
-    public int AcceptConnection(IGateway gateway)
+    public int AcceptConnection(IGateway<IServerCommand> gateway)
     {
         for(int i = 0; i < _maxConnections; i++)
         {
@@ -55,18 +55,18 @@ public class Server
         return -1;
     }
 
-    private void HandleCommand(int id, ICommand command )
+    private void HandleCommand(int id, IServerCommand command )
     {
         _logger.Log("Command received");
-        ((IServerCommand)command).Execute(id, this);
+        command.Execute(id, this);
     }
 
-    public void Send(int id, ICommand command)
+    public void Send(int id, IPacketable command)
     {
         _gateways[id].Send(command);
     }
 
-    public void Send(ICommand command, int exept = -1)
+    public void Send(IPacketable command, int exept = -1)
     {
         foreach(var value in _gateways)
         {

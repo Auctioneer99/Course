@@ -5,37 +5,42 @@ using UnityEngine;
 public class FieldBuilder : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _tile;
+    private GameObject _tilePrefab;
+    [SerializeField]
+    private GameObject _unitPrefab;
     [SerializeField]
     private float _distanceBetween = 0;
     [SerializeField]
     private float _perlinPower = 1;
     [SerializeField]
     private float _perlinDistance = 10;
+    [SerializeField]
+    private float _scale;
 
-    public void Build(System.Numerics.Vector3 originPosition, IEnumerable<System.Numerics.Vector3> field)
+    private static Quaternion rotation = Quaternion.Euler(-Mathf.Atan(Mathf.Sqrt(2) / 2) * (180 / Mathf.PI), 0, 45);
+
+    public void Build(Vector3 originPosition, IEnumerable<Tile> field)
     {
-        StartCoroutine(BuildCoroutine(originPosition, field));
+        GameObject playground = new GameObject("Playground");
+        playground.transform.localScale = new Vector3(_scale, _scale, _scale);
+        playground.transform.position = originPosition;
+        StartCoroutine(BuildCoroutine(playground, field));
     }
 
-    private IEnumerator BuildCoroutine(System.Numerics.Vector3 originPosition, IEnumerable<System.Numerics.Vector3> field)
+    private IEnumerator BuildCoroutine(GameObject parent, IEnumerable<Tile> field)
     {
-        float anglex = -Mathf.Atan(Mathf.Sqrt(2) / 2) * (180 / Mathf.PI);
-        Quaternion rotation = Quaternion.Euler(anglex, 0, 45);
-        Vector3 origin = new Vector3(originPosition.X, originPosition.Y, originPosition.Z);
-
         Vector2 perlinPostion = new Vector2(Random.Range(0, 10000), Random.Range(0, 10000));
 
         foreach (var tile in field)
         {
-            GameObject tileModel = Instantiate(_tile);
-            Vector3 rawPosition = new Vector3(tile.X, tile.Y, tile.Z);
+            GameObject tileModel = Instantiate(_tilePrefab, parent.transform);
+            tileModel.GetComponent<UnityTile>().Tile = tile;
+            Vector3 rawPosition = new Vector3(tile.Position.X, tile.Position.Y, tile.Position.Z);
             Vector3 position = rotation * rawPosition;
-            position.y = -0.3f;
             tileModel.transform.position = position * _distanceBetween;
-            tileModel.transform.position += origin;
+
             StartCoroutine(MoveCoroutine(tileModel, perlinPostion));
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
         yield break;
     }
@@ -43,8 +48,9 @@ public class FieldBuilder : MonoBehaviour
     private IEnumerator MoveCoroutine(GameObject tile, Vector2 perlinPosition)
     {
         Vector3 origin = tile.transform.position;
-        Vector3 forPerlin = tile.transform.position / _perlinDistance;
-        float y = Mathf.PerlinNoise(forPerlin.x + perlinPosition.x, forPerlin.z + perlinPosition.y) * _perlinPower;
+        Vector3 forPerlin = origin / _perlinDistance;
+        float y = Mathf.PerlinNoise(forPerlin.x + perlinPosition.x, forPerlin.z + perlinPosition.y) * _perlinPower + 0.01f;
+        
         Vector3 target = new Vector3(origin.x, y, origin.z);
         for (float i = 0; i < 1; i +=Time.deltaTime)
         {
@@ -52,6 +58,17 @@ public class FieldBuilder : MonoBehaviour
             yield return null;
         }
         tile.transform.position = target;
+        UnityTile uTile = tile.GetComponent<UnityTile>();
+        if (uTile.Tile.Unit != null)
+        {
+                StartCoroutine(CreateUnit(uTile.Tile.Unit, tile));
+        }
+        yield break;
+    }
+    private IEnumerator CreateUnit(Unit unit, GameObject tile)
+    {
+        GameObject unitModel = Instantiate(_unitPrefab, tile.transform);
+        unitModel.GetComponent<UnityUnit>().Unit = unit;
         yield break;
     }
 }

@@ -83,9 +83,13 @@ public static class FieldFactory
 
         foreach (var coord in rawCoordinates)
         {
-            field.Add(new Tile(coord,
-                rawCoordinates.Intersect(directions.Select(direction => direction + coord))));
+            field.Add(new Tile(coord, GetConnections(coord, rawCoordinates)));
         }
         return field;
+    }
+
+    public static IEnumerable<Vector3> GetConnections(Vector3 position, IEnumerable<Vector3> rawCoordinates)
+    {
+        return rawCoordinates.Intersect(directions.Select(direction => direction + position));
     }
 }

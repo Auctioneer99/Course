@@ -9,6 +9,9 @@ public class NetworkClientTest : MonoBehaviour
     private FieldBuilder _builder;
     [SerializeField]
     private UnityUnitFactory _unitFactory;
+    [SerializeField]
+    private GameObject _uiPrefab;
+
 
     private ThreadManager _threadManager;
     private Client _client;
@@ -22,21 +25,20 @@ public class NetworkClientTest : MonoBehaviour
     {
         if (Enabled)
         {
-            //IPlaygroundFactory factory = new UnityPlaygroundFactory(new System.Numerics.Vector3(0, 0, 500), _builder, _unitFactory);
             GameDirector director = new GameDirector();
 
+            // UI
+            GameObject uiObj = Instantiate(_uiPrefab);
+            UI ui = uiObj.GetComponent<UI>();
+            ui.Director = director;
+            ui.Client = _client;
             director.Playground.FieldChanged += (field) =>
             {
-                _builder.Build(new System.Numerics.Vector3(0, 0, 500), field.Values.Select(t => t.Position));
-
-                foreach (var u in director.Playground.Units)
-                {
-                    GameObject unit = _unitFactory.Spawn(u);
-                    System.Numerics.Vector3 pos = director.Playground.TileAtUnit(u).Position;
-                    unit.transform.position = new Vector3(pos.X, pos.Y, pos.Z);
-                }
+                _builder.Build(new Vector3(0, 0, 500), field.Values);
             };
 
+
+            // networking
             _client = new Client(director, LoggerManager.NetworkClient);
 
             _threadManager = new ThreadManager();

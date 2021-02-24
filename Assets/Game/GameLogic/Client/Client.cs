@@ -2,7 +2,7 @@
 {
     public GameDirector GameDirector { get; set; }
 
-    public IGateway Gateway
+    public IGateway<IClientCommand> Gateway
     {
         get
         {
@@ -19,7 +19,7 @@
             _gateway.Received += HandleCommand;
         }
     }
-    private IGateway _gateway;
+    private IGateway<IClientCommand> _gateway;
 
     private ILogger _logger;
 
@@ -30,13 +30,13 @@
         GameDirector = director;
     }
 
-    private void HandleCommand(int id, ICommand command)
+    private void HandleCommand(int id, IClientCommand command)
     {
         _logger?.Log("Command received");
-        ((IClientCommand)command).Execute(GameDirector);
+        command.Execute(GameDirector);
     }
 
-    public void Send(ICommand command)
+    public void Send(IPacketable command)
     {
         _logger?.Log("Sending command");
         _gateway.Send(command);

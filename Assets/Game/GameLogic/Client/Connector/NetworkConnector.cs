@@ -29,7 +29,7 @@ public class NetworkConnector
             if (socket.Connected == true)
             {
                 _logger.Log("Connected");
-                NetworkGateway gateway = new NetworkGateway(socket, _packetParser, ClientPacketHandler.Handlers, LoggerManager.NetworkGatewayClient);
+                NetworkGateway<IClientCommand> gateway = new NetworkGateway<IClientCommand>(socket, _packetParser, ClientPacketHandler.Handlers, LoggerManager.NetworkGatewayClient);
                 gateway.Initialize(_id);
                 _client.Gateway = gateway;
 

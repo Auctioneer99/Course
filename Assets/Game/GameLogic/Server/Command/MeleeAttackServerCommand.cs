@@ -9,6 +9,8 @@ public class MeleeAttackServerCommand : IServerCommand
         _tile = tile;
     }
 
+    public ServerPackets Command => throw new NotImplementedException();
+
     public void Execute(int invoker, Server server)
     {
 

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 public class PlayCardClientCommand : IClientCommand
 {
+    public ClientPackets Command => ClientPackets.PlayCard;
+
     private int _invoker;
     private int _cardNumber;
     private Vector3 _tile;
@@ -30,7 +32,7 @@ public class PlayCardClientCommand : IClientCommand
 
     public Packet ToPacket()
     {
-        Packet packet = new Packet((int)ClientPackets.PlayCard);
+        Packet packet = new Packet((int)Command);
         packet.Write(_cardNumber);
         packet.Write(_tile);
         packet.Write(_card.Cost);

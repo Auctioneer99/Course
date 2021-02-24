@@ -2,14 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CurrentContextGateway : IGateway
+public class CurrentContextGateway<T, N> : IGateway<T> where T: IPacketable where N: IPacketable
+
 {
     public int ClientId => _clientId;
     private int _clientId;
 
-    public event Action<int, ICommand> Received;
+    public event Action<int, T> Received;
 
-    public CurrentContextGateway Gateway;
+    public CurrentContextGateway<N, T> Gateway;
 
     public CurrentContextGateway()
     {
@@ -22,12 +23,12 @@ public class CurrentContextGateway : IGateway
         _clientId = id;
     }
 
-    public void Send(ICommand command)
+    public void Send(IPacketable command)
     {
-        Gateway.Accept(command);
+        Gateway.Accept((N)command);
     }
 
-    public void Accept(ICommand command)
+    public void Accept(T command)
     {
         Received?.Invoke(_clientId, command);
     }

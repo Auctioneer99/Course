@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ServerTest : MonoBehaviour
@@ -22,6 +23,12 @@ public class ServerTest : MonoBehaviour
         IEnumerable<Tile> field = FieldFactory.SimpleField6();
         Playground playground = new Playground(field);
         GameDirector gameDirector = new GameDirector(playground, 2);
+
+
+        Unit u = UnitFactory.Warrior();
+        u.Health.Current.Amount = 22;
+        playground.AddUnit(u, playground.TileAt(new System.Numerics.Vector3(2, -2, 0)));
+
 
         _server = new Server(gameDirector, 50, LoggerManager.Server);
 

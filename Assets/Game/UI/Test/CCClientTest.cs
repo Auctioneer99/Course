@@ -25,7 +25,7 @@ public class CCClientTest : MonoBehaviour
 
             director.Playground.FieldChanged += (field) =>
             {
-                _builder.Build(new System.Numerics.Vector3(0, 0, 0), field.Values.Select(t => t.Position));
+                _builder.Build(new Vector3(0, 0, 0), field.Values);
 
                 foreach(var u in director.Playground.Units)
                 {
