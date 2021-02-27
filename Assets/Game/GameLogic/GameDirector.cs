@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GameDirector
 {
@@ -89,7 +90,7 @@ public class GameDirector
         _players[id] = player;
         PlayerConnected?.Invoke(player);
 
-
+        Debug.Log(player.Name + "   connected");
         if (_players.Count >= _playersCount)
         {
             StartGame();
@@ -99,8 +100,24 @@ public class GameDirector
 
     public void StartGame()
     {
-        GameState = GameState.InProgress;
-
+        Debug.Log("Starting game");
+        int readyCount = 0;
+        foreach(var player in _players.Values)
+        {
+            Action ChangeState = null;
+            ChangeState = () =>
+            {
+                player.OnEndPlayingCards -= ChangeState;
+                readyCount++;
+                Debug.Log("readyCount == " + readyCount);
+                if (readyCount >= _playersCount)
+                {
+                    SetMovePhase();
+                }
+            };
+            player.OnEndPlayingCards += ChangeState;
+        }
+        GameState = GameState.PlayingCards;
         /*
         CardFactory factory = new CardFactory();
 
@@ -111,5 +128,11 @@ public class GameDirector
 
         //IEnumerable<Team> _teams = _players.Select(p => p.Value.Team);
         //_turnProvider = new TurnProvider(_teams);
+    }
+
+    public void SetMovePhase()
+    {
+        Debug.Log("MOVE PHASE");
+        GameState = GameState.InProgress;
     }
 }

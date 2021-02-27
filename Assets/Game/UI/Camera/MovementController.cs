@@ -26,6 +26,7 @@ public class MovementController : MonoBehaviour
     {
         _camera = GetComponent<Camera>();
         _parent = transform.parent;
+        RotateCamera();
     }
 
     void LateUpdate()

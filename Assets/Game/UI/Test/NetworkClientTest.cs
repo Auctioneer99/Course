@@ -55,5 +55,11 @@ public class NetworkClientTest : MonoBehaviour
         {
             _threadManager.Update();
         }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            IServerCommand command = new JoinAsPlayer("polya", "", Team.Blue);
+            _client.Send(command);
+        }
     }
 }

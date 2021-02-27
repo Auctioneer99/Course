@@ -13,6 +13,7 @@ public class SpawnerTest : MonoBehaviour
 
     void Start()
     {
+        /*
         _factory = _factoryObject.GetComponent<UnityUnitFactory>();
 
         _unit1 = UnitFactory.Warrior();
@@ -25,8 +26,7 @@ public class SpawnerTest : MonoBehaviour
 
 
         _uUnit2 = _factory.Spawn(_unit2);
-        _uUnit2.transform.position = new Vector3(100, 20, 20);
-    }
+        _uUnit2.transform.position = new Vector3(100, 20, 20);*/    }
 
     private void Update()
     {

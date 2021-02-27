@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class JoinAsPlayer : IServerCommand
 {
@@ -24,6 +25,7 @@ public class JoinAsPlayer : IServerCommand
             bool connected = server.GameDirector.TryAddPlayer(invoker, player);
             if (connected)
             {
+                //creating and checking deck;
                 server.Clients.Add(new Server.Client(invoker));
                 IClientCommand command = new PlayerConnected(invoker, player);
                 server.Send(command);

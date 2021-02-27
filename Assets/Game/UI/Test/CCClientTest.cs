@@ -26,13 +26,6 @@ public class CCClientTest : MonoBehaviour
             director.Playground.FieldChanged += (field) =>
             {
                 _builder.Build(new Vector3(0, 0, 0), field.Values);
-
-                foreach(var u in director.Playground.Units)
-                {
-                    GameObject unit = _unitFactory.Spawn(u);
-                    System.Numerics.Vector3 pos = director.Playground.TileAtUnit(u).Position;
-                    unit.transform.position = new Vector3(pos.X, pos.Y, pos.Z);
-                }
             };
 
             _client = new Client(director, LoggerManager.CCClient);
@@ -40,6 +33,15 @@ public class CCClientTest : MonoBehaviour
 
             CurrentContextReceiver receiver = _server.GetComponent<ServerTest>().CCReceiver;
             _connector.Connect(receiver);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            IServerCommand command = new JoinAsPlayer("vasya", "", Team.Red);
+            _client.Send(command);
         }
     }
 }

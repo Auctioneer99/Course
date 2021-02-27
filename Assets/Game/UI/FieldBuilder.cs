@@ -16,6 +16,8 @@ public class FieldBuilder : MonoBehaviour
     private float _perlinDistance = 10;
     [SerializeField]
     private float _scale;
+    [SerializeField]
+    private float _grayScaleMinimum;
 
     private static Quaternion rotation = Quaternion.Euler(-Mathf.Atan(Mathf.Sqrt(2) / 2) * (180 / Mathf.PI), 0, 45);
 
@@ -37,7 +39,8 @@ public class FieldBuilder : MonoBehaviour
             tileModel.GetComponent<UnityTile>().Tile = tile;
             Vector3 rawPosition = new Vector3(tile.Position.X, tile.Position.Y, tile.Position.Z);
             Vector3 position = rotation * rawPosition;
-            tileModel.transform.position = position * _distanceBetween;
+            position.y -= 0.1f;
+            tileModel.transform.localPosition = position * _distanceBetween;
 
             StartCoroutine(MoveCoroutine(tileModel, perlinPostion));
             yield return null;
@@ -47,28 +50,34 @@ public class FieldBuilder : MonoBehaviour
 
     private IEnumerator MoveCoroutine(GameObject tile, Vector2 perlinPosition)
     {
-        Vector3 origin = tile.transform.position;
+        Vector3 origin = tile.transform.localPosition;
         Vector3 forPerlin = origin / _perlinDistance;
-        float y = Mathf.PerlinNoise(forPerlin.x + perlinPosition.x, forPerlin.z + perlinPosition.y) * _perlinPower + 0.01f;
+        float y = Mathf.PerlinNoise(forPerlin.x + perlinPosition.x, forPerlin.z + perlinPosition.y) * _perlinPower;
         
         Vector3 target = new Vector3(origin.x, y, origin.z);
-        for (float i = 0; i < 1; i +=Time.deltaTime)
+        Material material = tile.GetComponent<Renderer>().material;
+
+        float colorMinimum = _grayScaleMinimum * _perlinPower;
+
+        for (float i = 0; i < 1; i += Time.deltaTime)
         {
-            tile.transform.position = Vector3.Lerp(origin, target, i);
+            tile.transform.localPosition = Vector3.Lerp(origin, target, i);
+            float color = (y + colorMinimum) / (_perlinPower + colorMinimum);
+            material.color = new Color(color, color, color);
             yield return null;
         }
-        tile.transform.position = target;
+        tile.transform.localPosition = target;
+
         UnityTile uTile = tile.GetComponent<UnityTile>();
         if (uTile.Tile.Unit != null)
         {
-                StartCoroutine(CreateUnit(uTile.Tile.Unit, tile));
+            CreateUnit(uTile.Tile.Unit, tile);
         }
         yield break;
     }
-    private IEnumerator CreateUnit(Unit unit, GameObject tile)
+    private void CreateUnit(Unit unit, GameObject tile)
     {
         GameObject unitModel = Instantiate(_unitPrefab, tile.transform);
         unitModel.GetComponent<UnityUnit>().Unit = unit;
-        yield break;
     }
 }

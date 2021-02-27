@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class Player
 {
+    public event Action OnEndPlayingCards;
+
     public string Name => _name;
     private string _name;
 
@@ -25,5 +28,10 @@ public class Player
     {
         _name = Name;
         _team = team;
+    }
+
+    public void EndPlayingCards()
+    {
+        OnEndPlayingCards?.Invoke();
     }
 }
