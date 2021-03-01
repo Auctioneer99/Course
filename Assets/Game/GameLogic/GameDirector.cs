@@ -9,6 +9,7 @@ public class GameDirector
     public event Action<GameState> GameStateChanged;
     public event Action<Player> PlayerConnected;
     public event Action<int> RoundChanged;
+    public event Action<Player> OnLocalPlayerSet;
 
     public GameState GameState
     {
@@ -23,6 +24,22 @@ public class GameDirector
 
     public IDictionary<int, Player> Players => _players;
     private IDictionary<int, Player> _players;
+
+    public Player LocalPlayer => _localPlayer;
+    private Player _localPlayer;
+    public int LocalPlayerID 
+    { 
+        set
+        {
+            _localPlayerId = value;
+            if (_players.TryGetValue(value, out Player player))
+            {
+                _localPlayer = player;
+                OnLocalPlayerSet?.Invoke(_localPlayer);
+            }
+        } 
+    }
+    private int _localPlayerId = -2;
 
     public int PlayersCount => _playersCount;
     private int _playersCount;
@@ -89,6 +106,10 @@ public class GameDirector
 
         _players[id] = player;
         PlayerConnected?.Invoke(player);
+        if (_localPlayerId == id)
+        {
+            OnLocalPlayerSet?.Invoke(player);
+        }
 
         Debug.Log(player.Name + "   connected");
         if (_players.Count >= _playersCount)
@@ -100,6 +121,15 @@ public class GameDirector
 
     public void StartGame()
     {
+        foreach(var p in _players.Values)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Card card = new Card(0, UnitEnum.Token);
+                p.AddCard(card);
+            }
+        }
+
         Debug.Log("Starting game");
         int readyCount = 0;
         foreach(var player in _players.Values)

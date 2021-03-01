@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using UnityEngine;
 
 public class PlayCardServerCommand : IServerCommand
 {
     public ServerPackets Command => ServerPackets.PlayCard;
 
     private int _cardNumber;
-    private Vector3 _tile;
+    private System.Numerics.Vector3 _tile;
 
-    public PlayCardServerCommand(int cardNumber, Vector3 tile)
+    public PlayCardServerCommand(int cardNumber, System.Numerics.Vector3 tile)
     {
         _cardNumber = cardNumber;
         _tile = tile;
@@ -18,6 +19,7 @@ public class PlayCardServerCommand : IServerCommand
 
     public void Execute(int invoker, Server server)
     {
+        Debug.Log("Playing card on server");
         if (server.GameDirector.GameState == GameState.PlayingCards)
         {
             IClientCommand command = new PlayCardClientCommand(invoker, _cardNumber, _tile, new CardFactory().Token());

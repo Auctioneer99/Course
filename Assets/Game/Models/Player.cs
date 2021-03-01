@@ -4,6 +4,9 @@ using System.Collections.Generic;
 public class Player
 {
     public event Action OnEndPlayingCards;
+    public event Action<ChangeEvent> OnManaChange;
+    public event Action OnDrawCard;
+    public event Action<Card> OnCardAdd;
 
     public string Name => _name;
     private string _name;
@@ -13,7 +16,9 @@ public class Player
         get => _mana;
         set
         {
+            ChangeEvent e = new ChangeEvent(_mana, value);
             _mana = value;
+            OnManaChange?.Invoke(e);
         }
     }
     private int _mana;
@@ -33,5 +38,16 @@ public class Player
     public void EndPlayingCards()
     {
         OnEndPlayingCards?.Invoke();
+    }
+
+    public void DrawCard()
+    {
+        OnDrawCard?.Invoke();
+    }
+
+    public void AddCard(Card card)
+    {
+        Hand.Add(card);
+        OnCardAdd?.Invoke(card);
     }
 }

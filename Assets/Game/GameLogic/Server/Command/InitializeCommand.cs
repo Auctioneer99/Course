@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using UnityEngine;
 
 public class InitializeCommand : IClientCommand
 {
     public ClientPackets Command => ClientPackets.Initialize;
 
+    private int _id;
     private GameDirector _director;
     private List<IClientCommand> _commands;
 
-    public InitializeCommand(GameDirector director, List<IClientCommand> commands)
+    public InitializeCommand(int id, GameDirector director, List<IClientCommand> commands)
     {
+        _id = id;
         _director = director;
         _commands = commands;
     }
@@ -18,11 +21,14 @@ public class InitializeCommand : IClientCommand
     public void Execute(GameDirector gameDirector)
     {
         gameDirector.Copy(_director);
+        Debug.Log("local player id = " + _id);
+        gameDirector.LocalPlayerID = _id;
     }
 
     public Packet ToPacket()
     {
         Packet packet = new Packet((int)Command);
+        packet.Write(_id);
 
         packet.Write(_director.Playground.Tiles.Count);
         foreach (var tile in _director.Playground.Tiles.Values)
@@ -66,11 +72,13 @@ public class InitializeCommand : IClientCommand
 
     public static InitializeCommand FromPacket(Packet packet)
     {
+        int id = packet.ReadInt();
+
         List<Tile> tiles = new List<Tile>();
         int tileCount = packet.ReadInt();
         for (int i = 0; i < tileCount; i++)
         {
-            Vector3 position = packet.ReadVector3();
+            System.Numerics.Vector3 position = packet.ReadVector3();
             Team spawnSide = (Team)packet.ReadInt();
             Tile tile = new Tile(position, FieldFactory.GetConnections(position, tiles.Select(t => t.Position)), spawnSide);
             bool hasUnit = packet.ReadBool();
@@ -123,6 +131,6 @@ public class InitializeCommand : IClientCommand
             director.Players[id] = player;
             */
         }
-        return new InitializeCommand(director, new List<IClientCommand>());
+        return new InitializeCommand(id, director, new List<IClientCommand>());
     }
 }

@@ -9,9 +9,12 @@ public class NetworkClientTest : MonoBehaviour
     private FieldBuilder _builder;
     [SerializeField]
     private UnityUnitFactory _unitFactory;
-    [SerializeField]
-    private GameObject _uiPrefab;
 
+    [SerializeField]
+    private UI _ui;
+
+    [SerializeField]
+    private Camera _camera;
 
     private ThreadManager _threadManager;
     private Client _client;
@@ -27,11 +30,9 @@ public class NetworkClientTest : MonoBehaviour
         {
             GameDirector director = new GameDirector();
 
-            // UI
-            GameObject uiObj = Instantiate(_uiPrefab);
-            UI ui = uiObj.GetComponent<UI>();
-            ui.Director = director;
-            ui.Client = _client;
+            _ui.Director = director;
+            _ui.Client = _client;
+            _ui.Camera = _camera;
             director.Playground.FieldChanged += (field) =>
             {
                 _builder.Build(new Vector3(0, 0, 500), field.Values);

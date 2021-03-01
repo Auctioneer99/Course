@@ -7,7 +7,7 @@ public class GetInitialData : IServerCommand
 
     public void Execute(int id, Server server)
     {
-        InitializeCommand command = new InitializeCommand(server.GameDirector, new System.Collections.Generic.List<IClientCommand>());
+        InitializeCommand command = new InitializeCommand(id, server.GameDirector, new System.Collections.Generic.List<IClientCommand>());
         server.Send(id, command);
     }
 
