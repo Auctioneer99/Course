@@ -33,8 +33,8 @@ public class ServerTest : MonoBehaviour
 
         _server = new Server(gameDirector, 50, LoggerManager.Server);
 
-        _parser = new PacketParser(_threadManager);
-        _networkReceiver = new NetworkReceiver(_server, PORT, _parser);
+       // _parser = new PacketParser(_threadManager);
+        //_networkReceiver = new NetworkReceiver(_server, PORT, _parser);
 
         _ccReceiver = new CurrentContextReceiver(_server);
         //some();

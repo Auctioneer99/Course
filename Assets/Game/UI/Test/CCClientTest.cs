@@ -16,6 +16,13 @@ public class CCClientTest : MonoBehaviour
     private Client _client;
     private CurrentContextConnector _connector;
 
+    private void Awake()
+    {
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            WebGLInput.captureAllKeyboardInput = false;
+        #endif
+    }
+
     private void Start()
     {
         if (Enabled)
