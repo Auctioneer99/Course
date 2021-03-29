@@ -5,14 +5,14 @@
         public GameController GameController { get; private set; }
 
         public Player LocalUser { get { return null; } }
+        public EPlayer LocalUserId { get { return GameController.PlayerManager.LocalUserId; } }
 
-
-        public void Initialize()
+        public ANetworkConnector(GameController controller)
         {
 
         }
 
-        public abstract void Send(Packet packet, NetworkTarget target, EPlayer aboutWho);
+        public abstract void Send(Packet packet, NetworkTarget target, EPlayer targetPlayer);
 
         public void HandlePacket(Packet packet, EPlayer sender)
         {

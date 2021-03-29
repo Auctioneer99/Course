@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerManager
+    public static class BattleSetupFactory
     {
+        public static Create()
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Gameplay
+﻿using System;
+
+namespace Gameplay
 {
     public enum EPlayer : byte
     {
@@ -15,6 +17,17 @@
 
     public static class EPlayerExtensions
     {
+        public static Packet Write(this Packet packet, EPlayer player)
+        {
+            packet.buffer.AddRange(BitConverter.GetBytes((byte)player));
+            return packet;
+        }
+
+        public static EPlayer ReadEPlayer(this Packet packet)
+        {
+            return (EPlayer)packet.ReadByte();
+        }
+
         public static bool Contains(this EPlayer origin, EPlayer other)
         {
             return (origin & other) != 0;

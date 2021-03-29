@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public abstract class ANetworkGateway
+    public enum EGameplaySetupMode
     {
-        public ANetworkGateway()
-        {
-
-        }
+        LocalServerPlayervsPlayer
     }
 }

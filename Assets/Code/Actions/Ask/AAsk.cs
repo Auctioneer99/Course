@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class LocalConnector : ANetworkConnector
+    public abstract class AAsk : AAction
     {
-
-
     }
 }

@@ -9,12 +9,10 @@ namespace Gameplay
     public abstract class ActionManager : AManager
     {
         public List<AAction> Actions { get; private set; }
-        public IGateway Gateway { get; private set; }
         private int _nextNetworkActionNumber;
 
-        public ActionManager(GameController controller, IGateway gateway) : base(controller)
+        public ActionManager(GameController controller) : base(controller)
         {
-            Gateway = gateway;
             _nextNetworkActionNumber = 1;
         }
 
