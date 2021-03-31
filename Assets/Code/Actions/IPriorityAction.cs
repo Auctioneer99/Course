@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public abstract class AAsk : AAction
+    public interface IPriorityAction
     {
     }
 }

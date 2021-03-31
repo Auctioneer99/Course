@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Gameplay
 {
-    public class RequestManager : AManager
+    public class RequestHolder : AManager
     {
         private int _requestCounter = 1;
 
@@ -11,7 +11,7 @@ namespace Gameplay
 
         public bool HasRequests => _requests.Count > 0;
 
-        public RequestManager(GameController controller) : base(controller)
+        public RequestHolder(GameController controller) : base(controller)
         {
             _requests = new List<ARequest>();
         }
@@ -47,7 +47,7 @@ namespace Gameplay
                 }
                 else
                 {
-                    if (shouldExpire)
+                    if (shouldExpire && GameController.HasAuthority)
                     {
                         if (req.Expired == false)
                         {
@@ -65,9 +65,8 @@ namespace Gameplay
             return false;
         }
 
-        public void AddRequest(ARequest request)
+        public void Add(ARequest request)
         {
-            request.Apply();
             _requests.Insert(0, request);
         }
 

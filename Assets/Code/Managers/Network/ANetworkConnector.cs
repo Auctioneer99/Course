@@ -9,10 +9,12 @@
 
         public ANetworkConnector(GameController controller)
         {
-
+            GameController = controller;
         }
 
         public abstract void Send(Packet packet, NetworkTarget target, EPlayer targetPlayer);
+
+        public virtual void StartHandlingMessages() { };
 
         public void HandlePacket(Packet packet, EPlayer sender)
         {

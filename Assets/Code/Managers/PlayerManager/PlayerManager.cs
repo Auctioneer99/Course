@@ -16,6 +16,8 @@ namespace Gameplay
         public Player LocalUser => GetPlayer(LocalUserId);
         public Player CurrentPlayer => GetPlayer(CurrentPlayerId);
 
+        public bool HasSpectators => false;
+
         public PlayerManager(GameController controller) : base(controller)
         {
 

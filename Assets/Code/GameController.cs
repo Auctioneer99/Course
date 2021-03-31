@@ -15,19 +15,31 @@ namespace Gameplay
 
         public PlayerManager PlayerManager { get; private set; }
 
-        public NotificationManager NotificationManager { get; private set; }
-        public AskManager AskManager { get; private set; }
-        public ActionManager ActionManager { get; private set; }
-        public RequestManager RequestManager { get; private set; }
-
-        public IGateway Network { get; private set; }
+        public ActionDistributor ActionDistributor { get; private set; }
+        public RequestHolder RequestHolder { get; private set; }
+        public ANetworkConnector Network { get; private set; }
+        public EventManager EventManager { get; private set; }
 
         public GameController()
         {
+            Logger = new LoggerManager(this);
             ActionFactory = new ActionFactory(this);
 
             PlayerManager = new PlayerManager(this);
-            ActionManager = new ActionManager(this);
+            ActionDistributor = new ActionDistributor(this);
+            RequestHolder = new RequestHolder(this);
+
+            EventManager = new EventManager(this);
+        }
+
+        public void Start()
+        {
+
+        }
+
+        public void Update()
+        {
+
         }
     }
 }

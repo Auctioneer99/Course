@@ -10,6 +10,11 @@ namespace Gameplay
 
         public bool Initialized { get; private set; }
 
+        public virtual bool IsValid()
+        {
+            return true;
+        }
+
         protected void Initialize()
         {
             if (Initialized)
@@ -17,6 +22,12 @@ namespace Gameplay
                 throw new Exception("Action " + EAction + "already initialized");
             }
             Initialized = true;
+        }
+
+        public virtual void Copy(AAction copyFrom, GameController controller)
+        {
+            Initialized = copyFrom.Initialized;
+            NetworkActionNumber = copyFrom.NetworkActionNumber;
         }
 
         public void Apply()

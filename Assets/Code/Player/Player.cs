@@ -8,5 +8,13 @@ namespace Gameplay
 {
     public class Player
     {
+        public PlayerManager PlayerManager { get; private set; }
+        public EPlayer EPlayer { get; private set; }
+        public PingStatus PingStatus { get; private set; }
+
+        public Player()
+        {
+
+        }
     }
 }
