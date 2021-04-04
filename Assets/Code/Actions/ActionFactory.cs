@@ -17,7 +17,7 @@ namespace Gameplay
             return action;
         }
 
-        public AAction Create<T>() where T: AAction
+        public T Create<T>() where T: AAction
         {
             Type type = typeof(T);
             return Create(type) as T;

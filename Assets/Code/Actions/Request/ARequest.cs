@@ -1,6 +1,6 @@
 ﻿namespace Gameplay
 {
-    public abstract class ARequest : AAction, IAuthorityAction
+    public abstract class ARequest : APlayerAction, IAuthorityAction
     {
         public int Id { get; private set; }
 

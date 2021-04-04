@@ -39,10 +39,10 @@ namespace Gameplay
             SetBytes(_data);
         }
 
-        public AAction ToAction(GameController controller)
+        public APlayerAction ToAction(GameController controller)
         {
             EAction actionId = this.ReadEAction();
-            AAction action = controller.ActionFactory.Create(actionId);
+            APlayerAction action = controller.ActionFactory.Create(actionId);
             action.FromPacket(controller, this);
             return action;
         }

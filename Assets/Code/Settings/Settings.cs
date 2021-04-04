@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public interface IUserAction
+    public class Settings
     {
+        public TimerSettings TimerSettings { get; private set;}
     }
 }

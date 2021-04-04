@@ -8,8 +8,9 @@ namespace Gameplay
 {
     public enum EAction : int
     {
-        Emplty = 0,
+        Empty = 0,
 
+        Ping = 50,
 
         ChangeGameState = 100,
 

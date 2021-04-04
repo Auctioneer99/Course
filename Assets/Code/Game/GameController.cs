@@ -9,7 +9,11 @@ namespace Gameplay
     public class GameController
     {
         public bool HasAuthority = true;
+        public EGameMode EGameMode { get; private set; }
 
+        public FiniteGameStateMachine StateMachine { get; private set; }
+
+        public Settings Settings { get; private set; }
         public LoggerManager Logger { get; private set; }
         public ActionFactory ActionFactory { get; private set; }
 
@@ -19,6 +23,7 @@ namespace Gameplay
         public RequestHolder RequestHolder { get; private set; }
         public ANetworkConnector Network { get; private set; }
         public EventManager EventManager { get; private set; }
+        public TimeManager TimeManager { get; private set; }
 
         public GameController()
         {
@@ -30,6 +35,7 @@ namespace Gameplay
             RequestHolder = new RequestHolder(this);
 
             EventManager = new EventManager(this);
+            TimeManager = new TimeManager(this);
         }
 
         public void Start()

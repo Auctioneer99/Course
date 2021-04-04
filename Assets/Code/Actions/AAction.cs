@@ -32,7 +32,7 @@ namespace Gameplay
 
         public void Apply()
         {
-            if (Initialized)
+            if (Initialized == false)
             {
                 throw new Exception("Action " + EAction + " is not initialized");
             }

@@ -16,32 +16,49 @@ namespace Gameplay
         public int LastReportedNetworkPacketId { get; private set; }
         public int LastKnownNetworkPacketId { get; private set; }
 
-        public long Passed { get; private set; }
+        public long TimePassedSinceLastPing { get; private set; }
 
         public PingStatus(Player player)
         {
             Player = player;
             EventManager eventManager = GameController.EventManager;
-            eventManager.
+            //eventManager.
         }
 
         public void Update()
         {
             GameController controller = GameController;
-            if (controller.GameMode != EGameMode.Spectator)
+            if (controller.EGameMode != EGameMode.Spectator)
             {
                 long deltaTime = controller.TimeManager.DeltaTime;
-                Passed += deltaTime;
+                TimePassedSinceLastPing += deltaTime;
 
                 if (controller.HasAuthority == false &&
                     controller.PlayerManager.LocalUserId == Player.EPlayer)
                 {
-                    if (Passed > PING_INTERVAL)
+                    if (TimePassedSinceLastPing > PING_INTERVAL)
                     {
-                        Passed = 0;
-                        //send action about ping
+                        TimePassedSinceLastPing = 0;
+                        PingAction action = GameController.ActionFactory.Create<PingAction>()
+                            .Initialize(Player.EPlayer, LastKnownNetworkPacketId);
+                        GameController.ActionDistributor.Add(action);
                     }
                 }
+            }
+        }
+
+        public void Ping(int lastNetworkPacketNumber)
+        {
+            if (LastReportedNetworkPacketId < lastNetworkPacketNumber &&
+                lastNetworkPacketNumber <= LastKnownNetworkPacketId)
+            {
+                if (GameController.HasAuthority)
+                {
+                    TimePassedSinceLastPing = 0;
+                }
+
+
+                LastReportedNetworkPacketId = lastNetworkPacketNumber;
             }
         }
     }

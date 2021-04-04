@@ -14,15 +14,15 @@
 
         public abstract void Send(Packet packet, NetworkTarget target, EPlayer targetPlayer);
 
-        public virtual void StartHandlingMessages() { };
+        public virtual void StartHandlingMessages() { }
 
         public void HandlePacket(Packet packet, EPlayer sender)
         {
-            AAction action = packet.ToAction(GameController);
+            APlayerAction action = packet.ToAction(GameController);
             HandleAction(action, sender);
         }
 
-        public void HandleAction(AAction action, EPlayer sender)
+        private void HandleAction(APlayerAction action, EPlayer sender)
         {
             bool valid = ValidateAction(action, sender);
             if (valid == false)
@@ -31,11 +31,19 @@
             }
 
 
-            GameController.ActionManager.AddAction(action);
+            GameController.ActionDistributor.Add(action);
         }
 
-        public bool ValidateAction(AAction action, EPlayer sender)
+        public bool ValidateAction(APlayerAction action, EPlayer sender)
         {
+            if (action is IUserAction userAction)
+            {
+                if (userAction.Sender != sender)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
     }

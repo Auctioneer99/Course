@@ -50,7 +50,7 @@ namespace Gameplay
         }
 #endif
 
-        private static void Register<T>(EAction action) where T: AAction
+        private static void Register<T>(EAction action) where T: APlayerAction
         {
             _enumToType[(int)action] = typeof(T);
         }

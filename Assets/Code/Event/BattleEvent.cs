@@ -17,7 +17,7 @@ namespace Gameplay
         public Event CoreEvent;
         public Event VisualEvent;
 
-        public BattleEvent()
+        public BattleEvent(GameController controller)
         {
             CoreEvent = new Event();
             VisualEvent = new Event();
@@ -36,7 +36,7 @@ namespace Gameplay
         public Event<T> CoreEvent;
         public Event<T> VisualEvent;
 
-        public BattleEvent()
+        public BattleEvent(GameController controller)
         {
             CoreEvent = new Event<T>();
             VisualEvent = new Event<T>();
@@ -55,7 +55,7 @@ namespace Gameplay
         public Event<T1, T2> CoreEvent;
         public Event<T1, T2> VisualEvent;
 
-        public BattleEvent()
+        public BattleEvent(GameController controller)
         {
             CoreEvent = new Event<T1, T2>();
             VisualEvent = new Event<T1, T2>();
@@ -74,7 +74,7 @@ namespace Gameplay
         public Event<T1, T2, T3> CoreEvent;
         public Event<T1, T2, T3> VisualEvent;
 
-        public BattleEvent()
+        public BattleEvent(GameController controller)
         {
             CoreEvent = new Event<T1, T2, T3>();
             VisualEvent = new Event<T1, T2, T3>();
