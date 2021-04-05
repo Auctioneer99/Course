@@ -25,7 +25,29 @@ namespace Gameplay
 
         public Player GetPlayer(EPlayer player)
         {
+            return null;
+        }
 
+        public void SetAllPlayersStatus(EPlayerStatus status)
+        {
+            if (AreAllPlayers(status) == false)
+            {
+                SetPlayerStatusAction action = GameController.ActionFactory.Create<SetPlayerStatusAction>()
+                    .Initialize(EPlayer.Players, status);
+                GameController.ActionDistributor.HandleAction(action);
+            }
+        }
+
+        public bool AreAllPlayers(EPlayerStatus status)
+        {
+            foreach(var player in Players)
+            {
+                if (player == null || status.Contains(player.EStatus))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

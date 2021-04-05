@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public enum EPlayerStatus
+    public enum EPlayerStatus : byte
     {
         Loading = 0,
         Ready = 1 << 0,
@@ -19,6 +19,17 @@ namespace Gameplay
 
     public static class EPlayerStatusExtension
     {
+        public static Packet Write(this Packet packet, EPlayerStatus status)
+        {
+            packet.Write((byte)status);
+            return packet;
+        }
+
+        public static EPlayerStatus ReadEPlayerStatus(this Packet packet)
+        {
+            return (EPlayerStatus)packet.ReadByte();
+        }
+
         public static bool Contains(this EPlayerStatus status, EPlayerStatus other)
         {
             return (status & other) > 0;

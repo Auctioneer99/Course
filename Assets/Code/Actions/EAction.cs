@@ -8,11 +8,14 @@ namespace Gameplay
 {
     public enum EAction : int
     {
-        Empty = 0,
+        Empty,
 
-        Ping = 50,
+        Ping,
 
-        ChangeGameState = 100,
+        TimerElapsed,
 
+        ChangeGameState,
+
+        SetPlayerStatus,
     }
 }

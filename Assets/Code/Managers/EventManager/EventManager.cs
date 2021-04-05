@@ -8,14 +8,21 @@ namespace Gameplay
 {
     public class EventManager : AManager
     {
-        public readonly Lazy<GameController> OnGameInitialized;
-        public readonly Lazy<BattleEvent<AGameState, AGameState>> OnGameStateChanged;
+        public readonly BattleEvent<GameController> OnGameInitialized;
+        public readonly BattleEvent<AGameState, AGameState> OnGameStateChanged;
+
+
+        public readonly BattleEvent<Player> OnPlayerStatusChanged;
+        public readonly BattleEvent<StateTimer> OnStateTimerElapsed;
 
 
         public EventManager(GameController controller) : base(controller)
         {
-            OnGameInitialized = new Lazy<GameController>();
-            OnGameStateChanged = new Lazy<BattleEvent<AGameState, AGameState>>();
+            OnGameInitialized = new BattleEvent<GameController>(controller);
+            OnGameStateChanged = new BattleEvent<AGameState, AGameState>(controller);
+
+            OnPlayerStatusChanged = new BattleEvent<Player>(controller);
+            OnStateTimerElapsed = new BattleEvent<StateTimer>(controller);
         }
     }
 }

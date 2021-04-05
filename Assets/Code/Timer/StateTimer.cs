@@ -8,6 +8,7 @@ namespace Gameplay
 
         public readonly BattleEvent<StateTimer> OnElapsed;
 
+        public GameController GameController => TimeManager.GameController;
         public TimeManager TimeManager { get; private set; }
         public TimerDefenition Definition { get; private set; }
         private TimerLevelDefenition _activeDefinition;
@@ -28,6 +29,12 @@ namespace Gameplay
             ETimerState = ETimerState.Stopped;
 
             OnElapsed = new BattleEvent<StateTimer>(TimeManager.GameController);
+        }
+
+        public void Reset()
+        {
+            _activeDefinition = null;
+            ETimerState = ETimerState.Stopped;
         }
 
         public void Start()
