@@ -47,7 +47,20 @@ namespace Gameplay
 
         private static void RegisterActions()
         {
+            Register<EmptyAction>(EAction.Empty);
             Register<SwitchGameStateAction>(EAction.SwitchGameState);
+
+            Register<ConnectInitializationAction>(EAction.ConnectInitialization);
+            Register<PingAction>(EAction.Ping);
+            Register<SetupPlayerAction>(EAction.SetupPlayer);
+            Register<SetupPlayerDeckAction>(EAction.SetupPlayerDeck);
+            Register<SyncTimersSettingsAction>(EAction.SyncTimersSettings);
+            Register<TimerStartedAction>(EAction.TimerStarted);
+            Register<TimerElapsedAction>(EAction.TimerElapsed);
+
+            Register<RequestPlayerFinishedReport>(EAction.RequestPlayerFinished);
+            Register<ReportPlayerStatusAction>(EAction.ReportPlayerStatus);
+            Register<SetPlayerStatusAction>(EAction.SetPlayerStatus);
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Gameplay
 {
     public class EventManager : AManager
     {
+        public readonly BattleEvent OnSnapshotRestored;
+
         public readonly BattleEvent<GameController> OnGameInitialized;
         public readonly BattleEvent<AGameState, AGameState> OnGameStateChanged;
 
@@ -30,6 +32,8 @@ namespace Gameplay
             OnStateTimerElapsed = new BattleEvent<StateTimer>(controller);
 
             OnGameStatusChanged = new BattleEvent(controller);
+
+            OnSnapshotRestored = new BattleEvent(controller);
         }
     }
 }

@@ -215,11 +215,15 @@ namespace Gameplay
         {
             if (buffer.Count > readPos)
             {
+                //UnityEngine.Debug.Log("Array length = " + readableBuffer.Length);
+                //UnityEngine.Debug.Log("Array read position = " + readPos);
+
                 int _value = BitConverter.ToInt32(readableBuffer, readPos);
                 if (_moveReadPos)
                 {
                     readPos += 4;
                 }
+                //UnityEngine.Debug.Log("Array Read Int Value = " + _value);
                 return _value;
             }
             else

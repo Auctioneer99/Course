@@ -29,6 +29,16 @@ namespace Gameplay
 
         }
 
+        public override void Update()
+        {
+            
+        }
+
+        public override void Send(AAction action)
+        {
+            Manager.SendToHost(this, action);
+        }
+
         public override void HandleMessage(AConnector sender, AAction action)
         {
             Packet packet = new Packet();

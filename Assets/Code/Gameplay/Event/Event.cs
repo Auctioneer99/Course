@@ -77,6 +77,7 @@ namespace Gameplay
 
         public void RemoveListener(Action<T> listener)
         {
+            //throw new Exception("lol");
             RemoveListener(listener);
         }
     }

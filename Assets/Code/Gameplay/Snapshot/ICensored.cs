@@ -1,6 +1,6 @@
 ﻿namespace Gameplay
 {
-    public interface ICensoredAction
+    public interface ICensored
     {
         void Censor(EPlayer player);
     }

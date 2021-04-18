@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gameplay
 {
-    public class TimerSettings : IDeserializable
+    public class TimerSettings : IDeserializable, IStateObjectCloneable<TimerSettings>
     {
         public bool EnableTimers;
         public List<TimerDefenition> Timers;
+
+        public TimerSettings()
+        {
+
+        }
 
         public TimerSettings(bool enableTimers)
         {
@@ -16,10 +22,28 @@ namespace Gameplay
             }
         }
 
+        public TimerSettings(Packet packet)
+        {
+            FromPacket(packet);
+        }
+
         public TimerSettings(List<TimerDefenition> definitions)
         {
             EnableTimers = true;
             Timers.AddRange(definitions);
+        }
+
+        public TimerSettings Clone(GameController controller)
+        {
+            TimerSettings settings = new TimerSettings();
+            settings.Copy(this, controller);
+            return settings;
+        }
+
+        public void Copy(TimerSettings other, GameController controller)
+        {
+            EnableTimers = other.EnableTimers;
+            Timers = other.Timers.Clone(controller);
         }
 
         public void FromPacket(Packet packet)
@@ -29,9 +53,7 @@ namespace Gameplay
             Timers = new List<TimerDefenition>(length);
             for(int i = 0; i < length; i++)
             {
-                TimerDefenition timer = new TimerDefenition();
-                timer.FromPacket(packet);
-                Timers.Add(timer);
+                Timers.Add(new TimerDefenition(packet));
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace Gameplay
 {
-    public class Player
+    public class Player : IDeserializable
     {
         public PlayerManager PlayerManager { get; private set; }
         public GameController GameController => PlayerManager.GameController;
@@ -30,11 +30,40 @@
         {
             PlayerManager = manager;
             EPlayer = player;
+            EStatus = EPlayerStatus.Loading;
+            Initialize();
+        }
+
+        public Player(PlayerManager manager, Packet packet)
+        {
+            PlayerManager = manager;
+            Initialize();
+            FromPacket(packet);
+        }
+
+        private void Initialize()
+        {
+
+        }
+
+        public void Reset()
+        {
+
         }
 
         public bool IsLocalUser()
         {
             return PlayerManager.LocalUserId == EPlayer;
+        }
+
+        public void FromPacket(Packet packet)
+        {
+            EPlayer = packet.ReadEPlayer();
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(EPlayer);
         }
     }
 }

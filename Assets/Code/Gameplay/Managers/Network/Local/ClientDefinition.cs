@@ -15,6 +15,8 @@ namespace Gameplay
     {
         public GameInstance GameInstance { get; private set; }
 
+        public bool Started { get; private set; }
+
         private NetworkManager _networkManager;
         private OnlineConnector _onlineConnector;
 
@@ -23,17 +25,33 @@ namespace Gameplay
             GameInstance = instance;
         }
 
+        public void Start()
+        {
+            if (Started)
+            {
+                throw new Exception("Already started");
+            }
+            GameInstance.Start();
+            Started = true;
+        }
+
         public void ConnectToLocal(ServerDefinition server)
         {
-            server.LocalListener.Connect(GameInstance);
+            if (Started)
+            {
+                server.LocalListener.Connect(GameInstance);
+            }
         }
 
         public void ConnectToOnline(string ip, int port)
         {
+            if (Started == false)
+            {
+                return;
+            }
             WebSocket webClient = new WebSocket($"ws://{ip}:{port}/game");
             _onlineConnector = new OnlineConnector(webClient, new Logger("red"));
-            _onlineConnector.Initialize(0);
-
+            _onlineConnector.Initialize(0, EPlayer.Server);
 
             EventHandler<MessageEventArgs> initializer = null;
 
@@ -43,10 +61,10 @@ namespace Gameplay
 
                 ConnectInitializationAction action = ParsePacket(new Packet(e.RawData)) as ConnectInitializationAction;
 
-                _networkManager = new NetworkManager(GameInstance.Controller.Network, action.ConnectionId, new Logger("red"));
+                _networkManager = new NetworkManager(GameInstance.Controller.Network, action.ConnectionId, action.PlayerGroup, new Logger("red"));
                 _networkManager.Add(_onlineConnector);
 
-                Debug.Log("[Client] Connection established, my id is " + action.ConnectionId);
+                GameInstance.Controller.ActionDistributor.Add(action);
 
                 webClient.OnMessage += OnMessageHandler;
             };
@@ -89,6 +107,9 @@ namespace Gameplay
 
         private AAction ParsePacket(Packet packet)
         {
+            Debug.Log("[Client] ReadingPacket");
+            Debug.Log(GameInstance.Controller);
+
             return packet.ReadAction(GameInstance.Controller);
         }
     }

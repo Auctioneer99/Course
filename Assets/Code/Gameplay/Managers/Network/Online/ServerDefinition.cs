@@ -24,6 +24,7 @@ namespace Gameplay
             {
                 throw new Exception("Definition already started listening");
             }
+            GameInstance.Start();
             OnlineListener?.Start();
             LocalListener.Start();
         }
@@ -33,7 +34,7 @@ namespace Gameplay
             ServerDefinition definition = new ServerDefinition();
             definition.GameInstance = game;
 
-            NetworkManager _networkManager = new NetworkManager(game.Controller.Network, 0, new Logger("blue"));
+            NetworkManager _networkManager = new NetworkManager(game.Controller.Network, 0, EPlayer.Server, new Logger("blue"));
             definition.LocalListener = new LocalListener(_networkManager);
 
             return definition;
@@ -45,7 +46,7 @@ namespace Gameplay
             definition.GameInstance = game;
 
             WebSocketServer webServer = new WebSocketServer(port, false);
-            NetworkManager _networkManager = new NetworkManager(game.Controller.Network, 0, new Logger("blue"));
+            NetworkManager _networkManager = new NetworkManager(game.Controller.Network, 0, EPlayer.Server, new Logger("blue"));
             webServer.AddWebSocketService<GameLobby>("/game", () =>
                 new GameLobby(_networkManager)
             );

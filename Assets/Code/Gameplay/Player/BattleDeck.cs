@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class BattleDeck
+    public class BattleDeck : IDeserializable, IStateObjectCloneable<BattleDeck>, ICensored
     {
         public string Name = string.Empty;
         public CardDefinition Hero;
@@ -24,9 +24,39 @@ namespace Gameplay
             Cards = cards;
         }
 
+        public BattleDeck(Packet packet)
+        {
+            FromPacket(packet);
+        }
+
         public static BattleDeck Default()
         {
             return new BattleDeck();
+        }
+
+        public void FromPacket(Packet packet)
+        {
+            
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            
+        }
+
+        public void Censor(EPlayer player)
+        {
+            
+        }
+
+        public BattleDeck Clone(GameController controller)
+        {
+            return this;
+        }
+
+        public void Copy(BattleDeck other, GameController controller)
+        {
+            
         }
     }
 }

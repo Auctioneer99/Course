@@ -24,7 +24,6 @@ namespace Gameplay
         public PlayerManager PlayerManager { get; private set; }
         public ActionDistributor ActionDistributor { get; private set; }
         public RequestHolder RequestHolder { get; private set; }
-        //public ANetworkConnector Network { get; set; }
         public LocalConnector Network { get; private set; }
         public EventManager EventManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
@@ -58,17 +57,6 @@ namespace Gameplay
             //OnlineNetworkRegistrator.ConnectClient(Network, ip, port);
         }
 
-        public void Setup(EPlayer perspectivePlayer, Player[] players)
-        {
-            SetStatus(EGameStatus.Running);
-            PlayerManager.SetupPlayers(perspectivePlayer, players);
-
-            if (HasAuthority)
-            {
-                TimeManager.SetupTimers();
-            }
-        }
-
         public void SetStatus(EGameStatus status)
         {
             if (Status != status)
@@ -77,9 +65,28 @@ namespace Gameplay
                 EventManager.OnGameStatusChanged.Invoke();
             }
         }
+        /*
+        public void Setup()
+        {
+            SetStatus(EGameStatus.Running);
+            //PlayerManager.SetupPlayers(perspectivePlayer, players);
+
+            if (HasAuthority)
+            {
+                TimeManager.SetupTimers();
+            }
+        }*/
 
         public void Start()
         {
+            SetStatus(EGameStatus.Running);
+            //PlayerManager.SetupPlayers(perspectivePlayer, players);
+
+            if (HasAuthority)
+            {
+                TimeManager.SetupTimers();
+            }
+
             StateMachine.TransitionTo(EGameState.AwaitingPlayers);
             //settings.Init
             Initialize();
@@ -97,6 +104,11 @@ namespace Gameplay
 
         public void Update()
         {
+            if (IsInitialized == false)
+            {
+                return;
+            }
+
             TimeManager.Update();
             StateMachine.Update();
             //PlayerManager.Update();
@@ -133,6 +145,11 @@ namespace Gameplay
         public bool IsFinished(bool ignoreRequests = false)
         {
             return true;
+        }
+
+        public void Reset(bool resetVisuals = false)
+        {
+            PlayerManager?.Reset();
         }
     }
 }

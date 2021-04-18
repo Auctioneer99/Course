@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Linq;
 
 
@@ -38,6 +39,7 @@ namespace Gameplay
         {
             if (Actions.Count > 0)
             {
+                Debug.Log($"<color=black>Actions.Count = {Actions.Count}</color>");
                 Step();
                 return true; 
             }
@@ -92,26 +94,7 @@ namespace Gameplay
                 }
 
                 GameController.Network.Send(action);
-
             }
-             
-        }
-
-        private void CensorSend(AAction action, EPlayer targetPlayer)
-        {
-            AAction copyToCensor = GameController.ActionFactory.Create(action.EAction);
-            copyToCensor.Copy(action, GameController);
-            (copyToCensor as ICensoredAction).Censor(targetPlayer);
-            Packet packet = new Packet();
-            copyToCensor.ToPacket(packet);
-            Send(packet, NetworkTarget.TargetPlayer, targetPlayer);
-        }
-
-        private void Send(Packet packet, NetworkTarget target, EPlayer player)
-        {
-            LocalConnector network = GameController.Network;
-            packet.WriteLength();
-            //network.Send(packet, target, player);
         }
 
         private void DestroyAction(AAction action)
@@ -145,28 +128,6 @@ namespace Gameplay
                 return !isAuthoritativeAction && isClientAction;
             }
             return false;
-        }
-
-        protected void GetDestination(AAction action, out NetworkTarget target, out EPlayer targetPlayer)
-        {
-            if (GameController.HasAuthority)
-            {
-                if (action is ITargetedAction targetedAction)
-                {
-                    target = targetedAction.Target;
-                    targetPlayer = targetedAction.TargetPlayer;
-                }
-                else
-                {
-                    target = NetworkTarget.AllPlayers;
-                    targetPlayer = EPlayer.Undefined;
-                }
-            }
-            else
-            {
-                target = NetworkTarget.Server;
-                targetPlayer = EPlayer.Undefined;
-            }
         }
     }
 }

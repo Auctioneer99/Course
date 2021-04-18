@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public abstract class AAction : IRuntimeDeserializable
+    public abstract class AAction : IRuntimeDeserializable, IStateObjectCloneable<AAction>
     {
         public abstract EAction EAction { get; }
         public int NetworkActionNumber { get; set; }
@@ -22,6 +22,13 @@ namespace Gameplay
                 throw new Exception("Action " + EAction + "already initialized");
             }
             Initialized = true;
+        }
+
+        public AAction Clone(GameController controller)
+        {
+            AAction action = controller.ActionFactory.Create(EAction);
+            action.Copy(this, controller);
+            return action;
         }
 
         public virtual void Copy(AAction copyFrom, GameController controller)
@@ -57,5 +64,6 @@ namespace Gameplay
 
         protected abstract void AttributesTo(Packet packet);
         protected abstract void AttributesFrom(Packet packet);
+
     }
 }

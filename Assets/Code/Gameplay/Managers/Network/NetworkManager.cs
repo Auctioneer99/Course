@@ -21,33 +21,30 @@ namespace Gameplay
 
         private Logger _logger;
 
-        public NetworkManager(LocalConnector user, int mainsocketid, Logger logger)
+        public NetworkManager(LocalConnector user, int mainsocketid, EPlayer group, Logger logger)
         {
             _logger = logger;
-            user.Initialize(mainsocketid);
+            user.Initialize(mainsocketid, group);
             Host = user;
             Add(user);
         }
 
-        public int IncomingConnection(OnlineConnector connection)
+        public int IncomingConnection(AConnector connection)
         {
-            int id = InitializeConnection(connection);
+            int id = InitializeConnection(connection, EPlayer.Spectators);
             _logger.Log("Sending first packet");
+            Snapshot snapshot = Snapshot.Create(Host.Controller, EPlayer.Spectators);
             AAction initialization = new ConnectInitializationAction()
-                .Initialize(id);
-            Send(Host, initialization, id);
+                .Initialize(id, EPlayer.Spectators, snapshot);
+            SendToTarget(Host, initialization, id);
+            //Send(Host, initialization, id);
             return id;
         }
 
-        public int IncomingConnection(LocalConnector connection)
-        {
-            return InitializeConnection(connection);
-        }
-
-        private int InitializeConnection(AConnector connection)
+        private int InitializeConnection(AConnector connection, EPlayer group)
         {
             int id = ConnectionCounter;
-            connection.Initialize(id);
+            connection.Initialize(id, group);
             ConnectionCounter++;
             Add(connection);
             return id;
@@ -58,11 +55,6 @@ namespace Gameplay
             connection.Manager = this;
             _connectionPool.Add(connection.ConnectionId, connection);
             _logger.Log("Socket setted up " + connection.ConnectionId);
-
-            //if (socket is OnlineSocket oSocket)
-            //{
-            //    oSocket.OnPacketReceived += OnPacketReceived;
-            //}
         }
 
         public void SendToHost(AConnector sender, AAction action)
@@ -79,6 +71,14 @@ namespace Gameplay
         public EPlayer GetPlayerTypeFromConnectionId(int connection)
         {
             return _connectionPool[connection].Role;
+        }
+        public void SendToGroup(AConnector sender, AAction action, EPlayer group)
+        {
+            int[] receivers = _connectionPool
+                .Where(connection => connection.Value.Role == group)
+                .Select(connection => connection.Key)
+                .ToArray();
+            _messages.Enqueue(new NetworkMessage(sender, action, receivers));
         }
 
         public void SendToTarget(AConnector sender, AAction action, int target)
@@ -107,6 +107,11 @@ namespace Gameplay
 
         public void Update()
         {
+            foreach(var connector in _connectionPool.Values)
+            {
+                connector.Update();
+            }
+
             if (_messages.Count > 0)
             {
                 UpdateMessages();

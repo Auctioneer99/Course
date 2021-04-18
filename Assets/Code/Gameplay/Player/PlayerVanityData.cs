@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerVanityData : IDeserializable
+    public class PlayerVanityData : IDeserializable, IStateObjectCloneable<PlayerVanityData>
     {
+        public PlayerVanityData()
+        {
+
+        }
+
         public static PlayerVanityData Default()
         {
             return new PlayerVanityData();
+        }
+
+        public PlayerVanityData(Packet packet)
+        {
+            FromPacket(packet);
         }
 
         public void FromPacket(Packet packet)
@@ -19,6 +29,18 @@ namespace Gameplay
         }
 
         public void ToPacket(Packet packet)
+        {
+            
+        }
+
+        public PlayerVanityData Clone(GameController controller)
+        {
+            PlayerVanityData data = new PlayerVanityData();
+            data.Copy(this, controller);
+            return data;
+        }
+
+        public void Copy(PlayerVanityData other, GameController controller)
         {
             
         }

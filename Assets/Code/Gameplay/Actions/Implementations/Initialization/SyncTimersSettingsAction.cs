@@ -4,7 +4,7 @@
     {
         public override EAction EAction => EAction.SyncTimersSettings;
 
-        public TimerSettings Settings { get; private set; } = new TimerSettings(true);
+        public TimerSettings Settings { get; private set; }
 
         public SyncTimersSettingsAction Initialize(TimerSettings settings)
         {

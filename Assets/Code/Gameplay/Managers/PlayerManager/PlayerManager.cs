@@ -11,7 +11,7 @@ namespace Gameplay
     {
         public Dictionary<EPlayer, Player> Players { get; private set; }
 
-        public EPlayer PerspectivePlayer { get; private set; }
+        //public EPlayer PerspectivePlayer { get; private set; }
         public EPlayer LocalUserId { get; private set; }
         public EPlayer CurrentPlayerId { get; private set; }
 
@@ -22,13 +22,26 @@ namespace Gameplay
 
         public PlayerManager(GameController controller) : base(controller)
         {
-
+            Players = new Dictionary<EPlayer, Player>(controller.GameInstance.Settings.PlayersSettings.Count);
         }
 
-        public void SetupPlayers(EPlayer perspective, Player[] players)
+        public void Reset()
         {
-            PerspectivePlayer = perspective;
-            LocalUserId = perspective;
+            foreach( var player in Players)
+            {
+                player.Value.Reset();
+            }
+            Players = new Dictionary<EPlayer, Player>();
+        }
+
+        public void SetupPlayer(Player player)
+        {
+            Players[player.EPlayer] = player;
+        }
+
+        public void SetupPlayers(EPlayer localuser, Player[] players)
+        {
+            LocalUserId = localuser;
 
             Players = new Dictionary<EPlayer, Player>(players.Length);
             for (int i = 0; i < players.Length; i++)
@@ -41,7 +54,7 @@ namespace Gameplay
 
         public Player GetPlayer(EPlayer player)
         {
-            if (player == EPlayer.Undefined || player == EPlayer.Spectator)
+            if (EPlayer.Players.Contains(player) == false)
             {
                 return null;
             }

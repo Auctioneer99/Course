@@ -41,7 +41,7 @@ namespace Gameplay
 
         public static bool IsSpectator(this EPlayer player)
         {
-            return EPlayer.Spectator.Contains(player);
+            return EPlayer.Spectators.Contains(player);
         }
     }
 }
