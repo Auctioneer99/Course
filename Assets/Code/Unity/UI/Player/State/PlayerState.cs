@@ -4,8 +4,8 @@
     {
         public PlayerStateMachine FSM { get; private set; }
 
+        public GameController GameController => FSM.View.PlayersUI.Controller;
         public Player Player => FSM.Player;
-        public PlayerIcon Icon => FSM.Icon;
 
         public APlayerState(PlayerStateMachine fsm)
         {

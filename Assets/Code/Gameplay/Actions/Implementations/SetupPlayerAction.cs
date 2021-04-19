@@ -1,4 +1,6 @@
-﻿namespace Gameplay
+﻿using UnityEngine;
+
+namespace Gameplay
 {
     public class SetupPlayerAction : AAction, IAuthorityAction
     {
@@ -17,11 +19,17 @@
 
         protected override void ApplyImplementation()
         {
-            GameController.PlayerManager.GetPlayer(Player).Info = Info;
+            Player player = GameController.PlayerManager.SetupPlayer(Player);
+            Debug.Log("Seting up user on side = " + GameController.HasAuthority);
+            Debug.Log(Player);
+            Debug.Log(player);
+            player.Info = Info;
             if (GameController.HasAuthority == false)
             {
-                GameController.GameInstance.Settings.GetPlayerSettings(Player).PlayerInfo = Info;
+                GameController.GameInstance.Settings.PlayersSettings[Player] = new PlayerSettings(Player, Info);
+                //GameController.GameInstance.Settings.GetPlayerSettings(Player).PlayerInfo = Info;
             }
+            GameController.EventManager.OnPlayerSetup.Invoke(player);
         }
 
         protected override void AttributesFrom(Packet packet)

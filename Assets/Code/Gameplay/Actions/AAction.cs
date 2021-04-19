@@ -65,5 +65,9 @@ namespace Gameplay
         protected abstract void AttributesTo(Packet packet);
         protected abstract void AttributesFrom(Packet packet);
 
+        public override string ToString()
+        {
+            return EAction.ToString();
+        }
     }
 }

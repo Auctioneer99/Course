@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Gameplay;
 
 namespace Gameplay.Unity
 {
@@ -15,19 +16,22 @@ namespace Gameplay.Unity
 
         public override void OnEnterState()
         {
-            Icon.ConnectButton.enabled = true;
+            FSM.View.ConnectButton.enabled = true;
         }
 
         public override void OnLeaveState()
         {
             Debug.Log("disabling");
-            Icon.ConnectButton.enabled = false;
+            FSM.View.ConnectButton.enabled = false;
         }
 
         public override void OnMouseClick()
         {
             Debug.Log("Trying to connect");
-            FSM.TransitionTo(EPlayerState.AwaitingStart);
+            Debug.Log(FSM.View.Place);
+            AskJoinAction join = GameController.ActionFactory.Create<AskJoinAction>()
+                .Initialize(EPlayer.Spectators, FSM.View.Place);
+            GameController.ActionDistributor.Add(join);
             //try to connect
         }
 

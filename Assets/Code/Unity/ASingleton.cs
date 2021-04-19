@@ -18,7 +18,7 @@ namespace Gameplay.Unity
         }
         private static T _instance = null;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             Debug.Log("settet up");
             if (_instance != null)

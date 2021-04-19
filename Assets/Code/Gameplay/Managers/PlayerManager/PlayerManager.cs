@@ -34,9 +34,18 @@ namespace Gameplay
             Players = new Dictionary<EPlayer, Player>();
         }
 
-        public void SetupPlayer(Player player)
+        public Player SetupPlayer(EPlayer player)
         {
-            Players[player.EPlayer] = player;
+            if (Players.TryGetValue(player, out Player p) == false)
+            {
+                Player result = new Player(this, player);
+                Players[player] = result;
+                return result;
+            }
+            else
+            {
+                throw new Exception("Player already set");
+            }
         }
 
         public void SetupPlayers(EPlayer localuser, Player[] players)
@@ -58,7 +67,11 @@ namespace Gameplay
             {
                 return null;
             }
-            return Players[player];
+            if (Players.TryGetValue(player, out Player p))
+            {
+                return p;
+            }
+            return null;
         }
 
         public void SetAllPlayersStatus(EPlayerStatus status)

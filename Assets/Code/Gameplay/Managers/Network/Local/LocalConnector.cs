@@ -23,27 +23,27 @@ namespace Gameplay
 
         public override void Send(AAction action)
         {
-            if (action is ICensored)
+            if (Controller.HasAuthority)
             {
-                foreach (var p in Controller.PlayerManager.Players.Values)
+                if (action is ICensored)
                 {
-                    CensorSend(action, p.EPlayer);
+                    foreach (var p in Controller.PlayerManager.Players.Values)
+                    {
+                        CensorSend(action, p.EPlayer);
+                    }
+                    if (Controller.PlayerManager.HasSpectators)
+                    {
+                        Manager.SendToGroup(this, action, EPlayer.Spectators);
+                    }
                 }
-                if (Controller.PlayerManager.HasSpectators)
+                else
                 {
-                    Manager.SendToGroup(this, action, EPlayer.Spectators);
+                    Manager.SendToGroup(this, action, EPlayer.NonAuthority);
                 }
             }
             else
             {
-                if (Controller.HasAuthority)
-                {
-                    Manager.SendToGroup(this, action, EPlayer.NonAuthority);
-                }
-                else
-                {
-                    Manager.SendToHost(this, action);
-                }
+                Manager.SendToHost(this, action);
             }
         }
 

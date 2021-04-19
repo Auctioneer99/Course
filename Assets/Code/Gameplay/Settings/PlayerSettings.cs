@@ -8,12 +8,28 @@ namespace Gameplay
 {
     public class PlayerSettings : IDeserializable, IStateObjectCloneable<PlayerSettings>, ICensored
     {
+        public EPlayer Player;
         public PlayerInfo PlayerInfo;
         public BattleDeck BattleDeck;
 
         public PlayerSettings()
         {
+            Player = EPlayer.Undefined;
             PlayerInfo = new PlayerInfo();
+            BattleDeck = BattleDeck.Default();
+        }
+
+        public PlayerSettings(EPlayer player)
+        {
+            Player = player;
+            PlayerInfo = new PlayerInfo();
+            BattleDeck = BattleDeck.Default();
+        }
+
+        public PlayerSettings(EPlayer player, PlayerInfo info)
+        {
+            Player = player;
+            PlayerInfo = info;
             BattleDeck = BattleDeck.Default();
         }
 
@@ -50,6 +66,16 @@ namespace Gameplay
         {
             packet.Write(PlayerInfo)
                 .Write(BattleDeck);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[PlayerSettings]");
+            sb.Append($"\n\t{Player}");
+            sb.Append($"\n\t{PlayerInfo}");
+            sb.Append($"\n\t{BattleDeck}");
+            return sb.ToString();
         }
     }
 }

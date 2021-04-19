@@ -9,7 +9,7 @@ namespace Gameplay
     public class EventManager : AManager
     {
         public readonly BattleEvent OnSnapshotRestored;
-
+        public readonly BattleEvent<Player> OnPlayerSetup;
         public readonly BattleEvent<GameController> OnGameInitialized;
         public readonly BattleEvent<AGameState, AGameState> OnGameStateChanged;
 
@@ -34,6 +34,7 @@ namespace Gameplay
             OnGameStatusChanged = new BattleEvent(controller);
 
             OnSnapshotRestored = new BattleEvent(controller);
+            OnPlayerSetup = new BattleEvent<Player>(controller);
         }
     }
 }

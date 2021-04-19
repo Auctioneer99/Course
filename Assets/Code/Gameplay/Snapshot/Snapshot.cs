@@ -25,12 +25,18 @@ namespace Gameplay
         {
             Snapshot snapshot = new Snapshot(controller);
             snapshot.Settings.Censor(player);
+            Debug.Log("Snapshot created ");
+            Debug.Log(snapshot.Settings);
             return snapshot;
         }
 
         public void Restore(GameController controller)
         {
             Debug.Log("Restoring client");
+            Debug.Log(Settings);
+            controller.GameInstance.Settings.Copy(Settings, controller);
+            Debug.Log("------");
+            Debug.Log(controller.GameInstance.Settings);
             controller.EventManager.OnSnapshotRestored.CoreEvent.Invoke();
         }
 

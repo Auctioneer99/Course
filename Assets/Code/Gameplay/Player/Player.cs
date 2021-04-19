@@ -1,4 +1,6 @@
-﻿namespace Gameplay
+﻿using System.Text;
+
+namespace Gameplay
 {
     public class Player : IDeserializable
     {
@@ -64,6 +66,16 @@
         public void ToPacket(Packet packet)
         {
             packet.Write(EPlayer);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[Player]");
+            sb.Append($"\n\t{EPlayer}");
+            sb.Append($"\n\t{EStatus}");
+            sb.Append($"\n\t{Info}");
+            return sb.ToString();
         }
     }
 }

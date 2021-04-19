@@ -15,7 +15,7 @@ namespace Gameplay.Unity
 
         public override void OnEnterState()
         {
-            Icon.ConnectButton.enabled = false;
+            FSM.View.ConnectButton.enabled = false;
             //set image
         }
 

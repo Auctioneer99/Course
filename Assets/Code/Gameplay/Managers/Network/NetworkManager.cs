@@ -75,9 +75,10 @@ namespace Gameplay
         public void SendToGroup(AConnector sender, AAction action, EPlayer group)
         {
             int[] receivers = _connectionPool
-                .Where(connection => connection.Value.Role == group)
+                .Where(connection => group.Contains(connection.Value.Role))
                 .Select(connection => connection.Key)
                 .ToArray();
+            Debug.Log("[Local Connector] sending packet " + action.ToString() + " : " + string.Join(", ", receivers));
             _messages.Enqueue(new NetworkMessage(sender, action, receivers));
         }
 

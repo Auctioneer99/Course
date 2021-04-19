@@ -82,15 +82,19 @@ namespace Gameplay
         private void SendAction(AAction action)
         {
             bool canSend = CanSend(action);
+            if (GameController.HasAuthority)
+            {
+                //Debug.Log($"Can send {action} = {canSend}");
+            }
             if (canSend)
             {
                 if (GameController.HasAuthority)
                 {
-                    action.NetworkActionNumber = _nextNetworkActionNumber++;
+                    //action.NetworkActionNumber = _nextNetworkActionNumber++;
                 }
                 else
                 {
-                    action.NetworkActionNumber = GameController.PlayerManager.CurrentPlayer.PingStatus.LastKnownNetworkPacketId;
+                    //action.NetworkActionNumber = GameController.PlayerManager.CurrentPlayer.PingStatus.LastKnownNetworkPacketId;
                 }
 
                 GameController.Network.Send(action);
@@ -104,17 +108,19 @@ namespace Gameplay
 
         private bool CanSend(AAction action)
         {
+            bool canSend = false;
             bool isClientAction = action is IUserAction;
             if (GameController.HasAuthority)
             {
                 bool isServerSide = action is IAuthoritySideAction;
-                bool canSend = (isClientAction || isServerSide) == false;
-
+                canSend = !isClientAction && !isServerSide;
                 if (canSend)
                 {
-                    return (action is ITargetedAction targetedAction
-                        && targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
-                        && targetedAction.TargetPlayer == EPlayer.Undefined) == false;
+                    if (action is ITargetedAction targetedAction)
+                    {
+                        return (targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
+                            && targetedAction.TargetPlayer == EPlayer.Undefined) == false;
+                    }
                 }
             }
             else
@@ -127,7 +133,7 @@ namespace Gameplay
                 }
                 return !isAuthoritativeAction && isClientAction;
             }
-            return false;
+            return canSend;
         }
     }
 }

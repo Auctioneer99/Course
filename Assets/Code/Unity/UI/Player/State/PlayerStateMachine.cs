@@ -4,22 +4,34 @@ namespace Gameplay.Unity
 {
     public class PlayerStateMachine
     {
-        public Player Player { get; private set; }
+        public PlayerView View { get; private set; }
         public APlayerState CurrentState { get; private set; }
-        public PlayerIcon Icon { get; private set; }
 
+        public Player Player => View.Player;
 
         private Dictionary<EPlayerState, APlayerState> _states;
 
-        public PlayerStateMachine(PlayerIcon icon, Player player)
+        public PlayerStateMachine(PlayerView view)
         {
-            Icon = icon;
-            Player = player;
+            View = view;
             _states = new Dictionary<EPlayerState, APlayerState>(4)
             {
                 { EPlayerState.NotConnected, new PlayerNotConnectedState(this) },
                 { EPlayerState.AwaitingStart, new PlayerAwaitingStartState(this) },
             };
+
+            
+            if(View.PlayersUI.Controller.StateMachine.ECurrentState == EGameState.AwaitingPlayers)
+            {
+                if (Player == null)
+                {
+                    TransitionTo(EPlayerState.NotConnected);
+                }
+                else
+                {
+                    TransitionTo(EPlayerState.AwaitingStart);
+                }
+            }
         }
 
         public void TransitionTo(EPlayerState state)

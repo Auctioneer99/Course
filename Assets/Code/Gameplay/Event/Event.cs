@@ -78,7 +78,7 @@ namespace Gameplay
         public void RemoveListener(Action<T> listener)
         {
             //throw new Exception("lol");
-            RemoveListener(listener);
+            RemoveListener(listener as Delegate);
         }
     }
 
@@ -126,7 +126,7 @@ namespace Gameplay
 
         public void RemoveListener(Action<T1, T2> listener)
         {
-            RemoveListener(listener);
+            RemoveListener(listener as Delegate);
         }
     }
 
@@ -174,7 +174,7 @@ namespace Gameplay
 
         public void RemoveListener(Action<T1, T2, T3> listener)
         {
-            RemoveListener(listener);
+            RemoveListener(listener as Delegate);
         }
     }
 }

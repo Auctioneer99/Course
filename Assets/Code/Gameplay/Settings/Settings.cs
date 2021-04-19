@@ -26,7 +26,7 @@ namespace Gameplay
             for(int i = 0; i < playersCount; i++)
             {
                 EPlayer index = (EPlayer)(1 << i);
-                PlayersSettings[index] = null;
+                PlayersSettings[index] = new PlayerSettings();
             }
             TimerSettings = new TimerSettings(true);
         }
@@ -63,8 +63,10 @@ namespace Gameplay
         public void ToPacket(Packet packet)
         {
             packet.Write(PlayersCount);
+            Debug.Log("Serializing settings");
             foreach(var player in PlayersSettings)
             {
+                Debug.Log(player.Key);
                 packet.Write(player.Key);
                 bool isConnected = player.Value != null;
                 packet.Write(isConnected);
@@ -98,6 +100,19 @@ namespace Gameplay
                     set.Value?.Censor(player);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[Settings]");
+            sb.Append($"\n\tPlayersCount = {PlayersCount}");
+            foreach(var p in PlayersSettings)
+            {
+                sb.Append($"\n\tPlace for = {p.Key}");
+                sb.Append($"\n\t{p.Value}");
+            }
+            return sb.ToString();
         }
     }
 }

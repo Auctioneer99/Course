@@ -19,6 +19,8 @@
         RequestPlayerFinished,
         ReportPlayerStatus,
         SetPlayerStatus,
+
+        AskJoinPlayer,
     }
 
     public static class EActionExtension

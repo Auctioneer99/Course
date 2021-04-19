@@ -5,11 +5,11 @@ namespace Gameplay
     public enum EPlayer : byte
     {
         Undefined = 0,
-        Server = 1 << 0,
-        Player1 = 1 << 1,
-        Player2 = 1 << 2,
-        Player3 = 1 << 3,
-        Spectators = 1 << 7,
+        Player1 = 1 << 0,
+        Player2 = 1 << 1,
+        Player3 = 1 << 2,
+        Spectators = 1 << 6,
+        Server = 1 << 7,
 
         Players = Player1 | Player2 | Player3,
 

@@ -61,6 +61,7 @@ namespace Gameplay
             Register<RequestPlayerFinishedReport>(EAction.RequestPlayerFinished);
             Register<ReportPlayerStatusAction>(EAction.ReportPlayerStatus);
             Register<SetPlayerStatusAction>(EAction.SetPlayerStatus);
+            Register<AskJoinAction>(EAction.AskJoinPlayer);
         }
     }
 }
