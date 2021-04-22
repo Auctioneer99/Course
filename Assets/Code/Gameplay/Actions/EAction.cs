@@ -21,6 +21,8 @@
         SetPlayerStatus,
 
         AskJoinPlayer,
+        AskLeaveAwaitingState,
+
     }
 
     public static class EActionExtension

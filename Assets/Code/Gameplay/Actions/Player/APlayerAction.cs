@@ -2,7 +2,8 @@
 {
     public abstract class APlayerAction : AAction
     {
-        public EPlayer EPlayer { get; private set; }
+        public int ConnectionId { get; private set; }
+        public EPlayer EPlayer => GameController.Network.Manager.GetPlayerTypeFromConnectionId(ConnectionId);
 
         public override bool IsValid()
         {
@@ -14,20 +15,20 @@
             return true;
         }
 
-        protected void Initialize(EPlayer player)
+        protected void Initialize(int connectionId)
         {
             Initialize();
-            EPlayer = player;
+            ConnectionId = connectionId;
         }
 
         protected override void AttributesTo(Packet packet)
         {
-            packet.Write(EPlayer);
+            packet.Write(ConnectionId);
         }
 
         protected override void AttributesFrom(Packet packet)
         {
-            EPlayer = packet.ReadEPlayer();
+            ConnectionId = packet.ReadInt();
         }
     }
 }

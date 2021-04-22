@@ -13,15 +13,15 @@ namespace Gameplay.Unity
     public class PlayerView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public EPlayer Place { get; private set; }
-        public Player Player { get; private set; }
         public PlayersUIController PlayersUI { get; private set; }
         public PlayerStateMachine FSM { get; private set; }
+
+        public Player Player => PlayersUI.Controller.PlayerManager.GetPlayer(Place);
 
         public void Initialize(PlayersUIController controller, EPlayer place)
         {
             PlayersUI = controller;
             Place = place;
-            Player = controller.Controller.PlayerManager.GetPlayer(place);
             FSM = new PlayerStateMachine(this);
         }
 

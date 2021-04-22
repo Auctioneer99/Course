@@ -43,12 +43,10 @@ namespace Gameplay.Unity
 
         private void OnSnapshotRestored()
         {
-            Debug.Log($"<color=purple>{Controller.GameInstance.Settings.PlayersCount} players</color>");
             //reset
             Views = new Dictionary<EPlayer, PlayerView>(Controller.GameInstance.Settings.PlayersCount);
             foreach (var ps in Controller.GameInstance.Settings.PlayersSettings)
             {
-                Debug.Log("Creating Player view " + ps.Key);
                 PlayerView view = Instantiate(_playerViewPrefab, this.transform);
                 view.Initialize(this, ps.Key);
                 Views.Add(ps.Key, view);
@@ -57,9 +55,7 @@ namespace Gameplay.Unity
 
         private void OnPlayerSetup(Player player)
         {
-            Debug.Log(player);
             Views[player.EPlayer].FSM.TransitionTo(EPlayerState.AwaitingStart);
-            Debug.Log("ui change new player");
         }
     }
 }

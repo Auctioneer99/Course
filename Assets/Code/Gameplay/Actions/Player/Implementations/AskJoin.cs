@@ -15,9 +15,9 @@ namespace Gameplay
 
         public EPlayer Place { get; private set; }
 
-        public AskJoinAction Initialize(EPlayer player, EPlayer place)
+        public AskJoinAction Initialize(int connection, EPlayer place)
         {
-            base.Initialize(player);
+            base.Initialize(connection);
             Place = place;
             return this;
         }
@@ -45,7 +45,6 @@ namespace Gameplay
                 Player player = GameController.PlayerManager.GetPlayer(Place);
                 if (player == null)
                 {
-                    Debug.Log("[AskJoin] " + Place);
                     SetupPlayerAction setup = GameController.ActionFactory.Create<SetupPlayerAction>()
                         .Initialize(Place, new PlayerInfo("lolka", PlayerVanityData.Default()));
                     GameController.ActionDistributor.Add(setup);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Gameplay.Unity
 {
@@ -25,7 +26,8 @@ namespace Gameplay.Unity
 
         public override void OnMouseClick()
         {
-            FSM.TransitionTo(EPlayerState.NotConnected);
+            //FSM.TransitionTo(EPlayerState.NotConnected);
+            Debug.Log(Player.Info.Name);
         }
 
         public override void OnMouseEnter()

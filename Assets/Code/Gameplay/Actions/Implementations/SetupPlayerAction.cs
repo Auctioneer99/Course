@@ -17,14 +17,19 @@ namespace Gameplay
             return this;
         }
 
+        public override void Copy(AAction copyFrom, GameController controller)
+        {
+            SetupPlayerAction other = copyFrom as SetupPlayerAction;
+            base.Copy(copyFrom, controller);
+            Player = other.Player;
+            Info = other.Info.Clone(controller);
+        }
+
         protected override void ApplyImplementation()
         {
             Player player = GameController.PlayerManager.SetupPlayer(Player);
-            Debug.Log("Seting up user on side = " + GameController.HasAuthority);
-            Debug.Log(Player);
-            Debug.Log(player);
             player.Info = Info;
-            if (GameController.HasAuthority == false)
+            if (GameController.HasAuthority)
             {
                 GameController.GameInstance.Settings.PlayersSettings[Player] = new PlayerSettings(Player, Info);
                 //GameController.GameInstance.Settings.GetPlayerSettings(Player).PlayerInfo = Info;

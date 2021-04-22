@@ -7,7 +7,9 @@ namespace Gameplay
         public PlayerManager PlayerManager { get; private set; }
         public GameController GameController => PlayerManager.GameController;
 
-        public EPlayer EPlayer { get; private set; }
+        public int ConnectionId { get; private set; }
+
+        public EPlayer EPlayer => GameController.Network.Manager.GetPlayerTypeFromConnectionId(ConnectionId);
         public EPlayerStatus EStatus
         {
             get
@@ -28,10 +30,10 @@ namespace Gameplay
         public PingStatus PingStatus { get; private set; }
         public PlayerInfo Info { get; set; }
 
-        public Player(PlayerManager manager, EPlayer player)
+        public Player(PlayerManager manager, int connectionId)
         {
+            ConnectionId = connectionId;
             PlayerManager = manager;
-            EPlayer = player;
             EStatus = EPlayerStatus.Loading;
             Initialize();
         }
@@ -60,12 +62,12 @@ namespace Gameplay
 
         public void FromPacket(Packet packet)
         {
-            EPlayer = packet.ReadEPlayer();
+            ConnectionId = packet.ReadInt();
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(EPlayer);
+            packet.Write(ConnectionId);
         }
 
         public override string ToString()
