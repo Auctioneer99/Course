@@ -28,12 +28,13 @@ namespace Gameplay.Unity
 
             eventManager.OnPlayerSetup.CoreEvent.AddListener(OnPlayerSetup);
 
-            eventManager.OnSnapshotRestored.CoreEvent.AddListener(OnSnapshotRestored);
+            CreatePlayersUI();
+            //eventManager.OnSnapshotRestored.CoreEvent.AddListener(OnSnapshotRestored);
         }
 
         public void Detach(GameController game)
         {
-            throw new NotImplementedException();
+            Views.Clear();
         }
 
         public void OnGameEndedCleanup()
@@ -41,7 +42,7 @@ namespace Gameplay.Unity
             throw new NotImplementedException();
         }
 
-        private void OnSnapshotRestored()
+        private void CreatePlayersUI()
         {
             //reset
             Views = new Dictionary<EPlayer, PlayerView>(Controller.GameInstance.Settings.PlayersCount);

@@ -32,11 +32,13 @@ namespace Gameplay
         public int IncomingConnection(AConnector connection)
         {
             int id = InitializeConnection(connection, EPlayer.Spectators);
-            _logger.Log("Sending first packet");
-            Snapshot snapshot = Snapshot.Create(Host.Controller, EPlayer.Spectators);
-            AAction initialization = new ConnectInitializationAction()
+            _logger.Log("[Network Manager] Sending initial packet");
+            Snapshot snapshot = Snapshot.Create(Host.Instance, EPlayer.Spectators);
+            AAction initialization = Host.Instance.Controller.ActionFactory.Create<ConnectInitializationAction>()
                 .Initialize(id, EPlayer.Spectators, snapshot);
-            SendToTarget(Host, initialization, id);
+            Host.Instance.Controller.ActionDistributor.HandleAction(initialization);
+
+            //SendToTarget(Host, initialization, id);
             //Send(Host, initialization, id);
             return id;
         }
@@ -54,7 +56,7 @@ namespace Gameplay
         {
             connection.Manager = this;
             _connectionPool.Add(connection.ConnectionId, connection);
-            _logger.Log("Socket setted up " + connection.ConnectionId);
+            _logger.Log("[Network Manager] Socket setted up " + connection.ConnectionId);
         }
 
         public void SendToHost(AConnector sender, AAction action)
@@ -78,12 +80,13 @@ namespace Gameplay
                 .Where(connection => group.Contains(connection.Value.Role))
                 .Select(connection => connection.Key)
                 .ToArray();
-            Debug.Log("[Local Connector] sending packet " + action.ToString() + " : " + string.Join(", ", receivers));
+            Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + string.Join(", ", receivers));
             _messages.Enqueue(new NetworkMessage(sender, action, receivers));
         }
 
         public void SendToTarget(AConnector sender, AAction action, int target)
         {
+            Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + target);
             _messages.Enqueue(new NetworkMessage(sender, action, target));
         }
 

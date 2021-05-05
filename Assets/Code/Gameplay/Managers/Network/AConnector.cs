@@ -1,4 +1,6 @@
-﻿namespace Gameplay
+﻿using System.Text;
+
+namespace Gameplay
 {
     public abstract class AConnector
     {
@@ -39,9 +41,12 @@
 
         public override string ToString()
         {
-            return $@"IsConnected = {IsConnected}
-                ConnectionId = {ConnectionId}
-                Role = {Role}";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[AConnector]");
+            sb.AppendLine($"IsConnected = {IsConnected}");
+            sb.AppendLine($"ConnectionId = {ConnectionId}");
+            sb.AppendLine($"Role = {Role}");
+            return sb.ToString();
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gameplay
 {
-    public class FiniteGameStateMachine
+    public class FiniteGameStateMachine : IStateObjectCloneable<FiniteGameStateMachine>, IRuntimeDeserializable
     {
         public const int STATES_COUNT = 13;
 
@@ -77,7 +78,54 @@ namespace Gameplay
 
         public override string ToString()
         {
-            return $"FGSM \n CurrentState: {CurrentState}";
+            return $"[FGSM] \n CurrentState: {ECurrentState}";
+        }
+
+        public void FromPacket(GameController controller, Packet packet)
+        {
+            EGameState currentState = packet.ReadEGameState();
+            _currentState = FindState(currentState);
+
+            int count = _states.Count;
+            for (int i = 0; i < count; i++)
+            {
+                EGameState state = packet.ReadEGameState();
+                AGameState gameState = FindState(state);
+                gameState.FromPacket(controller, packet);
+            }
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            Debug.Log("Writing ECurrentState " + ECurrentState);
+            packet.Write(ECurrentState);
+            foreach(var s in _states)
+            {
+                packet.Write(s.Key)
+                    .Write(s.Value);
+            }
+        }
+
+        public AGameState FindState(EGameState state)
+        {
+            if (_states.TryGetValue(state, out AGameState result))
+            {
+                return result;
+            }
+            return null;
+        }
+
+        public FiniteGameStateMachine Clone(GameController controller)
+        {
+            FiniteGameStateMachine fsm = new FiniteGameStateMachine(controller);
+            fsm.Copy(this, controller);
+            return fsm;
+        }
+
+        public void Copy(FiniteGameStateMachine other, GameController controller)
+        {
+            _currentState = other.CurrentState == null ? null : _states[other.ECurrentState];
+            
         }
     }
 }

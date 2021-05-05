@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Gameplay
 {
-    public class GameController
+    public class GameController : ICensored, IDeserializable
     {
         public bool HasAuthority => GameInstance.HasAuthority;
 
@@ -24,7 +25,7 @@ namespace Gameplay
         public PlayerManager PlayerManager { get; private set; }
         public ActionDistributor ActionDistributor { get; private set; }
         public RequestHolder RequestHolder { get; private set; }
-        public LocalConnector Network { get; private set; }
+        public LocalConnector Network => GameInstance.Network;
         public EventManager EventManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
 
@@ -32,29 +33,19 @@ namespace Gameplay
 
         public GameController(GameInstance instance, bool isMainController)
         {
-            Network = new LocalConnector(this);
+            //Network = new LocalConnector(this);
             GameInstance = instance;
             ActionFactory = new ActionFactory(this);
+
+            StateMachine = new FiniteGameStateMachine(this);
+            TimeManager = new TimeManager(this);
 
             PlayerManager = new PlayerManager(this);
             ActionDistributor = new ActionDistributor(this);
             RequestHolder = new RequestHolder(this);
 
             EventManager = new EventManager(this);
-            TimeManager = new TimeManager(this);
 
-            StateMachine = new FiniteGameStateMachine(this);
-        }
-
-        public void SetupServer(int port)
-        {
-            //OnlineNetworkRegistrator.CreateServer(Network, port);
-        }
-
-        public void SetupClient(string ip, int port)
-        {
-            //reset
-            //OnlineNetworkRegistrator.ConnectClient(Network, ip, port);
         }
 
         public void SetStatus(EGameStatus status)
@@ -144,12 +135,64 @@ namespace Gameplay
 
         public bool IsFinished(bool ignoreRequests = false)
         {
-            return true;
+            //Debug.Log("[Game Controller] IsFinished = " + (!ActionDistributor.HasActions && (ignoreRequests || !RequestHolder.HasRequests)));
+            return !ActionDistributor.HasActions && (ignoreRequests || !RequestHolder.HasRequests);
+                //&& !AbilityManager.HasInstances && !BoardManager.HasCardsInPlayStack() && DeathManager.CardsWaitingToDie.Count == 0;
         }
 
         public void Reset(bool resetVisuals = false)
         {
             PlayerManager?.Reset();
+            TimeManager?.Reset();
+        }
+
+        public void FromPacket(Packet packet)
+        {
+            IsInitialized = packet.ReadBool();
+            Status = packet.ReadEGameStatus();
+            StateMachine.FromPacket(this, packet);
+            PlayerManager.FromPacket(this, packet);
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(IsInitialized)
+                .Write(Status)
+                .Write(StateMachine)
+                .Write(PlayerManager);
+            
+        }
+
+        public GameController Clone(GameInstance gi)
+        {
+            GameController gc = new GameController(gi, false);
+            gc.Copy(this);
+            return gc;
+        }
+
+        public void Copy(GameController controller)
+        {
+            IsInitialized = controller.IsInitialized;
+            Status = controller.Status;
+            StateMachine = controller.StateMachine.Clone(this);
+            PlayerManager = controller.PlayerManager.Clone(this);
+            TimeManager.SetupTimers();
+        }
+
+        public void Censor(EPlayer player)
+        {
+            PlayerManager.Censor(player);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[GameController]");
+            sb.AppendLine($"Status = {Status}");
+            sb.AppendLine($"Initialized = {IsInitialized}");
+            sb.AppendLine(StateMachine.ToString());
+            sb.AppendLine(PlayerManager.ToString());
+            return sb.ToString();
         }
     }
 }

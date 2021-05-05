@@ -1,8 +1,10 @@
-﻿namespace Gameplay
+﻿using UnityEngine;
+
+namespace Gameplay
 {
-    public abstract class AGameState
+    public abstract class AGameState : IStateObject<AGameState>, IRuntimeDeserializable
     {
-        public readonly EGameState EGameState;
+        public EGameState EGameState { get; private set; }
 
         public GameController GameController { get; private set; }
         public StateTimer Timer { get; private set; }
@@ -40,10 +42,14 @@
         {
             if (GameController.HasAuthority)
             {
+                //Debug.Log("[AGameState]");
+                //Debug.Log(GameController.RequestHolder.HasRequests);
+                //Debug.Log(GameController.ActionDistributor.HasActions);
                 if (GameController.IsFinished())
                 {
                     if (AreFinished())
                     {
+                        Debug.Log("[AGameState] AreFinished");
                         OnFinished();
                     }
                 }
@@ -56,7 +62,7 @@
 
             Timer = timer;
             timer.OnElapsed.CoreEvent.AddListener(OnTimerElapsed);
-            GameController.Logger.Log("GameState Timer Setuped");
+            //GameController.Logger.Log("GameState Timer Setuped");
         }
 
         private bool TryStartTimer()
@@ -90,7 +96,7 @@
                 GameController.PlayerManager.SetAllPlayersStatus(EPlayerStatus.Blocked);
             }
             GameController.EventManager.OnStateTimerElapsed.Invoke(timer);
-            GameController.Logger.Log("GameState OnStateTimerElapsed Invoked");
+            GameController.Logger.Log("[GameState] OnStateTimerElapsed Invoked");
         }
 
         protected void SwitchState(EGameState state)
@@ -107,5 +113,20 @@
         protected abstract void SendWaitingForFinishedReport();
         protected abstract bool AreFinished();
         protected abstract void OnFinished();
+
+        public virtual void FromPacket(GameController controller, Packet packet)
+        {
+            
+        }
+
+        public virtual void ToPacket(Packet packet)
+        {
+            
+        }
+
+        public void Copy(AGameState other, GameController controller)
+        {
+            EGameState = other.EGameState;
+        }
     }
 }

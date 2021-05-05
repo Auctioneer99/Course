@@ -10,6 +10,11 @@ namespace Gameplay
     {
         public override EAction EAction => EAction.Empty;
 
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void ApplyImplementation()
         {
             throw new NotImplementedException();
@@ -21,6 +26,11 @@ namespace Gameplay
         }
 
         protected override void AttributesTo(Packet packet)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
         {
             throw new NotImplementedException();
         }

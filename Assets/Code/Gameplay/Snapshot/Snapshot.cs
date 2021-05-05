@@ -7,13 +7,18 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class Snapshot : IDeserializable
+    public class Snapshot : IDeserializable, ICensored, IStateObjectCloneable<Snapshot>
     {
-        public Settings Settings { get; private set; }
+        public GameInstance GameInstance { get; private set; }
+        //public Settings Settings { get; private set; }
+        //public GameController GameController { get; private set; }
 
-        private Snapshot(GameController controller)
+        private Snapshot() { }
+
+        private Snapshot(GameInstance instance)
         {
-            Settings = controller.GameInstance.Settings.Clone(controller);
+            //Settings = controller.GameInstance.Settings.Clone(controller);
+            GameInstance = instance.Clone();
         }
 
         public Snapshot(Packet packet)
@@ -21,33 +26,58 @@ namespace Gameplay
             FromPacket(packet);
         }
 
-        public static Snapshot Create(GameController controller, EPlayer player)
+        public static Snapshot Create(GameInstance instance, EPlayer player)
         {
-            Snapshot snapshot = new Snapshot(controller);
-            snapshot.Settings.Censor(player);
-            Debug.Log("Snapshot created ");
-            Debug.Log(snapshot.Settings);
+            Snapshot snapshot = new Snapshot(instance);
+            snapshot.GameInstance.Censor(player);
+            //snapshot.Settings.Censor(player);
+            //Debug.Log("Snapshot created ");
+            //Debug.Log(snapshot.Settings);
             return snapshot;
         }
 
-        public void Restore(GameController controller)
+        public void Restore(GameInstance instance)
         {
-            Debug.Log("Restoring client");
-            Debug.Log(Settings);
-            controller.GameInstance.Settings.Copy(Settings, controller);
-            Debug.Log("------");
-            Debug.Log(controller.GameInstance.Settings);
-            controller.EventManager.OnSnapshotRestored.CoreEvent.Invoke();
+            instance.Copy(GameInstance);
+            instance.SnapshotRestored.Invoke(instance);
+            Debug.Log(instance.ToString());
+            //controller.GameInstance.Settings.Copy(GameInstance.Settings, controller);
+            //Debug.Log("Restoring client");
+            //Debug.Log(Settings);
+            //Debug.Log("------");
+            //Debug.Log(controller.GameInstance.Settings);
+            //controller.Copy(GameController);
+            //controller.Reset();
+            //controller.EventManager.OnSnapshotRestored.CoreEvent.Invoke();
         }
 
         public void FromPacket(Packet packet)
         {
-            Settings = new Settings(packet);
+            GameInstance = new GameInstance(packet);
+            //GameController = new GameController(packet);
+            //Settings = new Settings(packet);
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(Settings);
+            packet.Write(GameInstance);
+        }
+
+        public void Censor(EPlayer player)
+        {
+            GameInstance.Censor(player);
+        }
+
+        public Snapshot Clone(GameController controller)
+        {
+            Snapshot ss = new Snapshot();
+            ss.Copy(this, controller);
+            return ss;
+        }
+
+        public void Copy(Snapshot other, GameController controller)
+        {
+            GameInstance = other.GameInstance.Clone();
         }
     }
 }

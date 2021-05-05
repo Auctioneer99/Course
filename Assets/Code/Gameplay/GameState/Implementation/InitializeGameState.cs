@@ -13,30 +13,30 @@ namespace Gameplay
             {
                 ActionDistributor distributor = GameController.ActionDistributor;
                 ActionFactory factory = GameController.ActionFactory;
-
+                /*
                 SyncTimersSettingsAction settings = factory.Create<SyncTimersSettingsAction>()
                     .Initialize(GameController.GameInstance.Settings.TimerSettings);
                 distributor.Add(settings);
-
+                */
 
                 int length = GameController.GameInstance.Settings.PlayersSettings.Count;
                 for (byte i = 0; i < length; i++)
                 {
                     EPlayer Eplayer = (EPlayer)(1 << i);
-                    PlayerSettings player = GameController.GameInstance.Settings.PlayersSettings[Eplayer];
+                    PlayerSettings pSets = GameController.GameInstance.Settings.PlayersSettings[Eplayer];
 
-                    SetupPlayerAction playerSetup = factory.Create<SetupPlayerAction>()
-                        .Initialize(Eplayer, player.PlayerInfo);
-                    distributor.Add(playerSetup);
+                    //SetupPlayerAction playerSetup = factory.Create<SetupPlayerAction>()
+                    //    .Initialize(Eplayer, player.PlayerInfo);
+                    //distributor.Add(playerSetup);
 
                     SetupPlayerDeckAction deck = factory.Create<SetupPlayerDeckAction>()
-                        .Initialize(Eplayer, null);
+                        .Initialize(Eplayer, pSets.BattleDeck);
                     distributor.Add(deck);
                 }
 
                 //Define turns
 
-
+                _isReady = true;
             }
         }
 
@@ -47,6 +47,7 @@ namespace Gameplay
 
         protected override void OnFinished()
         {
+
             SwitchState(EGameState.Mulligan);
         }
     }

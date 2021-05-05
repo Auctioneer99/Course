@@ -2,14 +2,14 @@
 
 namespace Gameplay
 {
-    public class Player : IDeserializable
+    public class Player : ICensored, IStateObjectCloneable<Player>, IRuntimeDeserializable
     {
         public PlayerManager PlayerManager { get; private set; }
         public GameController GameController => PlayerManager.GameController;
 
         public int ConnectionId { get; private set; }
 
-        public EPlayer EPlayer => GameController.Network.Manager.GetPlayerTypeFromConnectionId(ConnectionId);
+        public EPlayer EPlayer { get; private set; }
         public EPlayerStatus EStatus
         {
             get
@@ -27,14 +27,20 @@ namespace Gameplay
         }
         private EPlayerStatus _eStatus;
 
-        public PingStatus PingStatus { get; private set; }
+        //public PingStatus PingStatus { get; private set; }
         public PlayerInfo Info { get; set; }
 
-        public Player(PlayerManager manager, int connectionId)
+        public Player(PlayerManager manager)
         {
+            PlayerManager = manager;
+        }
+
+        public Player(PlayerManager manager, EPlayer player, int connectionId)
+        {
+            EPlayer = player;
             ConnectionId = connectionId;
             PlayerManager = manager;
-            EStatus = EPlayerStatus.Loading;
+            EStatus = EPlayerStatus.Ready;
             Initialize();
         }
 
@@ -42,7 +48,7 @@ namespace Gameplay
         {
             PlayerManager = manager;
             Initialize();
-            FromPacket(packet);
+            FromPacket(manager.GameController, packet);
         }
 
         private void Initialize()
@@ -60,14 +66,18 @@ namespace Gameplay
             return PlayerManager.LocalUserId == EPlayer;
         }
 
-        public void FromPacket(Packet packet)
+        public void FromPacket(GameController controller, Packet packet)
         {
             ConnectionId = packet.ReadInt();
+            EStatus = packet.ReadEPlayerStatus();
+            Info = new PlayerInfo(packet);
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(ConnectionId);
+            packet.Write(ConnectionId)
+                .Write(_eStatus)
+                .Write(Info);
         }
 
         public override string ToString()
@@ -78,6 +88,25 @@ namespace Gameplay
             sb.Append($"\n\t{EStatus}");
             sb.Append($"\n\t{Info}");
             return sb.ToString();
+        }
+
+        public void Censor(EPlayer player)
+        {
+            
+        }
+
+        public Player Clone(GameController controller)
+        {
+            Player p = new Player(PlayerManager);
+            p.Copy(this, controller);
+            return p;
+        }
+
+        public void Copy(Player other, GameController controller)
+        {
+            ConnectionId = other.ConnectionId;
+            EPlayer = other.EPlayer;
+            Info = other.Info.Clone();
         }
     }
 }

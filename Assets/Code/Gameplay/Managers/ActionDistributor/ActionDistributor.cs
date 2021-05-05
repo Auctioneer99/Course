@@ -10,6 +10,8 @@ namespace Gameplay
         public List<AAction> Actions { get; private set; }
         private int _nextNetworkActionNumber;
 
+        public bool HasActions => Actions.Count > 0;
+
         public ActionDistributor(GameController controller) : base(controller)
         {
             _nextNetworkActionNumber = 1;
@@ -39,7 +41,7 @@ namespace Gameplay
         {
             if (Actions.Count > 0)
             {
-                Debug.Log($"<color=black>Actions.Count = {Actions.Count}</color>");
+                //Debug.Log($"<color=black>Actions.Count = {Actions.Count}</color>");
                 Step();
                 return true; 
             }
@@ -118,8 +120,8 @@ namespace Gameplay
                 {
                     if (action is ITargetedAction targetedAction)
                     {
-                        return (targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
-                            && targetedAction.TargetPlayer == EPlayer.Undefined) == false;
+                        return targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
+                            && targetedAction.Connection != -1;
                     }
                 }
             }
@@ -129,7 +131,7 @@ namespace Gameplay
 
                 if ((isClientAction || isAuthoritativeAction) == false)
                 {
-                    throw new System.Exception("Unauthrized action send");
+                    throw new System.Exception("Unauthorized action send");
                 }
                 return !isAuthoritativeAction && isClientAction;
             }

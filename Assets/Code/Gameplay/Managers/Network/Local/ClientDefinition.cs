@@ -61,7 +61,7 @@ namespace Gameplay
 
                 ConnectInitializationAction action = ParsePacket(new Packet(e.RawData)) as ConnectInitializationAction;
 
-                _networkManager = new NetworkManager(GameInstance.Controller.Network, action.ConnectionId, action.PlayerGroup, new Logger("red"));
+                _networkManager = new NetworkManager(GameInstance.Controller.Network, action.Connection, action.PlayerGroup, new Logger("red"));
                 _networkManager.Add(_onlineConnector);
 
                 GameInstance.Controller.ActionDistributor.Add(action);

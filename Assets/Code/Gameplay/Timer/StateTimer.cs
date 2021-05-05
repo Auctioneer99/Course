@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public class StateTimer
+    public class StateTimer : IRuntimeDeserializable, IStateObjectCloneable<StateTimer>
     {
         public const int TIME_BUFFER_FOR_AUTHORITY_SIDE = 2000;
 
@@ -32,8 +32,7 @@ namespace Gameplay
 
         public void Reset()
         {
-            Definition = null;
-            ETimerState = ETimerState.Stopped;
+            OnElapsed.CoreEvent.RemoveAllListeners();
         }
 
         public void Start()
@@ -72,6 +71,35 @@ namespace Gameplay
             TimeRemaining = 0;
             ETimerState = ETimerState.Elapsed;
             OnElapsed.Invoke(this);
+        }
+
+        public StateTimer Clone(GameController controller)
+        {
+            StateTimer timer = new StateTimer(TimeManager, Definition);
+            timer.Copy(this, controller);
+            return timer;
+        }
+
+        public void Copy(StateTimer other, GameController controller)
+        {
+            Definition = other.Definition;
+            Duration = other.Duration;
+            ETimerState = other.ETimerState;
+            TimeRemaining = other.TimeRemaining;
+        }
+
+        public void FromPacket(GameController controller, Packet packet)
+        {
+            Duration = packet.ReadInt();
+            TimeRemaining = packet.ReadInt();
+            ETimerState = packet.ReadETimerState();
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(Duration)
+                .Write(TimeRemaining)
+                .Write(ETimerState);
         }
     }
 }

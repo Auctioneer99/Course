@@ -18,6 +18,7 @@ namespace Gameplay.Unity
             {
                 { EPlayerState.NotConnected, new PlayerNotConnectedState(this) },
                 { EPlayerState.AwaitingStart, new PlayerAwaitingStartState(this) },
+                { EPlayerState.Playing, new PlayerNotConnectedState(this) },
             };
 
             
@@ -31,6 +32,10 @@ namespace Gameplay.Unity
                 {
                     TransitionTo(EPlayerState.AwaitingStart);
                 }
+            }
+            else
+            {
+                TransitionTo(EPlayerState.Playing);
             }
         }
 

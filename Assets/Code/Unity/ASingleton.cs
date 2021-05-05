@@ -20,7 +20,6 @@ namespace Gameplay.Unity
 
         protected virtual void Awake()
         {
-            Debug.Log("settet up");
             if (_instance != null)
             {
                 throw new Exception("Only 1 sigleton awaible at any time");

@@ -2,7 +2,7 @@
 {
     public abstract class AManager
     {
-        public GameController GameController { get; private set; }
+        public GameController GameController { get; protected set; }
 
         protected AManager(GameController gameController)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class BattleDeck : IDeserializable, IStateObjectCloneable<BattleDeck>, ICensored
+    public class BattleDeck : IDeserializable, ICloneable<BattleDeck>, ICensored
     {
         public string Name = string.Empty;
         public CardDefinition Hero;
@@ -49,12 +49,12 @@ namespace Gameplay
             
         }
 
-        public BattleDeck Clone(GameController controller)
+        public BattleDeck Clone()
         {
             return this;
         }
 
-        public void Copy(BattleDeck other, GameController controller)
+        public void Copy(BattleDeck other)
         {
             
         }

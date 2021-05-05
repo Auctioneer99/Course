@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Gameplay.Unity
 {
     public class GameListenerManager
     {
-        public GameController Game { get; private set; }
+        public GameInstance Instance { get; private set; }
+        public GameController Game => Instance.Controller;
 
         public bool IsProcessing { get; private set; }
 
@@ -16,14 +18,14 @@ namespace Gameplay.Unity
         private List<GameListenerEntry> _toAdd = new List<GameListenerEntry>();
         private List<IGameListener> _toRemove = new List<IGameListener>();
 
-        public void SetGame(GameController game)
+        public void SetGame(GameInstance instance)
         {
-            if (game == Game)
+            if (instance == Instance)
             { 
                 return; 
             }
 
-            Game = game;
+            Instance = instance;
 
             IsProcessing = true;
             DetachListeners();
@@ -33,14 +35,14 @@ namespace Gameplay.Unity
                 return;
             }
 
-            if(Game.IsInitialized)
-            {
-                AfterGameInitialized(game, false);
-            }
-            else
-            {
-                Game.EventManager.OnGameInitialized.VisualEvent.AddListener(HandleGameInitialized, true, 0);
-            }
+            AfterGameInitialized(instance, false);
+            Game.GameInstance.SnapshotRestored.VisualEvent.AddListener(OnSnapshotRestored, true, 0);
+        }
+
+        private void OnSnapshotRestored(GameInstance instance)
+        {
+            DetachListeners();
+            AfterGameInitialized(instance, true);
         }
 
         public void FlushChanges(bool wasJustInitialized)
@@ -87,7 +89,7 @@ namespace Gameplay.Unity
             {
                 _listeners.Add(entry);
             }
-
+            Debug.Log($"Adding {_listeners.Count}");
             if(Game != null && Game.IsInitialized)
             {
                 entry.Attach(Game, wasJustInitialized);
@@ -144,10 +146,12 @@ namespace Gameplay.Unity
         private void AttachListeners(bool wasJustInitialized)
         {
             if (Game == null)
-            { 
-                return; 
+            {
+                Debug.Log("CANT ADD LISTENERS !!!!!!!!!!!!");
+                return;
             }
-            foreach(var entry in _listeners)
+            Debug.Log(_listeners.Count);
+            foreach (var entry in _listeners)
             {
                 if (entry.MarkedForRemove == false)
                 {
@@ -156,17 +160,19 @@ namespace Gameplay.Unity
             }
         }
 
-        private void HandleGameInitialized(GameController game)
+        private void HandleGameInitialized(GameInstance game)
         {
             AfterGameInitialized(game, true);
         }
 
-        private void AfterGameInitialized(GameController game, bool wasJustInitialized)
+        private void AfterGameInitialized(GameInstance instance, bool wasJustInitialized)
         {
-            if (game != Game)
+            Debug.Log("<color=red>INITIALIZED!!!</color>");
+            /*
+            if (instance != Instance)
             {
                 return;
-            }
+            }*/
 
             AttachListeners(wasJustInitialized);
 

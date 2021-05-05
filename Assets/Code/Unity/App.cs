@@ -39,7 +39,7 @@ namespace Gameplay.Unity
 
         public void SetupClient()
         {
-            GameInstance server = new GameInstance(EGameMode.Server, new Settings(2));
+            GameInstance server = new GameInstance(EGameMode.Server, new Settings(1));
             ServerDefinition serverDef = ServerDefinition.SetupOnline(server, 8000);
             serverDef.Start();
             LocalNetwork = server.Controller.Network.Manager;
@@ -52,7 +52,7 @@ namespace Gameplay.Unity
 
 
             GameInstance client2 = new GameInstance(EGameMode.Client, new Settings(0));
-            Listener.SetGame(client2.Controller);
+            Listener.SetGame(client2);
 
             ClientDefinition clientdef2 = new ClientDefinition(client2);
             clientdef2.Start();

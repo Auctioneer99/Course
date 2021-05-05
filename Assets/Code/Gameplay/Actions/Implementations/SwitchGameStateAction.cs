@@ -15,6 +15,19 @@
             return this;
         }
 
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            SwitchGameStateAction other = copyFrom as SwitchGameStateAction;
+
+            From = other.From;
+            To = other.To;
+        }
+
         protected override void ApplyImplementation()
         {
             GameController.StateMachine.TransitionTo(To);

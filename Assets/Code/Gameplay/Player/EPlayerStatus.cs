@@ -8,13 +8,13 @@ namespace Gameplay
 {
     public enum EPlayerStatus : byte
     {
-        Loading = 0,
+        Undefined = 0,
         Ready = 1 << 0,
         Active = 1 << 1,
         Finished = 1 << 2,
         Blocked = 1 << 3,
 
-        Communicable = Loading | Ready | Active | Finished
+        Communicable = Ready | Active | Finished
     }
 
     public static class EPlayerStatusExtension

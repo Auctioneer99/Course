@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Gameplay
+﻿namespace Gameplay
 {
     public class ReportPlayerStatusAction : APlayerAction, IUserAction
     {
@@ -10,14 +8,6 @@ namespace Gameplay
 
         public int RequestId { get; private set; }
         public EPlayerStatus Status { get; private set; }
-
-        public ReportPlayerStatusAction Initialize(EPlayer player, int requestId, EPlayerStatus status)
-        {
-            Initialize(player);
-            RequestId = requestId;
-            Status = status;
-            return this;
-        }
 
         public override bool IsValid()
         {
@@ -36,6 +26,22 @@ namespace Gameplay
             return false;
         }
 
+        public ReportPlayerStatusAction Initialize(int connection, int requestId, EPlayerStatus status)
+        {
+            Initialize(connection);
+            RequestId = requestId;
+            Status = status;
+            return this;
+        }
+
+        protected override void PlayerCopyImplementation(APlayerAction copyFrom, GameController controller)
+        {
+            ReportPlayerStatusAction other = copyFrom as ReportPlayerStatusAction;
+
+            RequestId = other.RequestId;
+            Status = other.Status;
+        }
+
         protected override void ApplyImplementation()
         {
             Player player = GameController.PlayerManager.GetPlayer(EPlayer);
@@ -47,18 +53,14 @@ namespace Gameplay
             player.EStatus = Status;
         }
 
-        protected override void AttributesFrom(Packet packet)
+        protected override void PlayerAttributesFrom(Packet packet)
         {
-            base.AttributesFrom(packet);
-
             RequestId = packet.ReadInt();
             Status = packet.ReadEPlayerStatus();
         }
 
-        protected override void AttributesTo(Packet packet)
+        protected override void PlayerAttributesTo(Packet packet)
         {
-            base.AttributesTo(packet);
-
             packet.Write(RequestId)
                 .Write(Status);
         }

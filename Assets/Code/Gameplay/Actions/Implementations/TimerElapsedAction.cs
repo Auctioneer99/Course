@@ -21,6 +21,16 @@ namespace Gameplay
             return this;
         }
 
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            GameState = (copyFrom as TimerElapsedAction).GameState;
+        }
+
         protected override void ApplyImplementation()
         {
             StateTimer timer = GameController.StateMachine.GetState(GameState).Timer;

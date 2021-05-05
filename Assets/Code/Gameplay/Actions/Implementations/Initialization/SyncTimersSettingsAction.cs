@@ -8,8 +8,20 @@
 
         public SyncTimersSettingsAction Initialize(TimerSettings settings)
         {
+            Initialize();
+
             Settings = settings;
             return this;
+        }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            //Settings = (copyFrom as SyncTimersSettingsAction).Settings.Clone(controller);
         }
 
         protected override void ApplyImplementation()

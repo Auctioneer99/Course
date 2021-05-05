@@ -19,10 +19,12 @@ namespace Gameplay
 
             Player = player;
             Deck = new RuntimeBattleDeck(GameController, deck);
-
-
-
             return this;
+        }
+
+        public override bool IsValid()
+        {
+            return true;
         }
 
         protected override void ApplyImplementation()
@@ -48,6 +50,11 @@ namespace Gameplay
         protected override void AttributesTo(Packet packet)
         {
             //
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            throw new NotImplementedException();
         }
     }
 }

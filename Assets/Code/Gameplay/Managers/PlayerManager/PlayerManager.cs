@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerManager : AManager
+    public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IStateObjectCloneable<PlayerManager>
     {
         public Dictionary<EPlayer, Player> Players { get; private set; }
 
@@ -22,30 +22,52 @@ namespace Gameplay
 
         public PlayerManager(GameController controller) : base(controller)
         {
-            Players = new Dictionary<EPlayer, Player>(controller.GameInstance.Settings.PlayersSettings.Count);
+            Debug.Log(controller.GameInstance.Settings == null);
+            int count = controller
+                .GameInstance
+                .Settings
+                .PlayersCount;
+            Players = new Dictionary<EPlayer, Player>(count);
+
+            for(int i = 0; i < count; i++)
+            {
+                Players.Add((EPlayer)(1 << i), null);
+            }
         }
 
         public void Reset()
         {
-            foreach( var player in Players)
+            foreach(var player in Players)
             {
-                player.Value.Reset();
+                player.Value?.Reset();
             }
             Players = new Dictionary<EPlayer, Player>();
+
+            for (int i = 0; i < GameController.GameInstance.Settings.PlayersCount; i++)
+            {
+                Players.Add((EPlayer)(1 << i), null);
+            }
         }
 
-        public Player SetupPlayer(EPlayer player)
+        public Player SetupPlayer(EPlayer eplayer, int connection)
         {
-            if (Players.TryGetValue(player, out Player p) == false)
+            Debug.Log("[Player Manager] Incoming player " + eplayer);
+            Debug.Log(GameController);
+            if (Players.TryGetValue(eplayer, out Player p))
             {
-                Player result = new Player(this, player);
-                Players[player] = result;
-                return result;
+                if (p == null)
+                {
+                    Player player = new Player(this, eplayer, connection);
+                    Players[eplayer] = player;
+                    return player;
+                }
+                else
+                {
+                    Debug.Log(p.ToString());
+                    throw new Exception("Player already set");
+                }
             }
-            else
-            {
-                throw new Exception("Player already set");
-            }
+            throw new Exception("No slot");
         }
 
         public void SetupPlayers(EPlayer localuser, Player[] players)
@@ -74,6 +96,18 @@ namespace Gameplay
             return null;
         }
 
+        public Player GetPlayer(int connection)
+        {
+            foreach(var p in Players.Values)
+            {
+                if (p.ConnectionId == connection)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
         public void SetAllPlayersStatus(EPlayerStatus status)
         {
             if (AreAllPlayers(status) == false)
@@ -86,14 +120,98 @@ namespace Gameplay
 
         public bool AreAllPlayers(EPlayerStatus status)
         {
+            //Debug.Log("[PlayerManager] PlayersCount = " + Players.Count);
             foreach(var player in Players.Values)
             {
-                if (player == null || status.Contains(player.EStatus))
+                if (player == null || !status.Contains(player.EStatus))
                 {
+                    //Debug.Log("[PlayerManager] false");
                     return false;
                 }
             }
             return true;
+        }
+
+        public void FromPacket(GameController controller, Packet packet)
+        {
+            LocalUserId = packet.ReadEPlayer();
+            CurrentPlayerId = packet.ReadEPlayer();
+
+            int count = controller.GameInstance.Settings.PlayersCount;
+            for(int i = 0; i < count; i++)
+            {
+                EPlayer key = packet.ReadEPlayer();
+                Player value = new Player(this, packet);
+                Players.Add(key, value);
+            }
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(LocalUserId)
+                .Write(CurrentPlayerId);
+
+            foreach(var p in Players)
+            {
+                packet.Write(p.Key)
+                    .Write(p.Value);
+            }
+        }
+
+        public void Censor(EPlayer player)
+        {
+            LocalUserId = player;
+
+            foreach(var p in Players.Values)
+            {
+                p?.Censor(player);
+            }
+        }
+
+        public PlayerManager Clone(GameController controller)
+        {
+            PlayerManager pm = new PlayerManager(controller);
+            pm.Copy(this, controller);
+            return pm;
+        }
+
+        public void Copy(PlayerManager other, GameController controller)
+        {
+            GameController = controller;
+            LocalUserId = other.LocalUserId;
+            CurrentPlayerId = other.CurrentPlayerId;
+
+            Players.Clear();
+            foreach (var p in other.Players)
+            {
+                if (p.Value == null)
+                {
+                    Players.Add(p.Key, null);
+                }
+                else
+                {
+                    Players.Add(p.Key, p.Value.Clone(controller));
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[PlayerManager]");
+            foreach (var p in Players)
+            {
+                sb.AppendLine(p.Key.ToString());
+                if (p.Value == null)
+                {
+                    sb.AppendLine("No player");
+                }
+                else
+                {
+                    sb.AppendLine(p.Value.ToString());
+                }
+            }
+            return sb.ToString();
         }
     }
 }

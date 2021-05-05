@@ -1,8 +1,9 @@
 ﻿namespace Gameplay
 {
-    public interface ITargetedAction
+    public interface ITargetedAction : IAuthorityAction
     {
+        int Connection { get; }
         NetworkTarget Target { get; }
-        EPlayer TargetPlayer { get; }
+        //EPlayer TargetPlayer { get; }
     }
 }

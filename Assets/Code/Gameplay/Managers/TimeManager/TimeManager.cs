@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Gameplay
 {
-    public class TimeManager : AManager
+    public class TimeManager : AManager, IStateObjectCloneable<TimeManager>, IRuntimeDeserializable
     {
-        public readonly long CreatedAt;
+        public long CreatedAt { get; private set; }
 
-        private readonly Stopwatch _stopwatch;
+        private Stopwatch _stopwatch;
+
+        private List<StateTimer> _timers = new List<StateTimer>();
 
         public long GameTime { get; private set; }
         public long DeltaTime { get; private set; }
@@ -20,6 +23,15 @@ namespace Gameplay
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
             _previousTime = 0;
+        }
+
+        public void Reset()
+        {
+            foreach(var t in _timers)
+            {
+                t.Reset();
+            }
+            _timers.Clear();
         }
 
         public void Update()
@@ -41,22 +53,73 @@ namespace Gameplay
 
             if (paused == false)
             {
-                GameController.StateMachine.CurrentState.Timer?.Update(DeltaTime);
+                if (GameController.StateMachine.CurrentState != null && GameController.StateMachine.CurrentState.HasTimer)
+                {
+                    GameController.StateMachine.CurrentState.Timer.Update(DeltaTime);
+                }
             }
         }
 
         public void SetupTimers()
         {
+            _timers.Clear();
             TimerSettings settings = GameController.GameInstance.Settings.TimerSettings;
             if (settings.EnableTimers)
             {
                 foreach(var definition in settings.Timers)
                 {
                     StateTimer timer = new StateTimer(this, definition);
+                    _timers.Add(timer);
                     AGameState gameState = GameController.StateMachine.GetState(timer.EGameState);
                     gameState.SetupTimer(timer);
                 }
-                GameController.Logger.Log("TimeManager Timers Setuped");
+                //GameController.Logger.Log("TimeManager Timers Setuped");
+            }
+        }
+
+        public void FromPacket(GameController controller, Packet packet)
+        {
+            _previousTime = packet.ReadLong();
+            GameTime = packet.ReadLong();
+            DeltaTime = packet.ReadLong();
+
+            SetupTimers();
+            foreach(var timer in _timers)
+            {
+                timer.FromPacket(controller, packet);
+            }
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(_previousTime)
+                .Write(GameTime)
+                .Write(DeltaTime);
+
+            foreach(var t in _timers)
+            {
+                packet.Write(t);
+            }
+        }
+
+        public TimeManager Clone(GameController controller)
+        {
+            TimeManager manager = new TimeManager(GameController);
+            manager.Copy(this, controller);
+            return manager;
+        }
+
+        public void Copy(TimeManager other, GameController controller)
+        {
+            _previousTime = other._previousTime;
+            GameTime = other.GameTime;
+            DeltaTime = other.DeltaTime;
+
+            SetupTimers();
+            int count = _timers.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _timers[i].Copy(other._timers[i], controller);
             }
         }
     }

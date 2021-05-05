@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class TimerSettings : IDeserializable, IStateObjectCloneable<TimerSettings>
+    public class TimerSettings : IDeserializable, ICloneable<TimerSettings>
     {
         public bool EnableTimers;
         public List<TimerDefenition> Timers;
@@ -33,17 +33,17 @@ namespace Gameplay
             Timers.AddRange(definitions);
         }
 
-        public TimerSettings Clone(GameController controller)
+        public TimerSettings Clone()
         {
             TimerSettings settings = new TimerSettings();
-            settings.Copy(this, controller);
+            settings.Copy(this);
             return settings;
         }
 
-        public void Copy(TimerSettings other, GameController controller)
+        public void Copy(TimerSettings other)
         {
             EnableTimers = other.EnableTimers;
-            Timers = other.Timers.Clone(controller);
+            Timers = other.Timers.Clone();
         }
 
         public void FromPacket(Packet packet)

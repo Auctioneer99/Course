@@ -10,9 +10,9 @@ namespace Gameplay
 
         public int LastNetworkPacketNumber { get; private set; }
 
-        public PingAction Initialize(EPlayer player, int lastPacketNumber)
+        public PingAction Initialize(int connection, int lastPacketNumber)
         {
-            Initialize(player);
+            Initialize(connection);
 
             LastNetworkPacketNumber = lastPacketNumber;
             return this;
@@ -21,19 +21,22 @@ namespace Gameplay
         protected override void ApplyImplementation()
         {
             Player player = GameController.PlayerManager.GetPlayer(EPlayer);
-            player.PingStatus.Ping(LastNetworkPacketNumber);
+            //player.PingStatus.Ping(LastNetworkPacketNumber);
         }
 
-        protected override void AttributesFrom(Packet packet)
+        protected override void PlayerAttributesFrom(Packet packet)
         {
-            base.AttributesFrom(packet);
             LastNetworkPacketNumber = packet.ReadInt();
         }
 
-        protected override void AttributesTo(Packet packet)
+        protected override void PlayerAttributesTo(Packet packet)
         {
-            base.AttributesTo(packet);
             packet.Write(LastNetworkPacketNumber);
+        }
+
+        protected override void PlayerCopyImplementation(APlayerAction copyFrom, GameController controller)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,10 +10,7 @@ namespace Gameplay
 
         public bool Initialized { get; private set; }
 
-        public virtual bool IsValid()
-        {
-            return true;
-        }
+        public abstract bool IsValid();
 
         protected void Initialize()
         {
@@ -31,10 +28,11 @@ namespace Gameplay
             return action;
         }
 
-        public virtual void Copy(AAction copyFrom, GameController controller)
+        public void Copy(AAction copyFrom, GameController controller)
         {
             Initialized = copyFrom.Initialized;
             NetworkActionNumber = copyFrom.NetworkActionNumber;
+            CopyImplementation(copyFrom, controller);
         }
 
         public void Apply()
@@ -45,8 +43,6 @@ namespace Gameplay
             }
             ApplyImplementation();
         }
-
-        protected abstract void ApplyImplementation();
 
         public void ToPacket(Packet packet)
         {
@@ -62,6 +58,8 @@ namespace Gameplay
             AttributesFrom(packet);
         }
 
+        protected abstract void CopyImplementation(AAction copyFrom, GameController controller);
+        protected abstract void ApplyImplementation();
         protected abstract void AttributesTo(Packet packet);
         protected abstract void AttributesFrom(Packet packet);
 

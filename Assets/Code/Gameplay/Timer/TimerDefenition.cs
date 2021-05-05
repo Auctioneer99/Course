@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public class TimerDefenition : IDeserializable, IStateObjectCloneable<TimerDefenition>
+    public class TimerDefenition : IDeserializable, ICloneable<TimerDefenition>
     {
         public EGameState EGameState { get; private set; }
         public int Duration { get; private set; }
@@ -20,14 +20,14 @@ namespace Gameplay
             Duration = duration;
         }
 
-        public TimerDefenition Clone(GameController controller)
+        public TimerDefenition Clone()
         {
             TimerDefenition def = new TimerDefenition();
-            def.Copy(this, controller);
+            def.Copy(this);
             return def;
         }
 
-        public void Copy(TimerDefenition other, GameController controller)
+        public void Copy(TimerDefenition other)
         {
             EGameState = other.EGameState;
             Duration = other.Duration;

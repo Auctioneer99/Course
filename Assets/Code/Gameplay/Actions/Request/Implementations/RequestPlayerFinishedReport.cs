@@ -8,16 +8,24 @@ namespace Gameplay
         public override ERequest ERequest => ERequest.PlayerFinished;
 
         public NetworkTarget Target => NetworkTarget.TargetPlayer;
-        public EPlayer TargetPlayer => PlayerId;
 
         //hash?
 
-        public RequestPlayerFinishedReport Initialize(EPlayer targetPlayer)
+        public RequestPlayerFinishedReport Initialize(int connection)
         {
-            Initialize(targetPlayer, false);
-
+            Initialize(connection, false);
 
             return this;
+        }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        protected override void CopyRequestImplementation(ARequest req, GameController controller)
+        {
+
         }
 
         protected override void ApplyImplementation() { }
@@ -26,7 +34,7 @@ namespace Gameplay
         {
             if(GameController.HasAuthority)
             {
-                Player player = GameController.PlayerManager.GetPlayer(PlayerId);
+                Player player = GameController.PlayerManager.GetPlayer(Connection);
                 return player.EStatus == EPlayerStatus.Finished;
             }
             else
@@ -47,7 +55,7 @@ namespace Gameplay
             else
             {
                 ReportPlayerStatusAction action = GameController.ActionFactory.Create<ReportPlayerStatusAction>()
-                    .Initialize(PlayerId, NetworkActionNumber, EPlayerStatus.Finished);
+                    .Initialize(Connection, NetworkActionNumber, EPlayerStatus.Finished);
                 GameController.ActionDistributor.HandleAction(action);
             }
         }
@@ -62,5 +70,15 @@ namespace Gameplay
         public override void HandleCancelled() { }
 
         public override void HandleExpired() { }
+
+        protected override void RequestAttributesFrom(Packet packet)
+        {
+            
+        }
+
+        protected override void RequestAttributesTo(Packet packet)
+        {
+            
+        }
     }
 }

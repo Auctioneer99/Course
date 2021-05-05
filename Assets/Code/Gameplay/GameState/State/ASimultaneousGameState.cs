@@ -11,9 +11,15 @@
         {
             if (GameController.HasAuthority)
             {
-                RequestPlayerFinishedReport request = GameController.ActionFactory.Create<RequestPlayerFinishedReport>()
-                    .Initialize(EPlayer.Players);
-                GameController.ActionDistributor.Add(request);
+                foreach(var player in GameController.PlayerManager.Players.Values)
+                {
+                    if (player != null)
+                    {
+                        RequestPlayerFinishedReport request = GameController.ActionFactory.Create<RequestPlayerFinishedReport>()
+                            .Initialize(player.ConnectionId);
+                        GameController.ActionDistributor.Add(request);
+                    }
+                }
             }
         }
 

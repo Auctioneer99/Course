@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Gameplay.Unity
 {
@@ -23,6 +24,7 @@ namespace Gameplay.Unity
 
         public void Attach(GameController game, bool wasJustInitialized)
         {
+            Debug.Log($"<color=purple>{game != _game}</color");
             if (game != _game)
             {
                 _game = game;

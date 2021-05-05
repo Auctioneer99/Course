@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace Gameplay
 {
     public class LocalConnector : AConnector
     {
-        public GameController Controller { get; private set; }
+        public GameInstance Instance { get; private set; }
+        //public GameController Controller { get; private set; }
 
-        public LocalConnector(GameController controller)
+        public LocalConnector(GameInstance instance)
         {
-            Controller = controller;
+            Instance = instance;
         }
 
         public override void GetDecks()
@@ -18,27 +20,36 @@ namespace Gameplay
 
         public override void Update()
         {
-            Controller.Update();
+            Instance.Update();
         }
 
         public override void Send(AAction action)
         {
-            if (Controller.HasAuthority)
+            Debug.Log("[Local Connector] Sending " + action.EAction + (Instance.HasAuthority ? " Authority side" : " Client Side"));
+            if (Instance.HasAuthority)
             {
-                if (action is ICensored)
+                if (action is ITargetedAction tAction)
                 {
-                    foreach (var p in Controller.PlayerManager.Players.Values)
-                    {
-                        CensorSend(action, p.EPlayer);
-                    }
-                    if (Controller.PlayerManager.HasSpectators)
-                    {
-                        Manager.SendToGroup(this, action, EPlayer.Spectators);
-                    }
+                    Manager.SendToTarget(this, action, tAction.Connection);
                 }
                 else
                 {
-                    Manager.SendToGroup(this, action, EPlayer.NonAuthority);
+                    if (action is ICensored)
+                    {
+                        GameController gc = Instance.Controller;
+                        foreach (var p in gc.PlayerManager.Players.Values)
+                        {
+                            CensorSend(action, p.EPlayer);
+                        }
+                        if (gc.PlayerManager.HasSpectators)
+                        {
+                            Manager.SendToGroup(this, action, EPlayer.Spectators);
+                        }
+                    }
+                    else
+                    {
+                        Manager.SendToGroup(this, action, EPlayer.NonAuthority);
+                    }
                 }
             }
             else
@@ -49,8 +60,8 @@ namespace Gameplay
 
         private void CensorSend(AAction action, EPlayer targetPlayer)
         {
-            AAction copyToCensor = Controller.ActionFactory.Create(action.EAction);
-            copyToCensor.Copy(action, Controller);
+            AAction copyToCensor = Instance.Controller.ActionFactory.Create(action.EAction);
+            copyToCensor.Copy(action, Instance.Controller);
             (copyToCensor as ICensored).Censor(targetPlayer);
             Manager.SendToGroup(this, action, targetPlayer);
         }
@@ -59,18 +70,20 @@ namespace Gameplay
         {
             if (CanHandleMessage(sender, action) == false)
             {
-                Debug.Log("Cant handle message");
+                Debug.Log("[Network Manager] Cant handle message");
                 return;
             }
-            action = action.Clone(Controller);
+            GameController gc = Instance.Controller;
+
+            action = action.Clone(gc);
 
             if (action is IPriorityAction)
             {
-                Controller.ActionDistributor.HandleAction(action);
+                gc.ActionDistributor.HandleAction(action);
             }
             else
             {
-                Controller.ActionDistributor.Add(action);
+                gc.ActionDistributor.Add(action);
             }
         }
 
@@ -79,11 +92,12 @@ namespace Gameplay
             bool isPlayerAction = action is APlayerAction;
             bool isAuthorityAction = action is IAuthorityAction;
             //EPlayer senderRole = sender.Role;
-
-            if (Controller.HasAuthority)
+            Debug.Log("[Local Connector] Can handle " + action.EAction + " " + (Instance.HasAuthority ? "Authority side" : "Client Side"));
+            if (Instance.HasAuthority)
             {
                 if (isPlayerAction)
                 {
+                    Debug.Log("Yes");
                     return true;
                 }
             }
@@ -91,10 +105,12 @@ namespace Gameplay
             {
                 if (isAuthorityAction)
                 {
+                    Debug.Log("Yes");
                     return true;
                 }
             }
 
+            Debug.Log("No");
             return false;
         }
     }

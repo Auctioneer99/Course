@@ -13,6 +13,16 @@
             return this;
         }
 
+        public override bool IsValid()
+        {
+            return true;
+        }
+
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            EGameState = (copyFrom as TimerStartedAction).EGameState;
+        }
+
         protected override void ApplyImplementation()
         {
             StateTimer timer = GameController.StateMachine.GetState(EGameState).Timer;

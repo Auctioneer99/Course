@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class AwaitingPlayersState : AAuthorityGameState
+    public class AwaitingPlayersState : ASimultaneousGameState
     {
         public AwaitingPlayersState(GameController controller) : base(controller, EGameState.AwaitingPlayers)
         { }
-
-        public void SetReady()
-        {
-            _isReady = true;
-        }
 
         public override void OnLeaveState(EGameState newStateId)
         {
@@ -24,7 +19,7 @@ namespace Gameplay
 
         protected override void OnFinished()
         {
-            if (_isReady)
+            if (AreFinished())
             {
                 GameController.Logger.Log("AwaitingPlayersState Players are ready");
                 SwitchState(EGameState.Init);

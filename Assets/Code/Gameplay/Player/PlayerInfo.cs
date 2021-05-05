@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerInfo : IDeserializable, IStateObjectCloneable<PlayerInfo>
+    public class PlayerInfo : IDeserializable, ICloneable<PlayerInfo>
     {
         public string Name = string.Empty;
 
@@ -40,17 +40,17 @@ namespace Gameplay
                 .Write(Vanity);
         }
 
-        public PlayerInfo Clone(GameController controller)
+        public PlayerInfo Clone()
         {
             PlayerInfo info = new PlayerInfo();
-            info.Copy(this, controller);
+            info.Copy(this);
             return this;
         }
 
-        public void Copy(PlayerInfo other, GameController controller)
+        public void Copy(PlayerInfo other)
         {
             Name = other.Name;
-            Vanity = other.Vanity.Clone(controller);
+            Vanity = other.Vanity.Clone();
         }
     }
 }

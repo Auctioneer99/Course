@@ -3,7 +3,7 @@
     public abstract class ASequentialGameState : AGameState
     {
         public Player CurrentPlayer => GameController.PlayerManager.CurrentPlayer;
-        public EPlayer CurrentEPlayer => GameController.PlayerManager.CurrentPlayerId;
+        //public EPlayer CurrentEPlayer => GameController.PlayerManager.CurrentPlayerId;
 
         public ASequentialGameState(GameController controller, EGameState state) : base(controller, state)
         {
@@ -15,7 +15,7 @@
             if (GameController.HasAuthority)
             {
                 RequestPlayerFinishedReport request = GameController.ActionFactory.Create<RequestPlayerFinishedReport>()
-                    .Initialize(CurrentEPlayer);
+                    .Initialize(CurrentPlayer.ConnectionId);
                 GameController.ActionDistributor.Add(request);
             }
         }

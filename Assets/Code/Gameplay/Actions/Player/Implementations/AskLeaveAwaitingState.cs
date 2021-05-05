@@ -12,6 +12,8 @@ namespace Gameplay
 
         public bool ValidWhenBlocked => true;
 
+        
+
         public override bool IsValid()
         {
             if (base.IsValid() == false)
@@ -32,6 +34,21 @@ namespace Gameplay
 
                 }
             }
+        }
+
+        protected override void PlayerAttributesFrom(Packet packet)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void PlayerAttributesTo(Packet packet)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void PlayerCopyImplementation(APlayerAction copyFrom, GameController controller)
+        {
+            throw new NotImplementedException();
         }
     }
 }

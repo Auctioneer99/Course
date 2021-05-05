@@ -86,18 +86,20 @@ namespace Gameplay
 
         public T Get<T>(EPlayer player, bool includeFulfilled = true) where T: ARequest
         {
+            int connection = GameController.PlayerManager.GetPlayer(player).ConnectionId;
             return
                 _requests.Where(item =>
                     item is T request &&
-                    player.Contains(request.PlayerId) &&
+                    connection == request.Connection &&
                     (includeFulfilled || request.IsFulfilled() == false))
                 .FirstOrDefault() as T;
         }
 
         public T Get<T>(EPlayer player, int requestId) where T: ARequest
         {
+            int connection = GameController.PlayerManager.GetPlayer(player).ConnectionId;
             if (Get(requestId) is T request &&
-                (player == EPlayer.Undefined || player.Contains(request.PlayerId)))
+                (connection == request.Connection))
             {
                 return request;
             }

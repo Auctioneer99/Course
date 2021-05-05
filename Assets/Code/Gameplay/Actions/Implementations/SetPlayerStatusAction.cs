@@ -1,11 +1,16 @@
 ﻿namespace Gameplay
 {
-    public class SetPlayerStatusAction : AAction, IAuthorityAction
+    public sealed class SetPlayerStatusAction : AAction, IAuthorityAction
     {
         public override EAction EAction => EAction.SetPlayerStatus;
 
         public EPlayer Player { get; private set; }
         public EPlayerStatus Status { get; private set; }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
 
         public SetPlayerStatusAction Initialize(EPlayer player, EPlayerStatus status)
         {
@@ -16,13 +21,24 @@
             return this;
         }
 
+        protected override void CopyImplementation(AAction copyFrom, GameController controller)
+        {
+            SetPlayerStatusAction other = copyFrom as SetPlayerStatusAction;
+
+            Player = other.Player;
+            Status = other.Status;
+        }
+
         protected override void ApplyImplementation()
         {
             foreach (var player in GameController.PlayerManager.Players.Values)
             {
-                if (Player.Contains(player.EPlayer))
+                if (player != null)
                 {
-                    player.EStatus = Status;
+                    if (Player.Contains(player.EPlayer))
+                    {
+                        player.EStatus = Status;
+                    }
                 }
             }
         }
