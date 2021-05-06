@@ -176,12 +176,14 @@ namespace Gameplay
             Status = controller.Status;
             StateMachine = controller.StateMachine.Clone(this);
             PlayerManager = controller.PlayerManager.Clone(this);
-            TimeManager.SetupTimers();
+            TimeManager = controller.TimeManager.Clone(this);
+            //TimeManager.SetupTimers();
         }
 
         public void Censor(EPlayer player)
         {
             PlayerManager.Censor(player);
+            TimeManager.Censor(player);
         }
 
         public override string ToString()
@@ -192,6 +194,7 @@ namespace Gameplay
             sb.AppendLine($"Initialized = {IsInitialized}");
             sb.AppendLine(StateMachine.ToString());
             sb.AppendLine(PlayerManager.ToString());
+            sb.AppendLine(TimeManager.ToString());
             return sb.ToString();
         }
     }

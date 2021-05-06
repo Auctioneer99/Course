@@ -24,7 +24,7 @@ namespace Gameplay.Unity
 
         public void Attach(GameController game, bool wasJustInitialized)
         {
-            Debug.Log($"<color=purple>{game != _game}</color");
+            //Debug.Log($"<color=purple>{game != _game}</color>");
             if (game != _game)
             {
                 _game = game;

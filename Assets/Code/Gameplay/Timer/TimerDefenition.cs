@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace Gameplay
 {
@@ -43,6 +44,15 @@ namespace Gameplay
         {
             packet.Write(EGameState)
                 .Write(Duration);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[TimerDefinition]");
+            sb.AppendLine($"GameState = {EGameState}");
+            sb.AppendLine($"Duration = {Duration}");
+            return sb.ToString();
         }
     }
 }

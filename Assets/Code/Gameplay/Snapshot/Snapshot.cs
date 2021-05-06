@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class Snapshot : IDeserializable, ICensored, IStateObjectCloneable<Snapshot>
+    public class Snapshot : IDeserializable, IStateObjectCloneable<Snapshot>
     {
         public GameInstance GameInstance { get; private set; }
         //public Settings Settings { get; private set; }
@@ -62,11 +62,11 @@ namespace Gameplay
         {
             packet.Write(GameInstance);
         }
-
+        /*
         public void Censor(EPlayer player)
         {
             GameInstance.Censor(player);
-        }
+        }*/
 
         public Snapshot Clone(GameController controller)
         {

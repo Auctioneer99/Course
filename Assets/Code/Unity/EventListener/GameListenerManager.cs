@@ -10,7 +10,7 @@ namespace Gameplay.Unity
     public class GameListenerManager
     {
         public GameInstance Instance { get; private set; }
-        public GameController Game => Instance.Controller;
+        public GameController Game => Instance?.Controller;
 
         public bool IsProcessing { get; private set; }
 
@@ -90,6 +90,9 @@ namespace Gameplay.Unity
                 _listeners.Add(entry);
             }
             Debug.Log($"Adding {_listeners.Count}");
+
+            Debug.Log(Game);
+            Debug.Log("-------------");
             if(Game != null && Game.IsInitialized)
             {
                 entry.Attach(Game, wasJustInitialized);
@@ -168,11 +171,11 @@ namespace Gameplay.Unity
         private void AfterGameInitialized(GameInstance instance, bool wasJustInitialized)
         {
             Debug.Log("<color=red>INITIALIZED!!!</color>");
-            /*
+            
             if (instance != Instance)
             {
                 return;
-            }*/
+            }
 
             AttachListeners(wasJustInitialized);
 

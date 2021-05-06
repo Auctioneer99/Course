@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace Gameplay
 {
-    public class TimeManager : AManager, IStateObjectCloneable<TimeManager>, IRuntimeDeserializable
+    public class TimeManager : AManager, IStateObjectCloneable<TimeManager>, IRuntimeDeserializable, ICensored
     {
         public long CreatedAt { get; private set; }
 
@@ -77,6 +78,24 @@ namespace Gameplay
             }
         }
 
+        public StateTimer GetCurrentStateTimer()
+        {
+            EGameState state = GameController.StateMachine.ECurrentState;
+            return GetTimer(state);
+        }
+
+        public StateTimer GetTimer(EGameState state)
+        {
+            foreach(var t in _timers)
+            {
+                if (t.EGameState == state)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
+
         public void FromPacket(GameController controller, Packet packet)
         {
             _previousTime = packet.ReadLong();
@@ -104,7 +123,7 @@ namespace Gameplay
 
         public TimeManager Clone(GameController controller)
         {
-            TimeManager manager = new TimeManager(GameController);
+            TimeManager manager = new TimeManager(controller);
             manager.Copy(this, controller);
             return manager;
         }
@@ -120,6 +139,27 @@ namespace Gameplay
             for (int i = 0; i < count; i++)
             {
                 _timers[i].Copy(other._timers[i], controller);
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[TimeManager]");
+            sb.AppendLine($"GameTime = {GameTime}");
+            sb.AppendLine($"DeltaTime = {DeltaTime}");
+            foreach(var t in _timers)
+            {
+                sb.AppendLine(t.ToString());
+            }
+            return sb.ToString();
+        }
+
+        public void Censor(EPlayer player)
+        {
+            foreach(var t in _timers)
+            {
+                t.Censor(player);
             }
         }
     }

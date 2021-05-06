@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Text;
+using UnityEngine;
 
 namespace Gameplay
 {
-    public class StateTimer : IRuntimeDeserializable, IStateObjectCloneable<StateTimer>
+    public class StateTimer : IRuntimeDeserializable, IStateObjectCloneable<StateTimer>, ICensored
     {
         public const int TIME_BUFFER_FOR_AUTHORITY_SIDE = 2000;
 
@@ -100,6 +102,27 @@ namespace Gameplay
             packet.Write(Duration)
                 .Write(TimeRemaining)
                 .Write(ETimerState);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[StateTimer]");
+            sb.AppendLine($"State = {ETimerState}");
+            sb.AppendLine($"Duration = {Duration}");
+            sb.AppendLine($"TimeRemaining = {TimeRemaining}");
+            sb.AppendLine(Definition.ToString());
+            return sb.ToString();
+        }
+
+        public void Censor(EPlayer player)
+        {
+            //Debug.Log("Censoring state timer " + player.Contains(EPlayer.NonAuthority));
+            if (player.Contains(EPlayer.NonAuthority))
+            {
+                TimeRemaining -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
+                Duration -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
+            }
         }
     }
 }

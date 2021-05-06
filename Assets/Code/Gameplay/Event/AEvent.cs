@@ -146,7 +146,7 @@ namespace Gameplay
         private void InstantRemoveListener(int index)
         {
             _isSorted = false;
-            if (index != -_pointer)
+            if (index != --_pointer)
             {
                 Array.Copy(_listeners, index + 1, _listeners, index, _pointer - index);
             }
