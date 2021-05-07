@@ -13,7 +13,7 @@ namespace Gameplay.Unity
         [SerializeField]
         private TextMeshProUGUI _text;
 
-        public StateTimer Timer { get; set; }
+        public StateTimer StateTimer { get; set; }
         private bool _active;
 
         private void Awake()
@@ -23,16 +23,16 @@ namespace Gameplay.Unity
 
         private void Update()
         {
-            if (Timer == null || _active == false)
+            if (StateTimer == null || _active == false)
             {
                 return;
             }
-            _text.text = Math.Round((double)Timer.TimeRemaining / 1000, 0).ToString();
+            _text.text = Math.Round((double)StateTimer.Timer.TimeRemaining / 1000, 0).ToString();
         }
 
         public void UnInitialize()
         {
-            Timer = null;
+            StateTimer = null;
             ToggleTimer(false);
         }
 

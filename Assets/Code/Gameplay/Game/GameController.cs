@@ -27,7 +27,7 @@ namespace Gameplay
         public RequestHolder RequestHolder { get; private set; }
         public LocalConnector Network => GameInstance.Network;
         public EventManager EventManager { get; private set; }
-        public TimeManager TimeManager { get; private set; }
+        //public TimeManager TimeManager { get; private set; }
 
         public GameInstance GameInstance { get; private set; }
 
@@ -38,7 +38,7 @@ namespace Gameplay
             ActionFactory = new ActionFactory(this);
 
             StateMachine = new FiniteGameStateMachine(this);
-            TimeManager = new TimeManager(this);
+            //TimeManager = new TimeManager(this);
 
             PlayerManager = new PlayerManager(this);
             ActionDistributor = new ActionDistributor(this);
@@ -73,12 +73,15 @@ namespace Gameplay
             SetStatus(EGameStatus.Running);
             //PlayerManager.SetupPlayers(perspectivePlayer, players);
 
+            StateMachine.Start();
+            /*
             if (HasAuthority)
             {
                 TimeManager.SetupTimers();
             }
 
             StateMachine.TransitionTo(EGameState.AwaitingPlayers);
+            */
             //settings.Init
             Initialize();
         }
@@ -100,7 +103,7 @@ namespace Gameplay
                 return;
             }
 
-            TimeManager.Update();
+            //TimeManager.Update();
             StateMachine.Update();
             //PlayerManager.Update();
 
@@ -143,7 +146,7 @@ namespace Gameplay
         public void Reset(bool resetVisuals = false)
         {
             PlayerManager?.Reset();
-            TimeManager?.Reset();
+            //TimeManager?.Reset();
         }
 
         public void FromPacket(Packet packet)
@@ -176,14 +179,14 @@ namespace Gameplay
             Status = controller.Status;
             StateMachine = controller.StateMachine.Clone(this);
             PlayerManager = controller.PlayerManager.Clone(this);
-            TimeManager = controller.TimeManager.Clone(this);
-            //TimeManager.SetupTimers();
+            //TimeManager = controller.TimeManager.Clone(this);
         }
 
         public void Censor(EPlayer player)
         {
             PlayerManager.Censor(player);
-            TimeManager.Censor(player);
+            StateMachine.Censor(player);
+            //TimeManager.Censor(player);
         }
 
         public override string ToString()
@@ -194,7 +197,7 @@ namespace Gameplay
             sb.AppendLine($"Initialized = {IsInitialized}");
             sb.AppendLine(StateMachine.ToString());
             sb.AppendLine(PlayerManager.ToString());
-            sb.AppendLine(TimeManager.ToString());
+           // sb.AppendLine(TimeManager.ToString());
             return sb.ToString();
         }
     }

@@ -1,128 +1,100 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Gameplay
 {
     public class StateTimer : IRuntimeDeserializable, IStateObjectCloneable<StateTimer>, ICensored
     {
-        public const int TIME_BUFFER_FOR_AUTHORITY_SIDE = 2000;
+        public TimeManager TimeManager { get; private set; }
 
-        public readonly BattleEvent<StateTimer> OnElapsed;
+        public EGameState EGameState { get; private set; }
+        public Timer Timer { get; private set; }
 
         public GameController GameController => TimeManager.GameController;
-        public TimeManager TimeManager { get; private set; }
-        public TimerDefenition Definition { get; private set; }
-        public EGameState EGameState => Definition.EGameState;
-        public ETimerState ETimerState { get; private set; }
 
-        public bool IsRunning => ETimerState == ETimerState.Running;
-        public bool IsElapsed => ETimerState == ETimerState.Elapsed;
+        private StateTimer() { }
 
-        public int Duration { get; private set; }
-        public int TimeRemaining { get; private set; }
+        public StateTimer(TimeManager manager, Packet packet)
+        {
+            FromPacket(manager.GameController, packet);
 
-        public StateTimer(TimeManager manager, TimerDefenition definition)
+            Initialize();
+        }
+
+        public StateTimer(TimeManager manager, StateTimerDefinition definition)
         {
             TimeManager = manager;
-            Definition = definition;
+            EGameState = definition.EGameState;
+            Timer = new Timer(GameController, definition.TimerDefinition);
 
-            ETimerState = ETimerState.Stopped;
+            Initialize();
+        }
 
-            OnElapsed = new BattleEvent<StateTimer>(TimeManager.GameController);
+        private void Initialize()
+        {
+            Timer.Started.CoreEvent.AddListener(OnTimerStarted);
+            Timer.Elapsed.CoreEvent.AddListener(OnTimerElapsed);
         }
 
         public void Reset()
         {
-            OnElapsed.CoreEvent.RemoveAllListeners();
+            Timer.Reset();
         }
 
-        public void Start()
+        private void OnTimerStarted(Timer timer)
         {
-            if (ETimerState == ETimerState.Running)
-            {
-                throw new Exception("Already running");
-            }
-            Duration = Definition.Duration + 
-                (TimeManager.GameController.HasAuthority ? TIME_BUFFER_FOR_AUTHORITY_SIDE : 0);
-            TimeRemaining = Duration;
-            ETimerState = ETimerState.Running;
-
             GameController.EventManager.OnStateTimerStarted.Invoke(this);
         }
 
-        public void Update(long deltaTime)
+        private void OnTimerElapsed(Timer timer)
         {
-            if (IsRunning)
-            {
-                TimeRemaining -= (int)deltaTime;
-                if (TimeRemaining <= 0)
-                {
-                    GameController.Logger.Log($"{EGameState} Time is out");
-                    Finish();
-                }
-            }
-        }
-
-        public void Finish()
-        {
-            if (ETimerState == ETimerState.Elapsed)
-            {
-                throw new Exception("Timer already elapsed");
-            }
-            TimeRemaining = 0;
-            ETimerState = ETimerState.Elapsed;
-            OnElapsed.Invoke(this);
+            GameController.EventManager.OnStateTimerElapsed.Invoke(this);
         }
 
         public StateTimer Clone(GameController controller)
         {
-            StateTimer timer = new StateTimer(TimeManager, Definition);
+            StateTimer timer = new StateTimer();
             timer.Copy(this, controller);
             return timer;
         }
 
         public void Copy(StateTimer other, GameController controller)
         {
-            Definition = other.Definition;
-            Duration = other.Duration;
-            ETimerState = other.ETimerState;
-            TimeRemaining = other.TimeRemaining;
+            TimeManager = controller.StateMachine.TimeManager;
+            EGameState = other.EGameState;
+            Timer = other.Timer.Clone(controller);
+
+            Initialize();
+        }
+
+        public void Censor(EPlayer player)
+        {
+            Timer.Censor(player);
         }
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            Duration = packet.ReadInt();
-            TimeRemaining = packet.ReadInt();
-            ETimerState = packet.ReadETimerState();
+            TimeManager = controller.StateMachine.TimeManager;
+            EGameState = packet.ReadEGameState();
+            Timer = new Timer(controller, packet);
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(Duration)
-                .Write(TimeRemaining)
-                .Write(ETimerState);
+            packet.Write(EGameState)
+                .Write(Timer);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("[StateTimer]");
-            sb.AppendLine($"State = {ETimerState}");
-            sb.AppendLine($"Duration = {Duration}");
-            sb.AppendLine($"TimeRemaining = {TimeRemaining}");
-            sb.AppendLine(Definition.ToString());
+            sb.AppendLine("[GameStateTimer]");
+            sb.AppendLine($"EGameState = {EGameState}");
+            sb.AppendLine(Timer.ToString());
             return sb.ToString();
-        }
-
-        public void Censor(EPlayer player)
-        {
-            //Debug.Log("Censoring state timer " + player.Contains(EPlayer.NonAuthority));
-            if (player.Contains(EPlayer.NonAuthority))
-            {
-                TimeRemaining -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
-                Duration -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
-            }
         }
     }
 }

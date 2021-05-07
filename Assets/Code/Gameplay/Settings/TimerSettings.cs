@@ -6,7 +6,7 @@ namespace Gameplay
     public class TimerSettings : IDeserializable, ICloneable<TimerSettings>
     {
         public bool EnableTimers;
-        public List<TimerDefenition> Timers;
+        public List<StateTimerDefinition> StateTimers;
 
         public TimerSettings()
         {
@@ -18,7 +18,7 @@ namespace Gameplay
             EnableTimers = enableTimers;
             if (enableTimers)
             {
-                Timers = TimerFactory.CreateDefaultDefinitions();
+                StateTimers = TimerFactory.CreateDefaultDefinitions();
             }
         }
 
@@ -27,10 +27,10 @@ namespace Gameplay
             FromPacket(packet);
         }
 
-        public TimerSettings(List<TimerDefenition> definitions)
+        public TimerSettings(List<StateTimerDefinition> definitions)
         {
             EnableTimers = true;
-            Timers.AddRange(definitions);
+            StateTimers.AddRange(definitions);
         }
 
         public TimerSettings Clone()
@@ -43,24 +43,24 @@ namespace Gameplay
         public void Copy(TimerSettings other)
         {
             EnableTimers = other.EnableTimers;
-            Timers = other.Timers.Clone();
+            StateTimers = other.StateTimers.Clone();
         }
 
         public void FromPacket(Packet packet)
         {
             EnableTimers = packet.ReadBool();
             int length = packet.ReadInt();
-            Timers = new List<TimerDefenition>(length);
+            StateTimers = new List<StateTimerDefinition>(length);
             for(int i = 0; i < length; i++)
             {
-                Timers.Add(new TimerDefenition(packet));
+                StateTimers.Add(new StateTimerDefinition(packet));
             }
         }
 
         public void ToPacket(Packet packet)
         {
             packet.Write(EnableTimers)
-                .Write(Timers);
+                .Write(StateTimers);
         }
     }
 }

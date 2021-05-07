@@ -33,7 +33,7 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
-            StateTimer timer = GameController.StateMachine.GetState(GameState).Timer;
+            Timer timer = GameController.StateMachine.GetState(GameState).Timer;
             timer.Finish();
         }
 

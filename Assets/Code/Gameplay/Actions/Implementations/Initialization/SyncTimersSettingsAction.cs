@@ -26,6 +26,7 @@
 
         protected override void ApplyImplementation()
         {
+            /*
             if (GameController.HasAuthority == false)
             {
                 TimerSettings currentSettings = GameController.GameInstance.Settings.TimerSettings;
@@ -33,7 +34,7 @@
                 currentSettings.Timers = Settings.Timers;
 
                 GameController.TimeManager.SetupTimers();
-            }
+            }*/
         }
 
         protected override void AttributesFrom(Packet packet)

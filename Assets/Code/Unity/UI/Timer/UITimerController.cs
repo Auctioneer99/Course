@@ -24,14 +24,14 @@ namespace Gameplay.Unity
             Debug.Log("Timers attached");
             _controller = game;
 
-            StateTimer timer = game.TimeManager.GetCurrentStateTimer();
+            StateTimer stateTimer = game.StateMachine.TimeManager.GetCurrentStateTimer();
             EventManager eManager = game.EventManager;
 
             Debug.Log("Is there is a timer?");
-            if (timer != null && timer.IsRunning)
+            if (stateTimer != null && stateTimer.Timer.IsRunning)
             {
                 Debug.Log("There is!");
-                OnStateTimerStarted(timer);
+                OnStateTimerStarted(stateTimer);
             }
 
             eManager.OnStateTimerStarted.VisualEvent.AddListener(OnStateTimerStarted);
@@ -52,7 +52,7 @@ namespace Gameplay.Unity
         private void OnStateTimerStarted(StateTimer timer)
         {
             //_timerUI = timer;
-            _timerUI.Timer = timer;
+            _timerUI.StateTimer = timer;
             _timerUI.ToggleTimer(true);
         }
 

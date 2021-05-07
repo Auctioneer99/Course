@@ -1,56 +1,49 @@
 ﻿using System.Text;
-using UnityEngine;
 
 namespace Gameplay
 {
-    public class TimerDefenition : IDeserializable, ICloneable<TimerDefenition>
+    public class TimerDefinition : IDeserializable, ICloneable<TimerDefinition>
     {
-        public EGameState EGameState { get; private set; }
         public int Duration { get; private set; }
 
-        public TimerDefenition() { }
+        private TimerDefinition() { }
 
-        public TimerDefenition(Packet packet)
+        public TimerDefinition(Packet packet)
         {
             FromPacket(packet);
         }
 
-        public TimerDefenition(EGameState eGameState, int duration)
+        public TimerDefinition(int duration)
         {
-            EGameState = eGameState;
             Duration = duration;
         }
 
-        public TimerDefenition Clone()
+        public TimerDefinition Clone()
         {
-            TimerDefenition def = new TimerDefenition();
+            TimerDefinition def = new TimerDefinition();
             def.Copy(this);
             return def;
         }
 
-        public void Copy(TimerDefenition other)
+        public void Copy(TimerDefinition other)
         {
-            EGameState = other.EGameState;
             Duration = other.Duration;
         }
 
         public void FromPacket(Packet packet)
         {
-            EGameState = packet.ReadEGameState();
             Duration = packet.ReadInt();
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(EGameState)
-                .Write(Duration);
+            packet.Write(Duration);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[TimerDefinition]");
-            sb.AppendLine($"GameState = {EGameState}");
             sb.AppendLine($"Duration = {Duration}");
             return sb.ToString();
         }

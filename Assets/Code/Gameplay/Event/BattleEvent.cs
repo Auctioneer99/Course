@@ -29,6 +29,15 @@ namespace Gameplay
         {
             CoreEvent.Invoke();
         }
+
+        public void RemoveAllListeners(bool includeCore = false)
+        {
+            if (includeCore)
+            {
+                CoreEvent.RemoveAllListeners();
+            }
+            VisualEvent.RemoveAllListeners();
+        }
     }
 
     public class BattleEvent<T>
@@ -47,6 +56,15 @@ namespace Gameplay
         public void Invoke(T arg)
         {
             CoreEvent.Invoke(arg);
+        }
+
+        public void RemoveAllListeners(bool includeCore = false)
+        {
+            if (includeCore)
+            {
+                CoreEvent.RemoveAllListeners();
+            }
+            VisualEvent.RemoveAllListeners();
         }
     }
 
@@ -67,6 +85,15 @@ namespace Gameplay
         {
             CoreEvent.Invoke(arg1, arg2);
         }
+
+        public void RemoveAllListeners(bool includeCore = false)
+        {
+            if (includeCore)
+            {
+                CoreEvent.RemoveAllListeners();
+            }
+            VisualEvent.RemoveAllListeners();
+        }
     }
 
     public class BattleEvent<T1, T2, T3>
@@ -85,6 +112,15 @@ namespace Gameplay
         public void Invoke(T1 arg1, T2 arg2, T3 arg3)
         {
             CoreEvent.Invoke(arg1, arg2, arg3);
+        }
+
+        public void RemoveAllListeners(bool includeCore = false)
+        {
+            if (includeCore)
+            {
+                CoreEvent.RemoveAllListeners();
+            }
+            VisualEvent.RemoveAllListeners();
         }
     }
 }

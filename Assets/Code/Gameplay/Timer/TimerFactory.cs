@@ -9,11 +9,11 @@ namespace Gameplay
         public const int PLAY_CARD_DURATION = 20000;
         public const int TURN_DURATION = 20000;
 
-        public static List<TimerDefenition> CreateDefaultDefinitions()
+        public static List<StateTimerDefinition> CreateDefaultDefinitions()
         {
-            return new List<TimerDefenition>()
+            return new List<StateTimerDefinition>()
             {
-                new TimerDefenition(EGameState.AwaitingPlayers, AWAITING_DURATION),
+                new StateTimerDefinition(EGameState.AwaitingPlayers, new TimerDefinition(AWAITING_DURATION)),
                // new TimerDefenition(EGameState.Mulligan, MULLIGAN_DURATION),
                // new TimerDefenition(EGameState.PlayingCard, PLAY_CARD_DURATION),
                // new TimerDefenition(EGameState.Turn, TURN_DURATION)

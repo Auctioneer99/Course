@@ -7,18 +7,23 @@ namespace Gameplay
         public EGameState EGameState { get; private set; }
 
         public GameController GameController { get; private set; }
-        public StateTimer Timer { get; private set; }
+        public StateTimer StateTimer { get; private set; }
+        public Timer Timer => StateTimer?.Timer;
 
         public bool HasTimer => Timer != null;
         public bool CanStartTimer => HasTimer && Timer.IsElapsed == false;
         public bool HasRunningTimer => HasTimer && Timer.IsRunning;
         public bool IsElapsed => HasTimer && Timer.IsElapsed;
 
-
         protected AGameState(GameController controller, EGameState state)
         {
             GameController = controller;
             EGameState = state;
+        }
+
+        public virtual void Reset()
+        {
+
         }
 
         public virtual void OnEnterState(EGameState prevState)
@@ -58,10 +63,10 @@ namespace Gameplay
 
         public void SetupTimer(StateTimer timer)
         {
-            Timer?.OnElapsed.CoreEvent.RemoveListener(OnTimerElapsed);
+            Timer?.Elapsed.CoreEvent.RemoveListener(OnTimerElapsed);
 
-            Timer = timer;
-            timer.OnElapsed.CoreEvent.AddListener(OnTimerElapsed);
+            StateTimer = timer;
+            Timer.Elapsed.CoreEvent.AddListener(OnTimerElapsed);
             //GameController.Logger.Log("GameState Timer Setuped");
         }
 
@@ -89,14 +94,14 @@ namespace Gameplay
             return false;
         }
 
-        private void OnTimerElapsed(StateTimer timer)
+        private void OnTimerElapsed(Timer timer)
         {
             if (GameController.HasAuthority)
             {
                 GameController.PlayerManager.SetAllPlayersStatus(EPlayerStatus.Blocked);
             }
-            GameController.EventManager.OnStateTimerElapsed.Invoke(timer);
-            GameController.Logger.Log("[GameState] OnStateTimerElapsed Invoked");
+            //GameController.EventManager.OnStateTimerElapsed.Invoke(timer);
+            //GameController.Logger.Log("[GameState] OnStateTimerElapsed Invoked");
         }
 
         protected void SwitchState(EGameState state)

@@ -25,7 +25,7 @@
 
         protected override void ApplyImplementation()
         {
-            StateTimer timer = GameController.StateMachine.GetState(EGameState).Timer;
+            Timer timer = GameController.StateMachine.GetState(EGameState).Timer;
             timer.Start();
         }
 
