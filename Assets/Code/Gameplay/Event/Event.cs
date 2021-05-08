@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Gameplay
 {
@@ -7,12 +8,9 @@ namespace Gameplay
         public void Invoke()
         {
             DeferredRemoveListeners();
-            if (_isSorted == false)
-            {
-                Array.Sort(_listeners);
-            }
+            DeferredSortListeners();
             isHandling = true;
-            for (int i = 0, size = _pointer; i < size && i < _pointer; i++)
+            for (int i = 0, size = _size; i < size && i < _size; i++)
             {
                 _listeners[i].Handler();
             }
@@ -38,12 +36,9 @@ namespace Gameplay
         public void Invoke(T arg)
         {
             DeferredRemoveListeners();
-            if (_isSorted == false)
-            {
-                Array.Sort(_listeners);
-            }
+            DeferredSortListeners();
             isHandling = true;
-            for (int i = 0, size = _pointer; i < size && i < _pointer; i++)
+            for (int i = 0, size = _size; i < size; i++)
             {
                 _listeners[i].Handler(arg);
             }
@@ -87,12 +82,9 @@ namespace Gameplay
         public void Invoke(T1 arg1, T2 arg2)
         {
             DeferredRemoveListeners();
-            if (_isSorted == false)
-            {
-                Array.Sort(_listeners);
-            }
+            DeferredSortListeners();
             isHandling = true;
-            for (int i = 0, size = _pointer; i < size && i < _pointer; i++)
+            for (int i = 0, size = _size; i < size && i < _size; i++)
             {
                 _listeners[i].Handler(arg1, arg2);
             }
@@ -135,12 +127,9 @@ namespace Gameplay
         public void Invoke(T1 arg1, T2 arg2, T3 arg3)
         {
             DeferredRemoveListeners();
-            if (_isSorted == false)
-            {
-                Array.Sort(_listeners);
-            }
+            DeferredSortListeners();
             isHandling = true;
-            for (int i = 0, size = _pointer; i < size && i < _pointer; i++)
+            for (int i = 0, size = _size; i < size && i < _size; i++)
             {
                 _listeners[i].Handler(arg1, arg2, arg3);
             }
