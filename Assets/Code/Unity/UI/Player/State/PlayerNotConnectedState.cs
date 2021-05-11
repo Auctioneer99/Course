@@ -27,13 +27,12 @@ namespace Gameplay.Unity
 
         public override void OnMouseClick()
         {
-            //Debug.Log("Trying to connect");
-            //Debug.Log(FSM.View.Place);
-            Debug.Log("Creating askjoin on " + GameController.HasAuthority);
-            AskJoinAction join = GameController.ActionFactory.Create<AskJoinAction>()
-                .Initialize(FSM.View.PlayersUI.Controller.Network.ConnectionId, FSM.View.Place);
-            GameController.ActionDistributor.Add(join);
-            //try to connect
+            if (GameController.Network.Role == EPlayer.Spectators)
+            {
+                AskJoinAction join = GameController.ActionFactory.Create<AskJoinAction>()
+                    .Initialize(FSM.View.PlayersUI.Controller.Network.ConnectionId, FSM.View.Place);
+                GameController.ActionDistributor.Add(join);
+            }
         }
 
         public override void OnMouseEnter()

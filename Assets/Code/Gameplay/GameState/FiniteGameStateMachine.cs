@@ -35,6 +35,7 @@ namespace Gameplay
             {
                 { EGameState.AwaitingPlayers, new AwaitingPlayersState(GameController) },
                 { EGameState.Init, new InitializeGameState(GameController) },
+                { EGameState.Mulligan, new MulliganGameState(GameController) },
             };
         }
 

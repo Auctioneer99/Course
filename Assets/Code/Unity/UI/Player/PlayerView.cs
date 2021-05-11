@@ -27,9 +27,11 @@ namespace Gameplay.Unity
 
         public Image ConnectButton;
 
-        public GameObject Attack, Health;
+        public Button DisconnectButton, ReadyButton;
 
-        public TextMeshPro AttackValue, HealthValue;
+        //public GameObject Attack, Health;
+
+        //public TextMeshPro AttackValue, HealthValue;
 
         public void OnPointerClick(PointerEventData eventData)
         {

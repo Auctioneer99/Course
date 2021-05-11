@@ -12,7 +12,7 @@ namespace Gameplay
         public Dictionary<EPlayer, Player> Players { get; private set; }
 
         //public EPlayer PerspectivePlayer { get; private set; }
-        public EPlayer LocalUserId { get; private set; }
+        public EPlayer LocalUserId => GameController.Network.Role;
         public EPlayer CurrentPlayerId { get; private set; }
 
         public Player LocalUser => GetPlayer(LocalUserId);
@@ -22,7 +22,6 @@ namespace Gameplay
 
         public PlayerManager(GameController controller) : base(controller)
         {
-            Debug.Log(controller.GameInstance.Settings == null);
             int count = controller
                 .GameInstance
                 .Settings
@@ -59,6 +58,8 @@ namespace Gameplay
                 {
                     Player player = new Player(this, eplayer, connection);
                     Players[eplayer] = player;
+
+                    GameController.Network.Manager.GetConnection(connection).Role = eplayer;
                     return player;
                 }
                 else
@@ -72,7 +73,7 @@ namespace Gameplay
 
         public void SetupPlayers(EPlayer localuser, Player[] players)
         {
-            LocalUserId = localuser;
+            //LocalUserId = localuser;
 
             Players = new Dictionary<EPlayer, Player>(players.Length);
             for (int i = 0; i < players.Length; i++)
@@ -121,9 +122,9 @@ namespace Gameplay
         public bool AreAllPlayers(EPlayerStatus status)
         {
             //Debug.Log("[PlayerManager] PlayersCount = " + Players.Count);
-            foreach(var player in Players.Values)
+            foreach(var player in Players)
             {
-                if (player == null || !status.Contains(player.EStatus))
+                if (player.Value == null || !status.Contains(player.Value.EStatus))
                 {
                     //Debug.Log("[PlayerManager] false");
                     return false;
@@ -134,7 +135,7 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            LocalUserId = packet.ReadEPlayer();
+            //LocalUserId = packet.ReadEPlayer();
             CurrentPlayerId = packet.ReadEPlayer();
 
             int count = controller.GameInstance.Settings.PlayersCount;
@@ -160,7 +161,7 @@ namespace Gameplay
 
         public void Censor(EPlayer player)
         {
-            LocalUserId = player;
+            //LocalUserId = player;
 
             foreach(var p in Players.Values)
             {
@@ -178,7 +179,7 @@ namespace Gameplay
         public void Copy(PlayerManager other, GameController controller)
         {
             GameController = controller;
-            LocalUserId = other.LocalUserId;
+            //LocalUserId = other.LocalUserId;
             CurrentPlayerId = other.CurrentPlayerId;
 
             Players.Clear();

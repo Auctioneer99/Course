@@ -6,7 +6,7 @@ namespace Gameplay
     {
         public int ConnectionId { get; private set; }
 
-        public EPlayer Role { get; protected set; }
+        public EPlayer Role { get; set; }
 
         public NetworkManager Manager { get; set; }
 
@@ -24,11 +24,6 @@ namespace Gameplay
             {
                 throw new System.Exception("connector already connected");
             }
-        }
-
-        public void Send(AAction action, int connectionId)
-        {
-            Manager.SendToTarget(this, action, connectionId);
         }
 
         public abstract void Update();

@@ -17,8 +17,12 @@ namespace Gameplay
         public bool IsRunning => ETimerState == ETimerState.Running;
         public bool IsElapsed => ETimerState == ETimerState.Elapsed;
 
-        public int Duration { get; private set; }
-        public int TimeRemaining { get; private set; }
+        public int Duration => Definition.Duration;
+        public int TimeRemaining => GameController.HasAuthority ? 
+            _timeRemaining + Definition.AuthorityBuffer
+            : _timeRemaining;
+
+        private int _timeRemaining;
 
         private Timer() { }
 
@@ -54,9 +58,8 @@ namespace Gameplay
             {
                 throw new Exception("Already running");
             }
-            Duration = Definition.Duration + 
-                (GameController.HasAuthority ? TIME_BUFFER_FOR_AUTHORITY_SIDE : 0);
-            TimeRemaining = Duration;
+
+            _timeRemaining = Duration;
             ETimerState = ETimerState.Running;
 
             Started.Invoke(this);
@@ -66,7 +69,7 @@ namespace Gameplay
         {
             if (IsRunning)
             {
-                TimeRemaining -= (int)deltaTime;
+                _timeRemaining -= (int)deltaTime;
                 if (TimeRemaining <= 0)
                 {
                     GameController.Logger.Log($"Time is out");
@@ -81,7 +84,7 @@ namespace Gameplay
             {
                 throw new Exception("Timer already elapsed");
             }
-            TimeRemaining = 0;
+            _timeRemaining = 0;
             ETimerState = ETimerState.Elapsed;
 
             Elapsed.Invoke(this);
@@ -98,35 +101,36 @@ namespace Gameplay
         {
             GameController = controller;
             Definition = other.Definition.Clone();
-            Duration = other.Duration;
+            //Duration = other.Duration;
             ETimerState = other.ETimerState;
-            TimeRemaining = other.TimeRemaining;
+            _timeRemaining = other._timeRemaining;
 
             Initialize();
         }
 
         public void Censor(EPlayer player)
         {
+            /*
             if (player.Contains(EPlayer.NonAuthority))
             {
                 TimeRemaining -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
                 Duration -= TIME_BUFFER_FOR_AUTHORITY_SIDE;
-            }
+            }*/
         }
 
         public void FromPacket(GameController controller, Packet packet)
         {
             GameController = controller;
-            Duration = packet.ReadInt();
-            TimeRemaining = packet.ReadInt();
+            //Duration = packet.ReadInt();
+            _timeRemaining = packet.ReadInt();
             ETimerState = packet.ReadETimerState();
             Definition = new TimerDefinition(packet);
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(Duration)
-                .Write(TimeRemaining)
+            packet//.Write(Duration)
+                .Write(_timeRemaining)
                 .Write(ETimerState)
                 .Write(Definition);
         }

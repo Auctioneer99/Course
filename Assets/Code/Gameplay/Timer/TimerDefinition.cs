@@ -6,6 +6,8 @@ namespace Gameplay
     {
         public int Duration { get; private set; }
 
+        public int AuthorityBuffer { get; private set; }
+
         private TimerDefinition() { }
 
         public TimerDefinition(Packet packet)
@@ -13,9 +15,10 @@ namespace Gameplay
             FromPacket(packet);
         }
 
-        public TimerDefinition(int duration)
+        public TimerDefinition(int duration, int buffer)
         {
             Duration = duration;
+            AuthorityBuffer = buffer;
         }
 
         public TimerDefinition Clone()
@@ -28,16 +31,19 @@ namespace Gameplay
         public void Copy(TimerDefinition other)
         {
             Duration = other.Duration;
+            AuthorityBuffer = other.AuthorityBuffer;
         }
 
         public void FromPacket(Packet packet)
         {
             Duration = packet.ReadInt();
+            AuthorityBuffer = packet.ReadInt();
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(Duration);
+            packet.Write(Duration)
+                .Write(AuthorityBuffer);
         }
 
         public override string ToString()
@@ -45,6 +51,7 @@ namespace Gameplay
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[TimerDefinition]");
             sb.AppendLine($"Duration = {Duration}");
+            sb.AppendLine($"Buffer = {AuthorityBuffer}");
             return sb.ToString();
         }
     }

@@ -74,6 +74,12 @@ namespace Gameplay
         {
             return _connectionPool[connection].Role;
         }
+
+        public AConnector GetConnection(int connectionId)
+        {
+            return _connectionPool[connectionId];
+        }
+
         public void SendToGroup(AConnector sender, AAction action, EPlayer group)
         {
             int[] receivers = _connectionPool

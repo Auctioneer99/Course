@@ -56,6 +56,10 @@ namespace Gameplay.Unity
 
         private void OnPlayerSetup(Player player)
         {
+            if (player.IsLocalUser())
+            {
+                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Prepearing);
+            }
             Views[player.EPlayer].FSM.TransitionTo(EPlayerState.AwaitingStart);
         }
     }

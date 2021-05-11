@@ -11,7 +11,7 @@
         TurnStart,
         TurnEnd,
         Turn,
-        End,
+        EndGame,
         PlayingCardStart,
         PlayingCardEnd,
         PlayingCard,

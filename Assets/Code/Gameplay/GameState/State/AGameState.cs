@@ -28,7 +28,7 @@ namespace Gameplay
 
         public virtual void OnEnterState(EGameState prevState)
         {
-            if (GameController.HasAuthority && EGameState != EGameState.End)
+            if (GameController.HasAuthority && EGameState != EGameState.EndGame)
             {
                 //Timer?.Reset();
 
@@ -99,6 +99,7 @@ namespace Gameplay
             if (GameController.HasAuthority)
             {
                 GameController.PlayerManager.SetAllPlayersStatus(EPlayerStatus.Blocked);
+                OnFinished();
             }
             //GameController.EventManager.OnStateTimerElapsed.Invoke(timer);
             //GameController.Logger.Log("[GameState] OnStateTimerElapsed Invoked");

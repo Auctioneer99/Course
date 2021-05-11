@@ -3,6 +3,7 @@
     public enum EPlayerState
     {
         NotConnected,
+        Prepearing,
         AwaitingStart,
         Playing,
         Describing
