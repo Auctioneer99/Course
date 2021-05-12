@@ -10,7 +10,7 @@ namespace Gameplay
 
         public bool Initialized { get; private set; }
 
-        public abstract bool IsValid();
+        public virtual bool IsValid() => true;
 
         protected void Initialize()
         {

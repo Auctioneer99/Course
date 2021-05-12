@@ -71,6 +71,18 @@ namespace Gameplay
             throw new Exception("No slot");
         }
 
+        public bool AreAllPrepared()
+        {
+            foreach (var player in Players)
+            {
+                if (player.Value == null || player.Value.IsPrepared == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void SetupPlayers(EPlayer localuser, Player[] players)
         {
             //LocalUserId = localuser;

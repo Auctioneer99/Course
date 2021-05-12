@@ -12,18 +12,12 @@ namespace Gameplay
         public PlayerInfo PlayerInfo;
         public BattleDeck BattleDeck;
 
-        public PlayerSettings()
+        public PlayerSettings() : this(EPlayer.Undefined)
         {
-            Player = EPlayer.Undefined;
-            PlayerInfo = new PlayerInfo();
-            BattleDeck = BattleDeck.Default();
         }
 
-        public PlayerSettings(EPlayer player)
+        public PlayerSettings(EPlayer player) : this (player, new PlayerInfo())
         {
-            Player = player;
-            PlayerInfo = new PlayerInfo();
-            BattleDeck = BattleDeck.Default();
         }
 
         public PlayerSettings(EPlayer player, PlayerInfo info)

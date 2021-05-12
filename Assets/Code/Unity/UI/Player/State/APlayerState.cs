@@ -1,4 +1,6 @@
-﻿namespace Gameplay.Unity
+﻿using UnityEngine;
+
+namespace Gameplay.Unity
 {
     public abstract class APlayerState
     {
@@ -13,8 +15,17 @@
         }
 
         public EPlayerState State { get; private set; }
-        public abstract void OnMouseEnter();
-        public abstract void OnMouseLeave();
+
+        public void OnMouseEnter()
+        {
+            Debug.Log(Player.ToString());
+        }
+
+        public void OnMouseLeave()
+        {
+
+        }
+
         public abstract void OnMouseClick();
         public abstract void OnEnterState();
         public abstract void OnLeaveState();

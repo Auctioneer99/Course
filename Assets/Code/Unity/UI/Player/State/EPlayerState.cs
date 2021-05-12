@@ -3,9 +3,10 @@
     public enum EPlayerState
     {
         NotConnected,
-        Prepearing,
-        AwaitingStart,
+        Unprepared,
+        UnpreparedLocal,
+        Prepared,
+        PreparedLocal,
         Playing,
-        Describing
     }
 }

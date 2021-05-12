@@ -56,11 +56,29 @@ namespace Gameplay.Unity
 
         private void OnPlayerSetup(Player player)
         {
+            Action<bool> OnPrepared = (toPrepare) =>
+            {
+                if (player.IsLocalUser())
+                {
+                    Views[player.EPlayer].FSM.TransitionTo(EPlayerState.PreparedLocal);
+                }
+                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Prepared);
+            };
+
+
+            player.Prepared.VisualEvent.AddListener(OnPrepared);
+
+
             if (player.IsLocalUser())
             {
-                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Prepearing);
+                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.UnpreparedLocal);
             }
-            Views[player.EPlayer].FSM.TransitionTo(EPlayerState.AwaitingStart);
+            Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Unprepared);
         }
+        /*
+        private void OnPrepared(bool toPrepare)
+        {
+
+        }*/
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class AwaitingPlayersState : ASimultaneousGameState
+    public class AwaitingPlayersState : AGameState
     {
         public AwaitingPlayersState(GameController controller) : base(controller, EGameState.AwaitingPlayers)
         { }
@@ -17,12 +17,23 @@ namespace Gameplay
             //
         }
 
+        protected override void SendWaitingForFinishedReport()
+        {
+
+        }
+
+        protected override bool AreFinished()
+        {
+            return GameController.PlayerManager.AreAllPrepared();
+        }
+
         protected override void OnFinished()
         {
-            if (AreFinished())
+            if (GameController.PlayerManager.AreAllPrepared())
             {
                 GameController.Logger.Log("AwaitingPlayersState Players are ready");
                 SwitchState(EGameState.Init);
+
             }
             else
             {

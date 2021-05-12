@@ -7,6 +7,7 @@
         Ping,
 
         SetupPlayer,
+        PreparePlayer,
         SetupPlayerDeck,
 
         SyncTimersSettings,
@@ -21,6 +22,7 @@
         SetPlayerStatus,
 
         AskJoinPlayer,
+        AskPrepare,
         AskLeaveAwaitingState,
 
     }

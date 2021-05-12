@@ -17,7 +17,9 @@ namespace Gameplay.Unity
             _states = new Dictionary<EPlayerState, APlayerState>(4)
             {
                 { EPlayerState.NotConnected, new PlayerNotConnectedState(this) },
-                { EPlayerState.Prepearing, new PlayerPreparingState(this) },
+                { EPlayerState.Unprepared,  },
+                { EPlayerState.UnpreparedLocal,  },
+                { EPlayerState.Prepared,  },
                 { EPlayerState.AwaitingStart, new PlayerAwaitingStartState(this) },
                 { EPlayerState.Playing, new PlayerNotConnectedState(this) },
             };

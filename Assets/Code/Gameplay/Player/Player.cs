@@ -4,6 +4,8 @@ namespace Gameplay
 {
     public class Player : ICensored, IStateObjectCloneable<Player>, IRuntimeDeserializable
     {
+        public BattleEvent<Player, bool> Prepared;
+
         public PlayerManager PlayerManager { get; private set; }
         public GameController GameController => PlayerManager.GameController;
 
@@ -27,8 +29,12 @@ namespace Gameplay
         }
         private EPlayerStatus _eStatus;
 
+        public bool IsPrepared { get; private set; }
+
+
         //public PingStatus PingStatus { get; private set; }
         public PlayerInfo Info { get; set; }
+        public RuntimeBattleDeck Deck { get; private set; }
 
         public Player(PlayerManager manager)
         {
@@ -47,13 +53,25 @@ namespace Gameplay
         public Player(PlayerManager manager, Packet packet)
         {
             PlayerManager = manager;
-            Initialize();
             FromPacket(manager.GameController, packet);
+            Initialize();
+        }
+
+        public void Prepare()
+        {
+            IsPrepared = true;
+            Prepared?.Invoke(this, true);
+        }
+
+        public void Unprepare()
+        {
+            IsPrepared = false;
+            Prepared?.Invoke(this, false);
         }
 
         private void Initialize()
         {
-
+            Prepared = new BattleEvent<Player, bool>(GameController);
         }
 
         public void Reset()

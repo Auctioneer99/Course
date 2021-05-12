@@ -34,13 +34,5 @@ namespace Gameplay.Unity
                 GameController.ActionDistributor.Add(join);
             }
         }
-
-        public override void OnMouseEnter()
-        {
-        }
-
-        public override void OnMouseLeave()
-        {
-        }
     }
 }
