@@ -53,6 +53,7 @@ namespace Gameplay
             Register<ConnectInitializationAction>(EAction.ConnectInitialization);
             Register<PingAction>(EAction.Ping);
             Register<SetupPlayerAction>(EAction.SetupPlayer);
+            Register<DisconnectPlayerAwaitingStateAction>(EAction.DisconnectPlayerAwaitingState);
             Register<SetupPlayerDeckAction>(EAction.SetupPlayerDeck);
             Register<SyncTimersSettingsAction>(EAction.SyncTimersSettings);
             Register<TimerStartedAction>(EAction.TimerStarted);
@@ -65,7 +66,7 @@ namespace Gameplay
 
             Register<AskJoinAction>(EAction.AskJoinPlayer);
             Register<AskPrepare>(EAction.AskPrepare);
-            Register<AskLeaveAwaitingStateAction>(EAction.AskLeaveAwaitingState);
+            Register<AskDisconnectPlayerAwaitingStateAction>(EAction.AskDisconnectPlayerAwaitingState);
         }
     }
 }

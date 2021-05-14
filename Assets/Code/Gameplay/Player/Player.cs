@@ -4,7 +4,7 @@ namespace Gameplay
 {
     public class Player : ICensored, IStateObjectCloneable<Player>, IRuntimeDeserializable
     {
-        public BattleEvent<Player, bool> Prepared;
+        public BattleEvent<bool> Prepared;
 
         public PlayerManager PlayerManager { get; private set; }
         public GameController GameController => PlayerManager.GameController;
@@ -60,23 +60,23 @@ namespace Gameplay
         public void Prepare()
         {
             IsPrepared = true;
-            Prepared?.Invoke(this, true);
+            Prepared?.Invoke(true);
         }
 
         public void Unprepare()
         {
             IsPrepared = false;
-            Prepared?.Invoke(this, false);
+            Prepared?.Invoke(false);
         }
 
         private void Initialize()
         {
-            Prepared = new BattleEvent<Player, bool>(GameController);
+            Prepared = new BattleEvent<bool>(GameController);
         }
 
         public void Reset()
         {
-
+            Prepared.RemoveAllListeners(true);
         }
 
         public bool IsLocalUser()

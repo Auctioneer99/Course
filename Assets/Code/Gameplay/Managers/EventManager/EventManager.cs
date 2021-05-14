@@ -10,6 +10,7 @@ namespace Gameplay
     {
         public readonly BattleEvent OnSnapshotRestored;
         public readonly BattleEvent<Player> OnPlayerSetup;
+        public readonly BattleEvent<Player> PlayerDisconnected;
         public readonly BattleEvent<GameController> OnGameInitialized;
         public readonly BattleEvent<AGameState, AGameState> OnGameStateChanged;
 
@@ -35,6 +36,7 @@ namespace Gameplay
 
             OnSnapshotRestored = new BattleEvent(controller);
             OnPlayerSetup = new BattleEvent<Player>(controller);
+            PlayerDisconnected = new BattleEvent<Player>(controller);
         }
     }
 }

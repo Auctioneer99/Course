@@ -7,6 +7,7 @@
         UnpreparedLocal,
         Prepared,
         PreparedLocal,
-        Playing,
+        InGame,
+        InGameLocal,
     }
 }

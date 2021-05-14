@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    class AskLeaveAwaitingStateAction : APlayerAction, IUserAction
+    class AskDisconnectPlayerAwaitingStateAction : APlayerAction, IUserAction
     {
-        public override EAction EAction => EAction.AskLeaveAwaitingState;
+        public override EAction EAction => EAction.AskDisconnectPlayerAwaitingState;
 
         public bool ValidWhenBlocked => true;
-
-        
 
         public override bool IsValid()
         {
@@ -24,6 +22,12 @@ namespace Gameplay
             return GameController.StateMachine.ECurrentState == EGameState.AwaitingPlayers;
         }
 
+        public new AskDisconnectPlayerAwaitingStateAction Initialize()
+        {
+            base.Initialize();
+            return this;
+        }
+
         protected override void ApplyImplementation()
         {
             if (GameController.HasAuthority)
@@ -31,24 +35,24 @@ namespace Gameplay
                 Player player = GameController.PlayerManager.GetPlayer(EPlayer);
                 if (player != null)
                 {
-
+                    var action = GameController.ActionFactory.Create<DisconnectPlayerAwaitingStateAction>()
+                        .Initialize(EPlayer);
+                    GameController.ActionDistributor.Add(action);
                 }
             }
         }
 
         protected override void PlayerAttributesFrom(Packet packet)
         {
-            throw new NotImplementedException();
         }
 
         protected override void PlayerAttributesTo(Packet packet)
         {
-            throw new NotImplementedException();
         }
 
         protected override void PlayerCopyImplementation(APlayerAction copyFrom, GameController controller)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Gameplay
 
         public int LastNetworkPacketNumber { get; private set; }
 
-        public PingAction Initialize(int connection, int lastPacketNumber)
+        public PingAction Initialize(int lastPacketNumber)
         {
-            Initialize(connection);
+            Initialize();
 
             LastNetworkPacketNumber = lastPacketNumber;
             return this;

@@ -21,11 +21,13 @@ namespace Gameplay
                 return false;
             }
 
-            return GameController.PlayerManager.GetPlayer(EPlayer).IsPrepared == false;
+            return GameController.PlayerManager.GetPlayer(EPlayer).IsPrepared != Preparation && 
+                GameController.StateMachine.ECurrentState == EGameState.AwaitingPlayers;
         }
 
         public AskPrepare Initialize(bool toPrepare)
         {
+            Initialize();
             Preparation = toPrepare;
             return this;
         }

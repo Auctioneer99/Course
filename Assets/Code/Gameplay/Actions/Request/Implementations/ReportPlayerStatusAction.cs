@@ -26,9 +26,9 @@
             return false;
         }
 
-        public ReportPlayerStatusAction Initialize(int connection, int requestId, EPlayerStatus status)
+        public ReportPlayerStatusAction Initialize(int requestId, EPlayerStatus status)
         {
-            Initialize(connection);
+            Initialize();
             RequestId = requestId;
             Status = status;
             return this;

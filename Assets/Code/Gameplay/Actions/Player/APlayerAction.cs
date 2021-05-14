@@ -2,7 +2,7 @@
 {
     public abstract class APlayerAction : AAction
     {
-        public int ConnectionId { get; private set; }
+        public int ConnectionId { get; set; }
         public EPlayer EPlayer => GameController.Network.Manager.GetPlayerTypeFromConnectionId(ConnectionId);
 
         public override bool IsValid()
@@ -13,12 +13,6 @@
                 return action.ValidWhenBlocked || EPlayerStatus.Communicable.Contains(player.EStatus);
             }
             return true;
-        }
-
-        protected void Initialize(int connectionId)
-        {
-            Initialize();
-            ConnectionId = connectionId;
         }
 
         protected sealed override void CopyImplementation(AAction copyFrom, GameController controller)

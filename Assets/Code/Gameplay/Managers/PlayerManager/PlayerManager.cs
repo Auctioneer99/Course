@@ -51,7 +51,6 @@ namespace Gameplay
         public Player SetupPlayer(EPlayer eplayer, int connection)
         {
             Debug.Log("[Player Manager] Incoming player " + eplayer);
-            Debug.Log(GameController);
             if (Players.TryGetValue(eplayer, out Player p))
             {
                 if (p == null)
@@ -69,6 +68,22 @@ namespace Gameplay
                 }
             }
             throw new Exception("No slot");
+        }
+
+        public void DisconnectPlayer(EPlayer eplayer)
+        {
+            Debug.Log("[Player Manager] Disconnecting player " + eplayer);
+            if (Players.TryGetValue(eplayer, out Player p))
+            {
+                if (p != null)
+                {
+                    GameController.EventManager.PlayerDisconnected.Invoke(p);
+                    GameController.Network.Manager.GetConnection(p.ConnectionId).Role = EPlayer.Spectators;
+
+                    p.Reset();
+                    Players[eplayer] = null;
+                }
+            }
         }
 
         public bool AreAllPrepared()

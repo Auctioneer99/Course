@@ -15,6 +15,7 @@ namespace Gameplay
 
         public PlayerPrepareAction Initialize(EPlayer player, bool toPrepare)
         {
+            Initialize();
             EPlayer = player;
             Preparation = toPrepare;
             return this;

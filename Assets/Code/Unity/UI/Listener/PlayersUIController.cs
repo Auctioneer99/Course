@@ -22,12 +22,11 @@ namespace Gameplay.Unity
 
         public void Attach(GameController game, bool wasJustInitialized)
         {
-            Debug.Log("<color=purple>Attaching</color>");
             Controller = game;
             EventManager eventManager = game.EventManager;
 
-            eventManager.OnPlayerSetup.CoreEvent.AddListener(OnPlayerSetup);
-
+            //eventManager.OnPlayerSetup.CoreEvent.AddListener(OnPlayerSetup);
+            eventManager.OnGameStateChanged.VisualEvent.AddListener(OnGameStateChanged);
             CreatePlayersUI();
             //eventManager.OnSnapshotRestored.CoreEvent.AddListener(OnSnapshotRestored);
         }
@@ -54,31 +53,16 @@ namespace Gameplay.Unity
             }
         }
 
-        private void OnPlayerSetup(Player player)
+        private void OnGameStateChanged(AGameState from, AGameState to)
         {
-            Action<bool> OnPrepared = (toPrepare) =>
+            if (from.EGameState == EGameState.AwaitingPlayers)
             {
-                if (player.IsLocalUser())
+                Controller.EventManager.OnGameStateChanged.VisualEvent.RemoveListener(OnGameStateChanged);
+                foreach(var view in Views)
                 {
-                    Views[player.EPlayer].FSM.TransitionTo(EPlayerState.PreparedLocal);
+                    view.Value.FSM.GameStarted();
                 }
-                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Prepared);
-            };
-
-
-            player.Prepared.VisualEvent.AddListener(OnPrepared);
-
-
-            if (player.IsLocalUser())
-            {
-                Views[player.EPlayer].FSM.TransitionTo(EPlayerState.UnpreparedLocal);
             }
-            Views[player.EPlayer].FSM.TransitionTo(EPlayerState.Unprepared);
         }
-        /*
-        private void OnPrepared(bool toPrepare)
-        {
-
-        }*/
     }
 }

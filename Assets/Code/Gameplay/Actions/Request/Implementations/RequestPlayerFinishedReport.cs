@@ -55,7 +55,7 @@ namespace Gameplay
             else
             {
                 ReportPlayerStatusAction action = GameController.ActionFactory.Create<ReportPlayerStatusAction>()
-                    .Initialize(Connection, NetworkActionNumber, EPlayerStatus.Finished);
+                    .Initialize(NetworkActionNumber, EPlayerStatus.Finished);
                 GameController.ActionDistributor.HandleAction(action);
             }
         }

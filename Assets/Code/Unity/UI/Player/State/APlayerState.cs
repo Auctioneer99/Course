@@ -7,18 +7,20 @@ namespace Gameplay.Unity
         public PlayerStateMachine FSM { get; private set; }
 
         public GameController GameController => FSM.View.PlayersUI.Controller;
+        public PlayerView View => FSM.View;
         public Player Player => FSM.Player;
 
-        public APlayerState(PlayerStateMachine fsm)
+        public APlayerState(PlayerStateMachine fsm, EPlayerState state)
         {
             FSM = fsm;
+            State = state;
         }
 
         public EPlayerState State { get; private set; }
 
         public void OnMouseEnter()
         {
-            Debug.Log(Player.ToString());
+            Debug.Log(Player?.ToString());
         }
 
         public void OnMouseLeave()

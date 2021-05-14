@@ -7,6 +7,7 @@
         Ping,
 
         SetupPlayer,
+        DisconnectPlayerAwaitingState,
         PreparePlayer,
         SetupPlayerDeck,
 
@@ -23,7 +24,7 @@
 
         AskJoinPlayer,
         AskPrepare,
-        AskLeaveAwaitingState,
+        AskDisconnectPlayerAwaitingState,
 
     }
 

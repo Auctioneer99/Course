@@ -10,9 +10,9 @@ namespace Gameplay
 
         public EPlayer Place { get; private set; }
 
-        public AskJoinAction Initialize(int connection, EPlayer place)
+        public AskJoinAction Initialize(EPlayer place)
         {
-            base.Initialize(connection);
+            Initialize();
             Place = place;
             return this;
         }

@@ -10,7 +10,7 @@ namespace Gameplay.Unity
 {
     public class PlayerNotConnectedState : APlayerState
     {
-        public PlayerNotConnectedState(PlayerStateMachine fsm) : base(fsm)
+        public PlayerNotConnectedState(PlayerStateMachine fsm) : base(fsm, EPlayerState.NotConnected)
         {
         }
 
@@ -21,7 +21,6 @@ namespace Gameplay.Unity
 
         public override void OnLeaveState()
         {
-            //Debug.Log("disabling");
             FSM.View.ConnectButton.enabled = false;
         }
 
@@ -30,7 +29,7 @@ namespace Gameplay.Unity
             if (GameController.Network.Role == EPlayer.Spectators)
             {
                 AskJoinAction join = GameController.ActionFactory.Create<AskJoinAction>()
-                    .Initialize(FSM.View.PlayersUI.Controller.Network.ConnectionId, FSM.View.Place);
+                    .Initialize(FSM.View.Place);
                 GameController.ActionDistributor.Add(join);
             }
         }

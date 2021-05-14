@@ -39,7 +39,7 @@ namespace Gameplay.Unity
 
         public void SetupClient()
         {
-            GameInstance server = new GameInstance(EGameMode.Server, new Settings(2));
+            GameInstance server = new GameInstance(EGameMode.Server, new Settings(1));
             ServerDefinition serverDef = ServerDefinition.SetupOnline(server, 8000);
             serverDef.Start();
             LocalNetwork = server.Controller.Network.Manager;

@@ -54,6 +54,10 @@ namespace Gameplay
             }
             else
             {
+                if (action is APlayerAction pAction)
+                {
+                    pAction.ConnectionId = ConnectionId;
+                }
                 Manager.SendToHost(this, action);
             }
         }
