@@ -21,16 +21,13 @@ namespace Gameplay.Unity
 
         public void Attach(GameController game, bool wasJustInitialized)
         {
-            Debug.Log("Timers attached");
             _controller = game;
 
             StateTimer stateTimer = game.StateMachine.TimeManager.GetCurrentStateTimer();
             EventManager eManager = game.EventManager;
 
-            Debug.Log("Is there is a timer?");
             if (stateTimer != null && stateTimer.Timer.IsRunning)
             {
-                Debug.Log("There is!");
                 OnStateTimerStarted(stateTimer);
             }
 

@@ -13,6 +13,7 @@ namespace Gameplay
 
         public int PlayersCount { get; private set; }
         public Dictionary<EPlayer, PlayerSettings> PlayersSettings { get; private set; }
+        public BattlefieldSettings BattlefieldSettings { get; private set; }
 
         public Settings()
         {
@@ -29,6 +30,7 @@ namespace Gameplay
                 PlayersSettings[index] = new PlayerSettings();
             }
             TimerSettings = new TimerSettings(true);
+            BattlefieldSettings = BattlefieldFactory.DefaultCreate(playersCount);
         }
 
         public Settings(Packet packet)

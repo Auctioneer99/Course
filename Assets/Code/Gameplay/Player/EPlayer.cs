@@ -2,12 +2,14 @@
 
 namespace Gameplay
 {
+    // divide this enum to EPlayer and ERole
     public enum EPlayer : byte
     {
         Undefined = 0,
         Player1 = 1 << 0,
         Player2 = 1 << 1,
         Player3 = 1 << 2,
+        Neutral = 1 << 5,
         Spectators = 1 << 6,
         Server = 1 << 7,
 

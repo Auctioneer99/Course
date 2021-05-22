@@ -4,6 +4,7 @@
     {
         Empty,
         ConnectInitialization,
+        SetupBattlefield,
         Ping,
 
         SetupPlayer,

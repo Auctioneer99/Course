@@ -13,21 +13,17 @@ namespace Gameplay
             {
                 ActionDistributor distributor = GameController.ActionDistributor;
                 ActionFactory factory = GameController.ActionFactory;
-                /*
-                SyncTimersSettingsAction settings = factory.Create<SyncTimersSettingsAction>()
-                    .Initialize(GameController.GameInstance.Settings.TimerSettings);
-                distributor.Add(settings);
-                */
 
                 int length = GameController.GameInstance.Settings.PlayersSettings.Count;
+
+                SetupBattlefieldAction action = factory.Create<SetupBattlefieldAction>()
+                    .Initialize(GameController.GameInstance.Settings.BattlefieldSettings);
+                distributor.Add(action);
+
                 for (byte i = 0; i < length; i++)
                 {
                     EPlayer Eplayer = (EPlayer)(1 << i);
                     PlayerSettings pSets = GameController.GameInstance.Settings.PlayersSettings[Eplayer];
-
-                    //SetupPlayerAction playerSetup = factory.Create<SetupPlayerAction>()
-                    //    .Initialize(Eplayer, player.PlayerInfo);
-                    //distributor.Add(playerSetup);
 
                     SetupPlayerDeckAction deck = factory.Create<SetupPlayerDeckAction>()
                         .Initialize(Eplayer, pSets.BattleDeck);

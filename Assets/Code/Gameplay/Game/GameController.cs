@@ -27,6 +27,8 @@ namespace Gameplay
         public RequestHolder RequestHolder { get; private set; }
         public LocalConnector Network => GameInstance.Network;
         public EventManager EventManager { get; private set; }
+
+        public BoardManager BoardManager { get; private set; }
         //public TimeManager TimeManager { get; private set; }
 
         public GameInstance GameInstance { get; private set; }
@@ -45,6 +47,8 @@ namespace Gameplay
             RequestHolder = new RequestHolder(this);
 
             EventManager = new EventManager(this);
+
+            BoardManager = new BoardManager(this);
 
         }
 

@@ -67,6 +67,8 @@ namespace Gameplay
             Register<AskJoinAction>(EAction.AskJoinPlayer);
             Register<AskPrepare>(EAction.AskPrepare);
             Register<AskDisconnectPlayerAwaitingStateAction>(EAction.AskDisconnectPlayerAwaitingState);
+
+            Register<SetupBattlefieldAction>(EAction.SetupBattlefield);
         }
     }
 }

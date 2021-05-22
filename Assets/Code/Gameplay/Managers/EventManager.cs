@@ -22,10 +22,14 @@ namespace Gameplay
 
         public readonly BattleEvent OnGameStatusChanged;
 
+        public readonly BattleEvent<Battlefield> OnBattleFieldSetuped;
+
         public EventManager(GameController controller) : base(controller)
         {
             OnGameInitialized = new BattleEvent<GameController>(controller);
             OnGameStateChanged = new BattleEvent<AGameState, AGameState>(controller);
+
+            OnBattleFieldSetuped = new BattleEvent<Battlefield>(controller);
 
             OnPlayerStatusChanged = new BattleEvent<Player>(controller);
 
