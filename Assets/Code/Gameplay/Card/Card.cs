@@ -9,6 +9,7 @@ namespace Gameplay
     public class Card : IStateObject<Card>, IRuntimeDeserializable
     {
         public int Id { get; private set; }
+        public Position Position;
 
         public void Copy(Card other, GameController controller)
         {

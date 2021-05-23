@@ -16,6 +16,10 @@ namespace Gameplay
         public PlayerPrepareAction Initialize(EPlayer player, bool toPrepare)
         {
             Initialize();
+
+            //maybe APlayerAction
+            sadas
+
             EPlayer = player;
             Preparation = toPrepare;
             return this;
