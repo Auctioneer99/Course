@@ -12,4 +12,18 @@
 
 
     }
+
+    public static class ELocationExtension
+    {
+        public static ELocation ReadELocation(this Packet packet)
+        {
+            return (ELocation)packet.ReadShort();
+        }
+
+        public static Packet Write(this Packet packet, ELocation location)
+        {
+            packet.Write((short)location);
+            return packet;
+        }
+    }
 }

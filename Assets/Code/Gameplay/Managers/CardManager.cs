@@ -8,9 +8,32 @@ namespace Gameplay
 {
     public class CardManager : AManager, IStateObject<CardManager>, IRuntimeDeserializable, ICensored
     {
+        public const int DEFAULT_BUFFER_SIZE = 64;
+        public const int DEFAULT_BUFFER_INCREMENT = 16;
+
+        private ushort _nextCardId = 0;
+
+        public Card[] Cards { get; private set; }
+
         public CardManager(GameController controller) : base(controller)
         {
+            Cards = new Card[DEFAULT_BUFFER_SIZE];
 
+        }
+
+        public ushort AllocateCardId()
+        {
+            int cardCount = Cards.Length;
+            if (_nextCardId == cardCount)
+            {
+                Card[] newCards = new Card[cardCount + DEFAULT_BUFFER_INCREMENT];
+                Array.Copy(Cards, newCards, cardCount);
+                Cards = newCards;
+            }
+
+            ushort id = _nextCardId;
+            _nextCardId++;
+            return id;
         }
 
         public void Censor(EPlayer player)

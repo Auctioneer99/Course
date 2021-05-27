@@ -27,6 +27,8 @@
         AskPrepare,
         AskDisconnectPlayerAwaitingState,
 
+        SpawnCards,
+
     }
 
     public static class EActionExtension

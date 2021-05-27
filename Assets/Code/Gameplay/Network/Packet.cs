@@ -96,6 +96,12 @@ namespace Gameplay
             return this;
         }
 
+        public Packet Write(ushort _value)
+        {
+            buffer.AddRange(BitConverter.GetBytes(_value));
+            return this;
+        }
+
         public Packet Write(short _value)
         {
             buffer.AddRange(BitConverter.GetBytes(_value));
@@ -191,6 +197,23 @@ namespace Gameplay
             else
             {
                 throw new Exception("Could not read value of type 'byte[]'!");
+            }
+        }
+
+        public ushort ReadUShort(bool _moveReadPos = true)
+        {
+            if (buffer.Count > readPos)
+            {
+                ushort _value = BitConverter.ToUInt16(readableBuffer, readPos);
+                if (_moveReadPos)
+                {
+                    readPos += 2;
+                }
+                return _value;
+            }
+            else
+            {
+                throw new Exception("Could not read value of type 'short'!");
             }
         }
 

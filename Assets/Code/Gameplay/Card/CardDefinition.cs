@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class CardDefinition
+    public struct CardDefinition : ISerializable
     {
+        public static readonly CardDefinition Unknown = new CardDefinition(0);
+
+        public int TemplateId;
+
+        public CardDefinition(int templateId)
+        {
+            TemplateId = templateId;
+        }
+
+        public CardDefinition(Packet packet)
+        {
+            TemplateId = packet.ReadInt();
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(TemplateId);
+        }
     }
 }

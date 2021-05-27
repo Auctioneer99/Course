@@ -29,8 +29,8 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
-            //SpawnCardsAction spawnAction = GameController.ActionFactory.Create<SpawnCardsAction>()
-            //    .Initialize();
+            SpawnCardsAction spawnAction = GameController.ActionFactory.Create<SpawnCardsAction>()
+                .Initialize();
 
             bool spawnVictory = false;
 

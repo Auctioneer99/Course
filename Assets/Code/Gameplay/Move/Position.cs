@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public struct Position
+    public struct Position : ISerializable
     {
         public const int UNDEFINED = -4,
         FIRST = -3,
@@ -23,6 +23,20 @@ namespace Gameplay
             Player = player;
             Location = location;
             Index = index;
+        }
+
+        public Position(Packet packet)
+        {
+            Player = packet.ReadEPlayer();
+            Location = packet.ReadELocation();
+            Index = packet.ReadInt();
+        }
+
+        public void ToPacket(Packet packet)
+        {
+            packet.Write(Player)
+                .Write(Location)
+                .Write(Index);
         }
     }
 }
