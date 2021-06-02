@@ -28,7 +28,7 @@
         AskDisconnectPlayerAwaitingState,
 
         SpawnCards,
-
+        Move,
     }
 
     public static class EActionExtension

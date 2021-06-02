@@ -25,7 +25,7 @@ namespace Gameplay
         public readonly BattleEvent<Battlefield> OnBattleFieldSetuped;
         public readonly BattleEvent<List<Card>> CardsSpawned;
 
-        public readonly BattleEvent<Card, Location> CardMoved;
+        public readonly BattleEvent<Card, Position> CardMoved;
 
         public EventManager(GameController controller) : base(controller)
         {
@@ -47,7 +47,7 @@ namespace Gameplay
             OnPlayerSetup = new BattleEvent<Player>(controller);
             PlayerDisconnected = new BattleEvent<Player>(controller);
 
-            CardMoved = new BattleEvent<Card, Location>(controller);
+            CardMoved = new BattleEvent<Card, Position>(controller);
         }
     }
 }

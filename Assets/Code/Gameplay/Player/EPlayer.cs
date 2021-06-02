@@ -20,6 +20,11 @@ namespace Gameplay
 
     public static class EPlayerExtensions
     {
+        public static EPlayer GetEPlayer(this int value)
+        {
+            return (EPlayer)value; 
+        }
+
         public static Packet Write(this Packet packet, EPlayer player)
         {
             packet.Write((byte)player);

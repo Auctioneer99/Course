@@ -9,7 +9,7 @@ namespace Gameplay.Unity
         [SerializeField]
         private CardViewManager CardViewManager;
         [SerializeField]
-        private LocationViewManager LocationViewManager;
+        private BoardView BoardView;
 
         private GameController _controller;
 
@@ -39,9 +39,17 @@ namespace Gameplay.Unity
         {
             CardBattleView cardView = CardViewManager.GetCardView(card);
 
-            LocationView locationView = LocationViewManager.GetLocationView(card.Position);
+            LocationView locationView = BoardView.GetLocationView(card.Position);
 
+            if(from == Position.Null)
+            {
+                cardView.enabled = true;
+            }
 
+            if (locationView.ELocation == ELocation.Field)
+            {
+                cardView.transform.position = locationView.transform.position + new Vector3(0, 100, 0);
+            }
         }
     }
 }

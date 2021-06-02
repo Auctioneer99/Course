@@ -40,5 +40,17 @@ namespace Gameplay
                 .Write(Location)
                 .Write(Index);
         }
+
+        public static bool operator ==(Position a, Position b)
+        {
+            return a.Id == b.Id &&
+                a.Index == b.Index &&
+                a.Location == b.Location;
+        }
+
+        public static bool operator !=(Position a, Position b)
+        {
+            return !(a == b);
+        }
     }
 }

@@ -39,6 +39,8 @@ namespace Gameplay
         public override void OnLeaveState(EGameState newStateId)
         {
             base.OnLeaveState(newStateId);
+
+            GameController.Initialize();
         }
 
         protected override void OnFinished()

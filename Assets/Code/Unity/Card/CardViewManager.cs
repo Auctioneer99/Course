@@ -38,7 +38,8 @@ namespace Gameplay.Unity
             {
                 CardBattleView view = GetCardView(card);
 
-                view.transform.position = new Vector3(0,300,0);
+                view.transform.position = new Vector3(0, 0, 0);
+                view.enabled = false;
             }
         }
 

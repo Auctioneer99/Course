@@ -63,5 +63,25 @@ namespace Gameplay
                 return side?.GetLocation(position.Location);
             }
         }
+
+        public void Move(MoveDefinition definition)
+        {
+            Location location = GetLocation(definition.To);
+            if (location != null && location.IsFull)
+            {
+                return;
+            }
+
+            bool moved = MoveImplementation(definition);
+            if (moved)
+            {
+                GameController.EventManager.CardMoved.Invoke();
+            }
+        }
+
+        private bool MoveImplementation(MoveDefinition definition)
+        {
+
+        }
     }
 }

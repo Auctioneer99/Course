@@ -77,22 +77,10 @@ namespace Gameplay
         public void Start()
         {
             SetStatus(EGameStatus.Running);
-            //PlayerManager.SetupPlayers(perspectivePlayer, players);
-
             StateMachine.Start();
-            /*
-            if (HasAuthority)
-            {
-                TimeManager.SetupTimers();
-            }
-
-            StateMachine.TransitionTo(EGameState.AwaitingPlayers);
-            */
-            //settings.Init
-            Initialize();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             if (IsInitialized)
             {
@@ -104,15 +92,7 @@ namespace Gameplay
 
         public void Update()
         {
-            if (IsInitialized == false)
-            {
-                return;
-            }
-
-            //TimeManager.Update();
             StateMachine.Update();
-            //PlayerManager.Update();
-
 
             while (true)
             {
@@ -121,8 +101,6 @@ namespace Gameplay
                     break;
                 }
             }
-
-            //EventManager.Update();
         }
 
         private bool Progress()

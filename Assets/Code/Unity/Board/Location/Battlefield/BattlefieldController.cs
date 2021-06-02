@@ -28,7 +28,7 @@ namespace Gameplay.Unity
 
             EventManager eManager = game.EventManager;
 
-            eManager.OnBattleFieldSetuped.VisualEvent.AddListener(OnBattleFieldSetuped);
+            eManager.OnBattleFieldSetuped.VisualEvent.AddListener(SetupField);
         }
 
         public void Detach(GameController game)
@@ -38,7 +38,7 @@ namespace Gameplay.Unity
 
         public void OnGameEndedCleanup()
         {
-            throw new NotImplementedException();
+            
         }
 
         public TileView GetTileView(Position position)
@@ -46,7 +46,7 @@ namespace Gameplay.Unity
             return _tiles[position.Id];
         }
 
-        private void OnBattleFieldSetuped(Battlefield field)
+        public void SetupField(Battlefield field)
         {
             Quaternion rotation = Quaternion.Euler(-Mathf.Atan(Mathf.Sqrt(2) / 2) * (180 / Mathf.PI), 0, 45);
             _tiles = new Dictionary<int, TileView>(field.Tiles.Length);
