@@ -17,9 +17,6 @@ namespace Gameplay
         {
             Initialize();
 
-            //maybe APlayerAction
-            sadas
-
             EPlayer = player;
             Preparation = toPrepare;
             return this;

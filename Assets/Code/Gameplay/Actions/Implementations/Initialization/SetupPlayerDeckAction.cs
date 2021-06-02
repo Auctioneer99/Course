@@ -30,7 +30,18 @@ namespace Gameplay
         protected override void ApplyImplementation()
         {
             SpawnCardsAction spawnAction = GameController.ActionFactory.Create<SpawnCardsAction>()
-                .Initialize();
+                .Initialize(0);
+
+            CardDefinition cardDef = new CardDefinition(88);
+            Position pos = new Position(0, ELocation.Field);
+
+            SpawnDefinition def = new SpawnDefinition(GameController.CardManager, cardDef, pos, null, ECardVisibility.All);
+
+            spawnAction.Spawns.Add(def);
+
+
+            GameController.ActionDistributor.Add(spawnAction);
+
 
             bool spawnVictory = false;
 

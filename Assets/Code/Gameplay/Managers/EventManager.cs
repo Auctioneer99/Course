@@ -23,6 +23,9 @@ namespace Gameplay
         public readonly BattleEvent OnGameStatusChanged;
 
         public readonly BattleEvent<Battlefield> OnBattleFieldSetuped;
+        public readonly BattleEvent<List<Card>> CardsSpawned;
+
+        public readonly BattleEvent<Card, Location> CardMoved;
 
         public EventManager(GameController controller) : base(controller)
         {
@@ -30,6 +33,8 @@ namespace Gameplay
             OnGameStateChanged = new BattleEvent<AGameState, AGameState>(controller);
 
             OnBattleFieldSetuped = new BattleEvent<Battlefield>(controller);
+
+            CardsSpawned = new BattleEvent<List<Card>>(controller);
 
             OnPlayerStatusChanged = new BattleEvent<Player>(controller);
 
@@ -41,6 +46,8 @@ namespace Gameplay
             OnSnapshotRestored = new BattleEvent(controller);
             OnPlayerSetup = new BattleEvent<Player>(controller);
             PlayerDisconnected = new BattleEvent<Player>(controller);
+
+            CardMoved = new BattleEvent<Card, Location>(controller);
         }
     }
 }

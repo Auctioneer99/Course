@@ -15,6 +15,8 @@ namespace Gameplay
         public List<Card> Cards { get; private set; }
         public int Capacity { get; private set; }
 
+        public bool IsFull => Capacity == Cards.Count;
+
         public Location(BoardSide side, ELocation location, int capacity = -1)
         {
             BoardSide = side;
@@ -30,7 +32,7 @@ namespace Gameplay
             foreach(var c in other.Cards)
             {
                 //Card card = controller.CardManager.GetCard(c.Id);
-                Card card = new Card();
+                Card card = controller.CardManager.GetCard(c.Id);
                 Cards.Add(card);
             }
         }

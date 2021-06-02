@@ -15,6 +15,7 @@ namespace Gameplay.Unity
         private float _distanceBetween = 0;
 
         private GameController _controller;
+        private Dictionary<int, TileView> _tiles;
 
         private void Start()
         {
@@ -40,9 +41,16 @@ namespace Gameplay.Unity
             throw new NotImplementedException();
         }
 
+        public TileView GetTileView(Position position)
+        {
+            return _tiles[position.Id];
+        }
+
         private void OnBattleFieldSetuped(Battlefield field)
         {
             Quaternion rotation = Quaternion.Euler(-Mathf.Atan(Mathf.Sqrt(2) / 2) * (180 / Mathf.PI), 0, 45);
+            _tiles = new Dictionary<int, TileView>(field.Tiles.Length);
+
 
             foreach(var tile in field.Tiles)
             {
@@ -52,6 +60,8 @@ namespace Gameplay.Unity
                 Vector3 position = rotation * rawPosition;
                 //position.y -= 0.1f;
                 tileModel.transform.localPosition = position * _distanceBetween;
+
+                _tiles.Add(tile.Id, tileModel.GetComponent<TileView>());
             }
         }
     }

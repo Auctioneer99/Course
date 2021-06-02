@@ -8,6 +8,8 @@ namespace Gameplay
 {
     public class Tile : Location
     {
+        public int Id => Definition.Id;
+
         public TileDefinition Definition { get; private set; }
 
         public Tile(BoardSide side, TileDefinition definition) : base(side, ELocation.Field, 1) 

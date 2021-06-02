@@ -9,7 +9,7 @@
         Mulligan = 1 << 3,
         Field = 1 << 4,
 
-
+        Spawn = 1 << 5,
 
     }
 

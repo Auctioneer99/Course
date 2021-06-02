@@ -34,7 +34,7 @@ namespace Gameplay
                 EAction action = actions[i];
                 if (!_enumToType.ContainsKey((int)action))
                 {
-                    Debug.LogError(string.Format("Missing Type for ActionID: {0}, {1}", action.ToString(), action));
+                    Debug.LogError(string.Format("Missing Type for Action: {0}, {1}", action.ToString(), action));
                 }
             }
         }
@@ -69,6 +69,7 @@ namespace Gameplay
             Register<AskDisconnectPlayerAwaitingStateAction>(EAction.AskDisconnectPlayerAwaitingState);
 
             Register<SetupBattlefieldAction>(EAction.SetupBattlefield);
+            Register<SpawnCardsAction>(EAction.SpawnCards);
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Gameplay
             GameController.EventManager.OnBattleFieldSetuped.Invoke(this);
         }
 
+        public Tile GetTile(int id)
+        {
+            return Tiles.Where(t => t.Definition.Id == id).FirstOrDefault();
+        }
+
         public void Copy(Battlefield other, GameController controller)
         {
 

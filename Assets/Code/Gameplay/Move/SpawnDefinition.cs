@@ -24,9 +24,21 @@ namespace Gameplay
 
         public void Censor(EPlayer player)
         {
-            if (!InitialVisibility.IsVisibleTo(Position.Player, player))
+            if (!InitialVisibility.IsVisibleTo(GetOwner(Position), player))
             {
                 Definition = CardDefinition.Unknown;
+            }
+        }
+
+        private EPlayer GetOwner(Position position)
+        {
+            if (position.Location == ELocation.Field)
+            {
+                return EPlayer.Players | EPlayer.Neutral;
+            }
+            else
+            {
+                return (EPlayer) position.Id;
             }
         }
 

@@ -7,8 +7,10 @@ using UnityEngine;
 
 namespace Gameplay.Unity
 {
-    public class TileView : MonoBehaviour
+    public abstract class LocationView : MonoBehaviour
     {
 
+        public BoardSideView BoardSideView { get; private set; }
+        public Location Location { get; private set; }
     }
 }

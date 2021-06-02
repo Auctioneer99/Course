@@ -22,6 +22,7 @@ namespace Gameplay
 
         public ActionFactory ActionFactory { get; private set; }
 
+        public CardManager CardManager { get; private set; }
         public PlayerManager PlayerManager { get; private set; }
         public ActionDistributor ActionDistributor { get; private set; }
         public RequestHolder RequestHolder { get; private set; }
@@ -49,6 +50,7 @@ namespace Gameplay
             EventManager = new EventManager(this);
 
             BoardManager = new BoardManager(this);
+            CardManager = new CardManager(this);
 
         }
 

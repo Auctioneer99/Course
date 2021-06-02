@@ -17,6 +17,7 @@ namespace Gameplay
 
         public CardManager(GameController controller) : base(controller)
         {
+            _nextCardId = 1;
             Cards = new Card[DEFAULT_BUFFER_SIZE];
 
         }
@@ -34,6 +35,41 @@ namespace Gameplay
             ushort id = _nextCardId;
             _nextCardId++;
             return id;
+        }
+
+        public Card GetCard(ushort id)
+        {
+            return id < Cards.Length ? Cards[id] : null;
+        }
+
+        public Card Register(ushort id, CardDefinition definition, Position position)
+        {
+            Card card = Create(id, definition, new Position(position.Id, ELocation.Spawn));
+
+            int cardCount = Cards.Length;
+
+            if (cardCount <= id)
+            {
+                Card[] newCards = new Card[cardCount + DEFAULT_BUFFER_INCREMENT];
+                Array.Copy(Cards, newCards, cardCount);
+                Cards = newCards;
+            }
+
+            Cards[id] = card;
+
+            return card;
+        }
+
+        public Card Create(ushort id, CardDefinition definition)
+        {
+            return Create(id, definition, Position.Null);
+        }
+
+        public Card Create(ushort id, CardDefinition definition, Position position)
+        {
+            Card card = new Card(this);
+            card.Initialize(id, definition, position);
+            return card;
         }
 
         public void Censor(EPlayer player)

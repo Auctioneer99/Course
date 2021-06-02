@@ -12,7 +12,7 @@ namespace Gameplay
         public EPlayer EPlayer { get; private set; }
         public TileDefinition[] Influence { get; private set; }
 
-        public Location[] Locations { get; private set; }
+        public Dictionary<ELocation, Location> Locations { get; private set; }
 
         public Location Hand { get; private set; }
         public Location Deck { get; private set; }
@@ -29,9 +29,12 @@ namespace Gameplay
             Graveyard = new Location(this, ELocation.Graveyard);
             Mulligan = new Location(this, ELocation.Mulligan);
 
-            Locations = new[]
+            Locations = new Dictionary<ELocation, Location>()
             {
-                Hand, Deck, Graveyard, Mulligan
+                { ELocation.Hand, Hand },
+                { ELocation.Deck, Deck },
+                { ELocation.Graveyard, Graveyard },
+                { ELocation.Mulligan, Mulligan }
             };
         }
 
@@ -46,11 +49,17 @@ namespace Gameplay
             }
         }
 
+        public Location GetLocation(ELocation location)
+        {
+            Locations.TryGetValue(location, out Location result);
+            return result;
+        }
+
         public void Copy(BoardSide other, GameController controller)
         {
-            for (int i = 0; i < Locations.Length; i++)
+            foreach(var l in Locations)
             {
-                Locations[i].Copy(other.Locations[i], controller);
+                l.Value.Copy(other.GetLocation(l.Key), controller);
             }
         }
 
@@ -60,7 +69,7 @@ namespace Gameplay
 
             foreach(var loc in Locations)
             {
-                loc.FromPacket(controller, packet);
+                loc.Value.FromPacket(controller, packet);
             }
         }
 
@@ -70,7 +79,7 @@ namespace Gameplay
 
             foreach(var loc in Locations)
             {
-                packet.Write(loc);
+                packet.Write(loc.Value);
             }
         }
     }

@@ -50,5 +50,18 @@ namespace Gameplay
             }
             return null;
         }
+
+        public Location GetLocation(Position position)
+        {
+            if (position.Location == ELocation.Field)
+            {
+                return Battlefield.GetTile(position.Id);
+            }
+            else
+            {
+                BoardSide side = GetBoardSide((EPlayer)position.Id);
+                return side?.GetLocation(position.Location);
+            }
+        }
     }
 }
