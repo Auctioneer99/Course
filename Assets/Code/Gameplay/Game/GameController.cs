@@ -30,6 +30,8 @@ namespace Gameplay
         public EventManager EventManager { get; private set; }
 
         public BoardManager BoardManager { get; private set; }
+
+        public PauseManager PauseManager { get; private set; }
         //public TimeManager TimeManager { get; private set; }
 
         public GameInstance GameInstance { get; private set; }
@@ -39,6 +41,8 @@ namespace Gameplay
             //Network = new LocalConnector(this);
             GameInstance = instance;
             ActionFactory = new ActionFactory(this);
+
+            PauseManager = new PauseManager(this);
 
             StateMachine = new FiniteGameStateMachine(this);
             //TimeManager = new TimeManager(this);
@@ -93,8 +97,9 @@ namespace Gameplay
         public void Update()
         {
             StateMachine.Update();
+            PauseManager.Update();
 
-            while (true)
+            while (PauseManager.HasPause(EPauseType.Logic) == false)
             {
                 if (Progress() == false)
                 {

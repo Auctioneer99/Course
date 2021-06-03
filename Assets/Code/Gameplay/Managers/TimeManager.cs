@@ -56,7 +56,7 @@ namespace Gameplay
             _previousTime = time;
 
 
-            bool paused = false;
+            bool paused = GameController.PauseManager.HasPause(EPauseType.Timers);
             if (paused)
             {
                 DeltaTime = 0;

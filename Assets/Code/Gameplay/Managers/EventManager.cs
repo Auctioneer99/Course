@@ -27,6 +27,8 @@ namespace Gameplay
 
         public readonly BattleEvent<Card, Position> CardMoved;
 
+        public readonly BattleEvent<EPauseType, bool> PauseToggled;
+
         public EventManager(GameController controller) : base(controller)
         {
             OnGameInitialized = new BattleEvent<GameController>(controller);
@@ -48,6 +50,8 @@ namespace Gameplay
             PlayerDisconnected = new BattleEvent<Player>(controller);
 
             CardMoved = new BattleEvent<Card, Position>(controller);
+
+            PauseToggled = new BattleEvent<EPauseType, bool>(controller);
         }
     }
 }
