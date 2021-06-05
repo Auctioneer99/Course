@@ -31,53 +31,64 @@ namespace Gameplay
             return TypesCounter[type] > 0;
         }
 
-        public void Add(IPauseRequester requester, EPauseType type, long timeout = TIMEOUT)
+        public void Add(EPauseType type, long timeout = TIMEOUT)
         {
             UpdateTypesCount(type, true);
 
-            Requests.Add(new PauseRequest(AllocateId(), type, requester, timeout));
+            Requests.Add(new PauseRequest(AllocateId(), type, timeout));
+        }
+
+        public void Add(PauseRequest pause)
+        {
+            UpdateTypesCount(pause.Type, true);
+
+            Requests.Add(pause);
         }
 
         private void UpdateTypesCount(EPauseType type, bool toAdd)
         {
             int delta = toAdd ? 1 : -1;
 
-            foreach(var pair in TypesCounter)
+            EPauseType[] arr = EPauseTypeExtension.Array;
+            UnityEngine.Debug.Log($"<color=black>{type}</color>");
+            for (int i = 0; i < arr.Length; i++)
             {
-                if (type.Contains(pair.Key))
+                EPauseType pauseType = arr[i];
+                if (type.Contains(pauseType))
                 {
-                    int previousCount = pair.Value;
-                    int currentCount = pair.Value + delta;
+                    UnityEngine.Debug.Log($"<color=black>{pauseType}</color>");
+                    int previousCount = TypesCounter[pauseType];
+                    int currentCount = previousCount + delta;
 
-                    TypesCounter[pair.Key] = currentCount;
+                    TypesCounter[pauseType] = currentCount;
 
                     if (previousCount == 0 && currentCount > 0)
                     {
-                        GameController.EventManager.PauseToggled.Invoke(pair.Key, true);
+                        GameController.EventManager.PauseToggled.Invoke(pauseType, true);
                     }
                     else
                     {
-                        if (previousCount >0 && currentCount == 0)
+                        if (previousCount > 0 && currentCount == 0)
                         {
-                            GameController.EventManager.PauseToggled.Invoke(pair.Key, false);
+                            GameController.EventManager.PauseToggled.Invoke(pauseType, false);
                         }
                     }
                 }
             }
         }
 
-        private int AllocateId()
+        public int AllocateId()
         {
             int result = Counter;
             Counter++;
             return result;
         }
 
-        public void Remove(IPauseRequester requester, EPauseType type = EPauseType.All)
+        public void Remove(EPauseType type = EPauseType.Logic | EPauseType.Timers)
         {
             foreach(var req in Requests)
             {
-                if (req.Requester == requester && req.Type.Contains(type))
+                if (req.Type.Contains(type))
                 {
                     UpdateTypesCount(req.Type, false);
                     Requests.Remove(req);
@@ -96,14 +107,13 @@ namespace Gameplay
             }*/
         }
 
-        public void ForceRemove(int id)
+        public void Remove(int id)
         {
             foreach(var r in Requests)
             {
                 if (r.Id == id)
                 {
                     UpdateTypesCount(r.Type, false);
-                    r.Requester.OnPauseExpired();
                     Requests.Remove(r);
                     return;
                 }
@@ -115,7 +125,6 @@ namespace Gameplay
             foreach (var r in Requests)
             {
                 UpdateTypesCount(r.Type, false);
-                r.Requester.OnPauseExpired();
                 Requests.Remove(r);
             }
         }
@@ -136,7 +145,7 @@ namespace Gameplay
 
                 if (req.TimeRemaining <= 0)
                 {
-                    ForceRemove(req.Id);
+                    Remove(req.Id);
                 }
             }
         }

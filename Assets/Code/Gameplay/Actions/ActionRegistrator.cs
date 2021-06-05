@@ -70,6 +70,11 @@ namespace Gameplay
 
             Register<SetupBattlefieldAction>(EAction.SetupBattlefield);
             Register<SpawnCardsAction>(EAction.SpawnCards);
+
+            Register<AddPauseAction>(EAction.AddPause);
+            Register<RemovePauseAction>(EAction.RemovePause);
+
+            Register<MoveAction>(EAction.Move);
         }
     }
 }

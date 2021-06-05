@@ -75,13 +75,13 @@ namespace Gameplay
             bool moved = MoveImplementation(definition);
             if (moved)
             {
-                GameController.EventManager.CardMoved.Invoke();
+               // GameController.EventManager.CardMoved.Invoke();
             }
         }
 
         private bool MoveImplementation(MoveDefinition definition)
         {
-
+            return false;
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Gameplay.Unity
         public NetworkManager AdditionalNetwork { get; private set; }
         public NetworkManager LocalNetwork { get; private set; }
 
+        private bool _hasPause => _pauseId >= 0;
+
+        private int _pauseId = -1;
 
         public GameListenerManager Listener { get; private set; }
 
@@ -30,6 +33,29 @@ namespace Gameplay.Unity
         {
             LocalNetwork.Update();
             //AdditionalNetwork?.Update();
+
+            if (_hasPause)
+            {
+                if (Input.GetKey(KeyCode.F2))
+                {
+                    GameController controller = LocalNetwork.Host.Instance.Controller;
+                    RemovePauseAction action = controller.ActionFactory.Create<RemovePauseAction>().Initialize(_pauseId);
+                    _pauseId = -1;
+                    controller.ActionDistributor.HandleAction(action);
+                }
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.F1))
+                {
+                    GameController controller = LocalNetwork.Host.Instance.Controller;
+                    PauseRequest pause = new PauseRequest(controller.PauseManager.AllocateId(), EPauseType.Timers | EPauseType.Logic, long.MaxValue);
+                    UnityEngine.Debug.Log($"<color=black>{pause.ToString()}</color>");
+                    AddPauseAction action = controller.ActionFactory.Create<AddPauseAction>().Initialize(pause);
+                    _pauseId = pause.Id;
+                    controller.ActionDistributor.HandleAction(action);
+                }
+            }
         }
 
         private void OnGameInitialized(GameController controller)

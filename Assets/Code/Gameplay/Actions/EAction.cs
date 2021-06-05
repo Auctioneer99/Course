@@ -2,6 +2,9 @@
 {
     public enum EAction : int
     {
+        AddPause,
+        RemovePause,
+
         Empty,
         ConnectInitialization,
         SetupBattlefield,
