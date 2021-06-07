@@ -33,8 +33,8 @@ namespace Gameplay
 
             Card spawner = GameController.CardManager.GetCard(SpawnerId);
 
-            Debug.Log("<color=green>Spawns</color>");
-            Debug.Log(Spawns.Count);
+            //Debug.Log("<color=green>Spawns</color>");
+            //Debug.Log(Spawns.Count);
             foreach (var spawn in Spawns)
             {
                 Location location = GameController.BoardManager.GetLocation(spawn.Position);
@@ -44,7 +44,7 @@ namespace Gameplay
                     Spawns.Remove(spawn);
                     continue;
                 }
-                Debug.Log("<color=blue>registred</color>");
+                //Debug.Log("<color=blue>registred</color>");
                 Card card = GameController.CardManager.Register(spawn.CardId, spawn.Definition, spawn.Position);
                 spawnedCards.Add(card);
 

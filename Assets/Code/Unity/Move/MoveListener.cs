@@ -68,13 +68,14 @@ namespace Gameplay.Unity
 
         private void SetCardPosition(CardBattleView card, Position position)
         {
+            /*
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[SetCardPosition]");
             sb.AppendLine($"CardId = {card.Card.Id}");
             sb.AppendLine(position.ToString());
 
             Debug.Log(sb.ToString());
-
+            */
             LocationView locView = BoardView.GetLocationView(position);
 
             if (position.Location == ELocation.Field)

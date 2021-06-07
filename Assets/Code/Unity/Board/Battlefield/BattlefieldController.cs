@@ -13,6 +13,8 @@ namespace Gameplay.Unity
         private GameObject _tilePrefab;
         [SerializeField]
         private float _distanceBetween = 0;
+        [SerializeField]
+        private BoardView _boardView;
 
         private GameController _controller;
         private Dictionary<int, TileView> _tiles;
@@ -43,7 +45,7 @@ namespace Gameplay.Unity
 
         public TileView GetTileView(Position position)
         {
-            Debug.Log(string.Join(", ", _tiles.Keys));
+            //Debug.Log(string.Join(", ", _tiles.Keys));
             return _tiles[position.Id];
         }
 
@@ -61,6 +63,10 @@ namespace Gameplay.Unity
                 Vector3 position = rotation * rawPosition;
                 //position.y -= 0.1f;
                 tileModel.transform.localPosition = position * _distanceBetween;
+
+                TileView view = tileModel.GetComponent<TileView>();
+                Debug.Log(tile.BoardSide);
+                view.Prepare(_boardView.GetBoardSideView(tile.BoardSide.EPlayer));
 
                 _tiles.Add(tile.Id, tileModel.GetComponent<TileView>());
             }
