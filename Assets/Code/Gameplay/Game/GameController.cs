@@ -17,6 +17,7 @@ namespace Gameplay
         public bool IsInitialized { get; private set; }
 
         public Logger Logger => GameInstance.Logger;
+        public RandomGenerator RandomGenerator { get; private set; }
 
         public FiniteGameStateMachine StateMachine { get; private set; }
 
@@ -55,7 +56,7 @@ namespace Gameplay
 
             BoardManager = new BoardManager(this);
             CardManager = new CardManager(this);
-
+            RandomGenerator = new RandomGenerator();
         }
 
         public void SetStatus(EGameStatus status)

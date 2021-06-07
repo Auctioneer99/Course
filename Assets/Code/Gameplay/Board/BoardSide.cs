@@ -55,6 +55,24 @@ namespace Gameplay
             return result;
         }
 
+        public void Add(Card card, Position position)
+        {
+            Location location = GetLocation(position.Location);
+            if (location != null)
+            {
+                location.TryAdd(card, position.Index);
+            }
+        }
+
+        public void Remove(Card card)
+        {
+            Location location = GetLocation(card.Position.Location);
+            if (location != null)
+            {
+                location.TryRemove(card);
+            }
+        }
+
         public void Copy(BoardSide other, GameController controller)
         {
             foreach(var l in Locations)

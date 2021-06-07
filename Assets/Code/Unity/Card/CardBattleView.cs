@@ -9,10 +9,11 @@ namespace Gameplay
 {
     public class CardBattleView : MonoBehaviour
     {
+        public Card Card { get; private set; }
 
         public void Initialize(Card card)
         {
-
+            Card = card;
         }
     }
 }

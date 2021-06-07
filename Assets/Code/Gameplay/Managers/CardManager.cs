@@ -44,7 +44,7 @@ namespace Gameplay
 
         public Card Register(ushort id, CardDefinition definition, Position position)
         {
-            Card card = Create(id, definition, new Position(position.Id, ELocation.Spawn));
+            Card card = Create(id, definition, position);//new Position(position.Id, ELocation.Spawn));
 
             int cardCount = Cards.Length;
 

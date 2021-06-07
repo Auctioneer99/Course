@@ -8,17 +8,20 @@ namespace Gameplay
 {
     public struct Position : ISerializable
     {
-        public const int UNDEFINED = -4,
-        FIRST = -3,
-        LAST = -2,
-        RANDOM = -1;
+        public const int 
+            UNDEFINED = -4,
+            FIRST = -3,
+            LAST = -2,
+            RANDOM = -1;
 
         public static readonly Position Null = new Position { Index = UNDEFINED, Location = ELocation.Undefined, Id = 0 };
 
         public int Id;
-        //public EPlayer Player;
         public ELocation Location;
         public int Index;
+
+        public bool IsExist => Location != ELocation.Undefined;
+
 
         public Position(int id, ELocation location, int index = LAST)
         {
@@ -32,6 +35,20 @@ namespace Gameplay
             Id = packet.ReadInt();
             Location = packet.ReadELocation();
             Index = packet.ReadInt();
+        }
+
+        public Location GetLocation(BoardManager manager)
+        {
+            if (Location == ELocation.Field)
+            {
+                return manager.Battlefield.GetTile(Id);
+            }
+            else
+            {
+                BoardSide side = manager.GetBoardSide((EPlayer)Id);
+                Location loc = side.GetLocation(Location);
+                return loc;
+            }
         }
 
         public void ToPacket(Packet packet)
@@ -51,6 +68,17 @@ namespace Gameplay
         public static bool operator !=(Position a, Position b)
         {
             return !(a == b);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[Postion]");
+            sb.AppendLine($"Id = {Id}");
+            sb.AppendLine($"Location = {Location}");
+            sb.AppendLine($"Index = {Index}");
+
+            return sb.ToString();
         }
     }
 }

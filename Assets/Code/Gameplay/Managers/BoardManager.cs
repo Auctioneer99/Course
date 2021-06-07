@@ -64,24 +64,76 @@ namespace Gameplay
             }
         }
 
-        public void Move(MoveDefinition definition)
+        public void Move(Card card, Position toPosition)
         {
-            Location location = GetLocation(definition.To);
+            Location location = GetLocation(toPosition);
             if (location != null && location.IsFull)
             {
                 return;
             }
 
-            bool moved = MoveImplementation(definition);
+            Position previousPosition = card.Position;
+            bool moved = MoveImplementation(card, toPosition);
             if (moved)
             {
-               // GameController.EventManager.CardMoved.Invoke();
+                GameController.EventManager.CardMoved.Invoke(card, previousPosition);
             }
         }
 
-        private bool MoveImplementation(MoveDefinition definition)
+        private bool MoveImplementation(Card card, Position toPosition)
         {
-            return false;
+            Position currentPosition = card.Position;
+
+            if((currentPosition.Location == toPosition.Location && 
+                currentPosition.Id == toPosition.Id) == false)
+            {
+                Location location = GetLocation(toPosition);
+                if (location != null && location.IsFull)
+                {
+                    return false;
+                }
+            }
+
+            if (toPosition.Location == ELocation.Field)
+            {
+                
+                if (currentPosition.IsExist)
+                {
+                    Tile tile = Battlefield.GetTile(currentPosition.Id);
+                    tile.TryRemove(card);
+                }
+
+                if (toPosition.IsExist)
+                {
+                    Tile tile = Battlefield.GetTile(toPosition.Id);
+                    tile.TryAdd(card, toPosition.Index);
+                }
+                else
+                {
+                    card.Position = toPosition;
+                }
+
+            }
+            else
+            {
+                if (currentPosition.IsExist)
+                {
+                    BoardSide side = GetBoardSide((EPlayer)currentPosition.Id);
+                    side.Remove(card);
+                }
+
+                if (toPosition.IsExist)
+                {
+                    BoardSide side = GetBoardSide((EPlayer)toPosition.Id);
+                    side.Add(card, toPosition);
+                }
+                else
+                {
+                    card.Position = toPosition;
+                }
+            }
+
+            return true;
         }
     }
 }

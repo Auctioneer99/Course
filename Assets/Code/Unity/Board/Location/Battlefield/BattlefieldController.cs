@@ -43,6 +43,7 @@ namespace Gameplay.Unity
 
         public TileView GetTileView(Position position)
         {
+            Debug.Log(string.Join(", ", _tiles.Keys));
             return _tiles[position.Id];
         }
 

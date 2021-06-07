@@ -12,7 +12,6 @@ namespace Gameplay
 
         public List<MoveDefinition> Moves { get; private set; }
 
-        public Position To { get; private set; }
         public new MoveAction Initialize()
         {
             base.Initialize();
@@ -25,7 +24,8 @@ namespace Gameplay
         {
             foreach (var def in Moves)
             {
-                GameController.BoardManager.Move(def);
+                Card card = GameController.CardManager.GetCard(def.CardId);
+                GameController.BoardManager.Move(card, def.To);
             }
         }
 

@@ -8,7 +8,7 @@ namespace Gameplay
 {
     public struct MoveDefinition
     {
-        public int CardId;
+        public ushort CardId;
         public Position From, To;
         public EPlayer MovedByPlayer;
 

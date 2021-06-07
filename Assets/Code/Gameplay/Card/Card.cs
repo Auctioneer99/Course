@@ -8,16 +8,10 @@ namespace Gameplay
 {
     public class Card : IStateObject<Card>, IRuntimeDeserializable
     {
-        public BattleEvent<ECardVisibility, ECardVisibility> VisibilityChanged {
-            get 
-            {
-                return new BattleEvent<ECardVisibility, ECardVisibility>(GameController);
-            }
-        }
-        private BattleEvent<ECardVisibility, ECardVisibility> _visibilityChanged;
+        public BattleEvent<ECardVisibility, ECardVisibility> VisibilityChanged { get; private set; }
 
         public ushort Id { get; private set; }
-        public Position Position { get; private set; }
+        public Position Position { get; set; }
         public CardDefinition Definition { get; private set; }
 
         public CardManager CardManager { get; private set; }

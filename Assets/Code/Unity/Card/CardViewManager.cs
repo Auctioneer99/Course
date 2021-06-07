@@ -26,7 +26,7 @@ namespace Gameplay.Unity
         {
             _controller = game;
 
-            _controller.EventManager.CardsSpawned.VisualEvent.AddListener(OnCardsSpawned);
+            //_controller.EventManager.CardsSpawned.VisualEvent.AddListener(OnCardsSpawned);
             Debug.Log("<color=purple>Attaching</color>");
         }
 

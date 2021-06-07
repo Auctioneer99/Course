@@ -50,6 +50,9 @@ namespace Gameplay
 
             }
             GameController.EventManager.CardsSpawned.Invoke(spawnedCards);
+
+            /////
+            /////
         }
 
         public void Censor(EPlayer player)

@@ -15,6 +15,7 @@ namespace Gameplay
         {
             base.OnLeaveState(newStateId);
             //
+
         }
 
         protected override void SendWaitingForFinishedReport()

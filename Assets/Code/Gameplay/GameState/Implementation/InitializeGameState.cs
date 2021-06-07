@@ -41,6 +41,17 @@ namespace Gameplay
             base.OnLeaveState(newStateId);
 
             GameController.Initialize();
+
+            if (GameController.HasAuthority)
+            {
+                var action = GameController.ActionFactory.Create<SpawnCardsAction>().Initialize(0);
+
+                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(0, ELocation.Field, 1)));
+                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(1, ELocation.Field, 1)));
+                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(2, ELocation.Field, 1)));
+
+                GameController.ActionDistributor.Add(action);
+            }
         }
 
         protected override void OnFinished()
