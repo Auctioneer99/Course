@@ -57,6 +57,7 @@ namespace Gameplay.Unity
             Debug.Log(cards.Count);
             foreach (var card in cards)
             {
+                Debug.Log(card);
                 CardBattleView view = CardViewManager.GetCardView(card);
 
                 view.transform.position = new Vector3(0, 0, 0);

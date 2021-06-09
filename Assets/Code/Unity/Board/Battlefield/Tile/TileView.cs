@@ -9,6 +9,8 @@ namespace Gameplay.Unity
 {
     public class TileView : LocationView
     {
+        public override ELocation ELocation => ELocation.Field;
+
         public override void Attach(GameController game, bool wasJustInitialized)
         {
             base.Attach(game, wasJustInitialized);

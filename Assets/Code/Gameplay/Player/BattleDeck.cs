@@ -31,17 +31,15 @@ namespace Gameplay
 
         public static BattleDeck Default()
         {
-            return new BattleDeck();
-        }
+            string name = "TemplateDeck 1";
+            CardDefinition leader = new CardDefinition(1);
+            List<CardDefinition> cards = new List<CardDefinition>(30);
+            for( int i = 0; i < 30; i++)
+            {
+                cards.Add(new CardDefinition(i + 22));
+            }
 
-        public void FromPacket(Packet packet)
-        {
-            
-        }
-
-        public void ToPacket(Packet packet)
-        {
-            
+            return new BattleDeck(name, leader, cards);
         }
 
         public void Censor(EPlayer player)
@@ -56,7 +54,17 @@ namespace Gameplay
 
         public void Copy(BattleDeck other)
         {
-            
+
+        }
+
+        public void FromPacket(Packet packet)
+        {
+
+        }
+
+        public void ToPacket(Packet packet)
+        {
+
         }
     }
 }

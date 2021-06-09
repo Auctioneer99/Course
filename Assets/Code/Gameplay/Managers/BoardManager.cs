@@ -26,14 +26,12 @@ namespace Gameplay
 
         public void Initialize(BattlefieldSettings settings)
         {
-            foreach(var s in settings.BattlefieldPlayerSettings)
+            foreach(var playerSettings in settings.BattlefieldPlayerSettings)
             {
-                Debug.Log(s.EPlayer);
-                var side = GetBoardSide(s.EPlayer);
+                var side = GetBoardSide(playerSettings.EPlayer);
                 if (side != null)
                 {
-                    Debug.Log(side);
-                    side.Initialize(s);
+                    side.Initialize(playerSettings);
                 }
             }
             Battlefield.Setup(settings);

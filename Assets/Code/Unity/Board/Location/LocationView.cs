@@ -11,11 +11,11 @@ namespace Gameplay.Unity
     {
         public BoardSideView BoardSideView { get; private set; }
         public Location Location { get; private set; }
-        public ELocation ELocation;
+        public abstract ELocation ELocation { get; }
 
-        private GameController _controller;
+        protected GameController _controller;
 
-        public virtual void Prepare(BoardSideView sideView)
+        public virtual void Initialize(BoardSideView sideView)
         {
             BoardSideView = sideView;
 
@@ -25,9 +25,7 @@ namespace Gameplay.Unity
         public virtual void Attach(GameController game, bool wasJustInitialized)
         {
             _controller = game;
-            EPlayer player = BoardSideView.Player.EPlayer;
-            BoardSide side = _controller.BoardManager.GetBoardSide(player);
-            Location = side.GetLocation(ELocation);
+            Location = BoardSideView.BoardSide.GetLocation(ELocation);
         }
 
         public void Detach(GameController game)

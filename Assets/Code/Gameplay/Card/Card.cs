@@ -67,5 +67,16 @@ namespace Gameplay
         {
 
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[Card]");
+            sb.AppendLine($"Id = {Id}");
+            sb.AppendLine($"Position = {Position}");
+            sb.AppendLine($"Definition = {Definition}");
+            sb.AppendLine($"Visibility = {EVisibility}");
+            return sb.ToString();
+        }
     }
 }

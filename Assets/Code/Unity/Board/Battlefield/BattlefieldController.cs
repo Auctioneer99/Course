@@ -66,7 +66,7 @@ namespace Gameplay.Unity
 
                 TileView view = tileModel.GetComponent<TileView>();
                 Debug.Log(tile.BoardSide);
-                view.Prepare(_boardView.GetBoardSideView(tile.BoardSide.EPlayer));
+                view.Initialize(_boardView.GetBoardSideView(tile.BoardSide.EPlayer));
 
                 _tiles.Add(tile.Id, tileModel.GetComponent<TileView>());
             }

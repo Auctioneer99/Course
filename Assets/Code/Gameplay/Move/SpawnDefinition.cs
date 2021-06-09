@@ -57,5 +57,16 @@ namespace Gameplay
                 .Write(Position)
                 .Write(InitialVisibility);
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[SpawnDefinition]");
+            sb.AppendLine($"CardId = {CardId}");
+            sb.AppendLine($"Definition = {Definition.ToString()}");
+            sb.AppendLine($"Position = {Position.ToString()}");
+            sb.AppendLine($"InitialVisibility = {InitialVisibility}");
+            return sb.ToString();
+        }
     }
 }

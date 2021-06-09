@@ -41,6 +41,7 @@ namespace Gameplay
 
                 if (location != null && location.IsFull)
                 {
+                    UnityEngine.Debug.Log($"<color=red>Spawn request was cancelled{spawn.ToString()}</color");
                     Spawns.Remove(spawn);
                     continue;
                 }

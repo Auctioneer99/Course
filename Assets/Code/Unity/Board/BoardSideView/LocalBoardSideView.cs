@@ -29,7 +29,7 @@ namespace Gameplay.Unity
         {
             if (LocalPlayer == player.EPlayer)
             {
-                Player = player;
+                //Player = player;
 
                 //attaching events;
             }

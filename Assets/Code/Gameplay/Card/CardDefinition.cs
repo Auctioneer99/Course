@@ -26,5 +26,13 @@ namespace Gameplay
         {
             packet.Write(TemplateId);
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[CardDefinition]");
+            sb.AppendLine($"TemplateId = {TemplateId}");
+            return sb.ToString();
+        }
     }
 }

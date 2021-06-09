@@ -10,12 +10,16 @@ namespace Gameplay.Unity
     public class BoardView : MonoBehaviour, IGameListener
     {
         [SerializeField]
+        private BoardSideView BoadSideViewPrefab;
+        [SerializeField]
+        private LocalBoardSideView LocalBoardSideViewPrefab;
+
+        [SerializeField]
         private BattlefieldController BattlefieldController;
 
         private GameController _controller;
-
-        [SerializeField]
-        private LocalBoardSideView LocalBoardSideView;
+        private Dictionary<EPlayer, BoardSideView> _boardSideViews;
+        private LocalBoardSideView _localBoardSideView;
 
         private void Start()
         {
@@ -24,11 +28,13 @@ namespace Gameplay.Unity
 
         public BoardSideView GetBoardSideView(EPlayer player)
         {
-            if (player == _controller.PlayerManager.LocalUserId)
+            foreach(var side in _boardSideViews)
             {
-                return LocalBoardSideView;
+                if (side.Key == player)
+                {
+                    return side.Value;
+                }
             }
-
             return null;
         }
 
@@ -48,6 +54,7 @@ namespace Gameplay.Unity
             _controller = game;
 
             _controller.EventManager.OnSnapshotRestored.VisualEvent.AddListener(OnSnapshotRestored);
+            _controller.EventManager.OnPlayerSetup.VisualEvent.AddListener(OnPlayerSetup);
         }
 
         public void Detach(GameController game)
@@ -58,6 +65,14 @@ namespace Gameplay.Unity
         {
         }
 
+        private void OnPlayerSetup(Player player)
+        {
+            if (_controller.Network.ConnectionId == player.ConnectionId)
+            {
+                //LocalBoardSideView.Initialize(player);
+            }
+        }
+
         private void OnSnapshotRestored()
         {
             if (_controller.IsInitialized)
@@ -65,10 +80,19 @@ namespace Gameplay.Unity
                 BattlefieldController.SetupField(_controller.BoardManager.Battlefield);
             }
 
+
+            _boardSideViews = new Dictionary<EPlayer, BoardSideView>(_controller.PlayerManager.Players.Count);
+            foreach(var side in _controller.BoardManager.Sides)
+            {
+                BoardSideView view = Instantiate(BoadSideViewPrefab, this.transform);
+                view.Initialize(this, side.EPlayer);
+                _boardSideViews.Add(side.EPlayer, view);
+            }
+            /*
             if (_controller.PlayerManager.LocalUserId.IsPlayer())
             {
                 LocalBoardSideView.Setup();
-            }
+            }*/
         }
     }
 }

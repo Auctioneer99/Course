@@ -100,5 +100,16 @@ namespace Gameplay
                 packet.Write(loc.Value);
             }
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[BoardSide]");
+            sb.AppendLine($"");
+            sb.AppendLine($"");
+            sb.AppendLine($"");
+            sb.AppendLine($"");
+            return sb.ToString();
+        }
     }
 }

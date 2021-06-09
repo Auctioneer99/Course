@@ -11,17 +11,31 @@ namespace Gameplay.Unity
     {
         protected GameController _controller;
 
-        public Player Player { get; protected set; }
-
+        public EPlayer EPlayer { get; private set; }
+        public BoardView BoardView { get; private set; }
         public BoardSide BoardSide { get; private set; }
+
+
+
+
 
         public virtual LocationView GetLocationView(Position position)
         {
             return null;
         }
 
+        public void Initialize(BoardView boardView, EPlayer player)
+        {
+            BoardView = boardView;
+            EPlayer = player;
+
+            App.Instance.Listener.Add(this);
+        }
+
         public virtual void Attach(GameController game, bool wasJustInitialized)
         {
+            _controller = game;
+            BoardSide = game.BoardManager.GetBoardSide(EPlayer);
         }
 
         public virtual void Detach(GameController game)

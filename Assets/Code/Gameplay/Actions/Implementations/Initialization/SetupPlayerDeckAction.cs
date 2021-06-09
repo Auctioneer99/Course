@@ -40,10 +40,7 @@ namespace Gameplay
             spawnAction.Spawns.Add(def);
 
 
-            GameController.ActionDistributor.Add(spawnAction);
-
-
-
+            ///****
 
             bool spawnVictory = false;
 
@@ -53,6 +50,35 @@ namespace Gameplay
             }
 
 
+            ///
+
+            List<CardDefinition> deckCards = new List<CardDefinition>(Deck.Cards);
+            List<SpawnDefinition> spawns = new List<SpawnDefinition>(deckCards.Count);
+
+            foreach(var card in deckCards)
+            {
+                SpawnDefinition spawn = new SpawnDefinition(GameController.CardManager,
+                    card,
+                    new Position((int)Player, ELocation.Deck));
+                spawns.Add(spawn);
+            }
+
+            Shuffle(spawns);
+
+            spawnAction.Spawns.AddRange(spawns);
+
+            GameController.ActionDistributor.Add(spawnAction);
+        }
+        private void Shuffle<T>(List<T> list)
+        {
+            RandomGenerator rand = GameController.RandomGenerator;
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = rand.Next(i);
+                T tmp = list[i];
+                list[i] = list[j];
+                list[j] = tmp;
+            }
         }
 
         protected override void AttributesFrom(Packet packet)
