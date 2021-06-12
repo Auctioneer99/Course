@@ -9,8 +9,8 @@ namespace Gameplay.Unity
 {
     public abstract class LocationView : MonoBehaviour, IGameListener
     {
-        public BoardSideView BoardSideView { get; private set; }
-        public Location Location { get; private set; }
+        public BoardSideView BoardSideView { get; protected set; }
+        public Location Location { get; protected set; }
         public abstract ELocation ELocation { get; }
 
         protected GameController _controller;
@@ -18,14 +18,12 @@ namespace Gameplay.Unity
         public virtual void Initialize(BoardSideView sideView)
         {
             BoardSideView = sideView;
-
-            App.Instance.Listener.Add(this);
+            Location = BoardSideView.BoardSide.GetLocation(ELocation);
         }
 
         public virtual void Attach(GameController game, bool wasJustInitialized)
         {
             _controller = game;
-            Location = BoardSideView.BoardSide.GetLocation(ELocation);
         }
 
         public void Detach(GameController game)

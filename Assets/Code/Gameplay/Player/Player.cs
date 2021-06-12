@@ -84,6 +84,25 @@ namespace Gameplay
             return PlayerManager.LocalUserId == EPlayer;
         }
 
+        public void Censor(EPlayer player)
+        {
+
+        }
+
+        public Player Clone(GameController controller)
+        {
+            Player p = new Player(PlayerManager);
+            p.Copy(this, controller);
+            return p;
+        }
+
+        public void Copy(Player other, GameController controller)
+        {
+            ConnectionId = other.ConnectionId;
+            EPlayer = other.EPlayer;
+            Info = other.Info.Clone();
+        }
+
         public void FromPacket(GameController controller, Packet packet)
         {
             ConnectionId = packet.ReadInt();
@@ -104,27 +123,8 @@ namespace Gameplay
             sb.Append("[Player]");
             sb.Append($"\n\t{EPlayer}");
             sb.Append($"\n\t{EStatus}");
-            sb.Append($"\n\t{Info}");
+            sb.Append($"\n\t{Info.ToString()}");
             return sb.ToString();
-        }
-
-        public void Censor(EPlayer player)
-        {
-            
-        }
-
-        public Player Clone(GameController controller)
-        {
-            Player p = new Player(PlayerManager);
-            p.Copy(this, controller);
-            return p;
-        }
-
-        public void Copy(Player other, GameController controller)
-        {
-            ConnectionId = other.ConnectionId;
-            EPlayer = other.EPlayer;
-            Info = other.Info.Clone();
         }
     }
 }

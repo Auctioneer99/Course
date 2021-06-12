@@ -34,9 +34,12 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
-            PlayerPrepareAction action = GameController.ActionFactory.Create<PlayerPrepareAction>()
-                .Initialize(EPlayer, Preparation);
-            GameController.ActionDistributor.Add(action);
+            if (GameController.HasAuthority)
+            {
+                PlayerPrepareAction action = GameController.ActionFactory.Create<PlayerPrepareAction>()
+                    .Initialize(EPlayer, Preparation);
+                GameController.ActionDistributor.Add(action);
+            }
         }
 
         protected override void PlayerAttributesFrom(Packet packet)

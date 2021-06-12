@@ -27,34 +27,26 @@ namespace Gameplay
         {
             int radius = 7;
 
-            List<TileDefinition> definitions = CreateRadial(radius);
+            BattlefieldFactorySettings facSetts = BattlefieldFactorySettings.DefaultSettings();
+            List<Vector3> rawCoords = CreateRadial(radius);
+
+            List<TileDefinition> definitions = ConvertRawCoordinates(rawCoords, facSetts);
 
             Dictionary<TileDefinition, Dictionary<TileDefinition, bool>> adjencencyMatrix
                 = GetAdjencencyMatrix(definitions);
-            /*
-            foreach(var i in adjencencyMatrix)
-            {
-                UnityEngine.Debug.Log(string.Join(", ", i.Value.Values));
-            }*/
+            
 
-            //influence
+            BattlefieldPlayerSettings player1 = new BattlefieldPlayerSettings(EPlayer.Player1, -1);
+            //BattlefieldPlayerSettings player2 = new BattlefieldPlayerSettings(EPlayer.Player2, influencePlayer2, -1);
+            BattlefieldPlayerSettings neutral = new BattlefieldPlayerSettings(EPlayer.Neutral, -1);
 
-            //for 1 player
+            Dictionary<EPlayer, BattlefieldPlayerSettings> pSets = new Dictionary<EPlayer, BattlefieldPlayerSettings>(){
+                { player1.EPlayer, player1 },
+             //   { player2.EPlayer, player2 },
+                { neutral.EPlayer, neutral }
+            };
 
-            TileDefinition[] influencePlayer1 = definitions.Where(tile => tile.X >= 2).ToArray();
-
-            TileDefinition[] influencePlayer2 = definitions.Where(tile => tile.X <= -2).ToArray();
-
-            TileDefinition[] influenceNeutrals = definitions.Except(influencePlayer1).Except(influencePlayer2).ToArray();
-
-
-            BattlefieldPlayerSettings player1 = new BattlefieldPlayerSettings(EPlayer.Player1, influencePlayer1, -1);
-            BattlefieldPlayerSettings player2 = new BattlefieldPlayerSettings(EPlayer.Player2, influencePlayer2, -1);
-            BattlefieldPlayerSettings neutral = new BattlefieldPlayerSettings(EPlayer.Neutral, influenceNeutrals, -1);
-
-            BattlefieldPlayerSettings[] pSets = { player1, player2, neutral };
-
-            BattlefieldSettings settings = new BattlefieldSettings(pSets, adjencencyMatrix);
+            BattlefieldSettings settings = new BattlefieldSettings(pSets, definitions, adjencencyMatrix);
 
             return settings;
         }
@@ -93,7 +85,7 @@ namespace Gameplay
             return adjencencyMatrix;
         }
 
-        private static List<TileDefinition> CreateRadial(int radius)
+        private static List<Vector3> CreateRadial(int radius)
         {
             Vector3 origin = new Vector3(0, 0, 0);
 
@@ -115,16 +107,17 @@ namespace Gameplay
                 }
                 return result.Distinct();
             }
-            return ConvertRawCoordinates(rawCoordinates);
+            return rawCoordinates.ToList();
         }
 
-        private static List<TileDefinition> ConvertRawCoordinates(IEnumerable<Vector3> rawCoordinates)
+        private static List<TileDefinition> ConvertRawCoordinates(IEnumerable<Vector3> rawCoordinates, BattlefieldFactorySettings factorySettings)
         {
             List<TileDefinition> field = new List<TileDefinition>();
 
             foreach (var coord in rawCoordinates)
             {
-                field.Add(new TileDefinition((short)coord.X, (short)coord.Y));
+                EPlayer owner = factorySettings.GetOwner(coord);
+                field.Add(new TileDefinition(owner, (short)coord.X, (short)coord.Y));
             }
             return field;
         }

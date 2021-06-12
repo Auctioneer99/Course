@@ -75,6 +75,8 @@ namespace Gameplay
             Register<RemovePauseAction>(EAction.RemovePause);
 
             Register<MoveAction>(EAction.Move);
+            Register<SyncCardsAction>(EAction.SyncCards);
+            Register<ChangeVisibilityAction>(EAction.ChangeVisibility);
         }
     }
 }

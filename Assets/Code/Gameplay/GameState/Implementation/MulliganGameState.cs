@@ -26,7 +26,7 @@ namespace Gameplay
 
         private void HandlePlayerMulligan(EPlayer player)
         {
-            Debug.Log("RECEIVING MULLIGANS ACTIONS from " + player.ToString());
+            //Debug.Log("RECEIVING MULLIGANS ACTIONS from " + player.ToString());
         }
 
         protected override void OnFinished()

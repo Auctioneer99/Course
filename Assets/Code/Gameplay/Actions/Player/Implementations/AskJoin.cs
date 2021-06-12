@@ -34,7 +34,7 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
-            Debug.Log("Setting up player on side " + GameController.HasAuthority);
+            //Debug.Log("Setting up player on side " + GameController.HasAuthority);
             if (GameController.HasAuthority)
             {
                 Player player = GameController.PlayerManager.GetPlayer(Place);

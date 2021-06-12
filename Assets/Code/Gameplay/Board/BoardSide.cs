@@ -10,7 +10,7 @@ namespace Gameplay
     {
         public BoardManager BoardManager { get; private set; }
         public EPlayer EPlayer { get; private set; }
-        public TileDefinition[] Influence { get; private set; }
+        public BattlefieldPlayerSettings Settings { get; private set; }
 
         public Dictionary<ELocation, Location> Locations { get; private set; }
 
@@ -40,13 +40,7 @@ namespace Gameplay
 
         public void Initialize(BattlefieldPlayerSettings settings)
         {
-            EPlayer = settings.EPlayer;
-            Influence = settings.Influence;
-
-            if (settings.ShouldSpawnLeader)
-            {
-                //Spawn;
-            }
+            Settings = settings;
         }
 
         public Location GetLocation(ELocation location)
@@ -105,10 +99,11 @@ namespace Gameplay
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[BoardSide]");
-            sb.AppendLine($"");
-            sb.AppendLine($"");
-            sb.AppendLine($"");
-            sb.AppendLine($"");
+            sb.AppendLine($"Player = {EPlayer}");
+            foreach(var loc in Locations)
+            {
+                sb.AppendLine($"{loc.Key} = {loc.Value.ToString()}");
+            }
             return sb.ToString();
         }
     }

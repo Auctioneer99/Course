@@ -8,13 +8,16 @@ namespace Gameplay
 {
     public class BattlefieldSettings
     {
-        public BattlefieldPlayerSettings[] BattlefieldPlayerSettings;
+        public Dictionary<EPlayer, BattlefieldPlayerSettings> BattlefieldPlayerSettings;
 
         public Dictionary<TileDefinition, Dictionary<TileDefinition, bool>> Graph;
 
-        public BattlefieldSettings(BattlefieldPlayerSettings[] battlefieldPlayerSettings, Dictionary<TileDefinition, Dictionary<TileDefinition, bool>> graph)
+        public List<TileDefinition> TileDefinitions { get; private set; }
+
+        public BattlefieldSettings(Dictionary<EPlayer, BattlefieldPlayerSettings> battlefieldPlayerSettings, List<TileDefinition> definitions, Dictionary<TileDefinition, Dictionary<TileDefinition, bool>> graph)
         {
             BattlefieldPlayerSettings = battlefieldPlayerSettings;
+            TileDefinitions = definitions;
             Graph = graph;
         }
     }

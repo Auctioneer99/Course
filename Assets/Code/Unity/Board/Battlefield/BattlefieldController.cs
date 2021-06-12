@@ -58,17 +58,22 @@ namespace Gameplay.Unity
             foreach(var tile in field.Tiles)
             {
                 GameObject tileModel = Instantiate(_tilePrefab, transform);
-                //tileModel.GetComponent<UnityTile>().Tile = tile;
                 Vector3 rawPosition = new Vector3(tile.Definition.X, tile.Definition.Y, tile.Definition.Z);
                 Vector3 position = rotation * rawPosition;
-                //position.y -= 0.1f;
                 tileModel.transform.localPosition = position * _distanceBetween;
 
                 TileView view = tileModel.GetComponent<TileView>();
-                Debug.Log(tile.BoardSide);
-                view.Initialize(_boardView.GetBoardSideView(tile.BoardSide.EPlayer));
+                if (tile.BoardSide == null)
+                {
+                    view.Initialize(null, tile);
+                    Debug.LogWarning("[Warning] There is missing a player");
+                }
+                else
+                {
+                    view.Initialize(_boardView.GetBoardSideView(tile.BoardSide.EPlayer), tile);
+                }
 
-                _tiles.Add(tile.Id, tileModel.GetComponent<TileView>());
+                _tiles.Add(tile.Id, view);
             }
         }
     }

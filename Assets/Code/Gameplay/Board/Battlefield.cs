@@ -12,7 +12,9 @@ namespace Gameplay
         private GameController GameController => _manager.GameController;
 
         public Tile[] Tiles { get; private set; }
-        private Dictionary<TileDefinition, Dictionary<TileDefinition, bool>> _adjencencyMatrix;
+
+        public BattlefieldSettings Settings { get; private set; }
+
 
         public Battlefield(BoardManager manager)
         {
@@ -21,18 +23,17 @@ namespace Gameplay
 
         public void Setup(BattlefieldSettings settings)
         {
-            _adjencencyMatrix = settings.Graph;
+            Settings = settings;
 
             List<Tile> internalTiles = new List<Tile>();
-            foreach (var ps in settings.BattlefieldPlayerSettings)
+
+            foreach(var definition in settings.TileDefinitions)
             {
-                BoardSide side = _manager.GetBoardSide(ps.EPlayer);
-                foreach( var definition in ps.Influence)
-                {
-                    Tile tile = new Tile(side, definition);
-                    internalTiles.Add(tile);
-                }
+                BoardSide side = _manager.GetBoardSide(definition.Player);
+                Tile tile = new Tile(side, definition);
+                internalTiles.Add(tile);
             }
+
             Tiles = internalTiles.ToArray();
 
             GameController.EventManager.OnBattleFieldSetuped.Invoke(this);

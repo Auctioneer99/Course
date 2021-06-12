@@ -32,6 +32,9 @@
 
         SpawnCards,
         Move,
+        ChangeVisibility,
+        SyncCards,
+
     }
 
     public static class EActionExtension

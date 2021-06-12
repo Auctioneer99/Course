@@ -52,5 +52,14 @@ namespace Gameplay
             Name = other.Name;
             Vanity = other.Vanity.Clone();
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[PlayerInfo]");
+            sb.AppendLine($"Name = {Name}");
+            sb.AppendLine(Vanity.ToString());
+            return sb.ToString();
+        }
     }
 }

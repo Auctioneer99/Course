@@ -27,13 +27,13 @@ namespace Gameplay.Unity
             _controller = game;
 
             //_controller.EventManager.CardsSpawned.VisualEvent.AddListener(OnCardsSpawned);
-            Debug.Log("<color=purple>Attaching</color>");
+            //Debug.Log("<color=purple>Attaching</color>");
         }
 
         private void OnCardsSpawned(List<Card> cards)
         {
-            Debug.Log("<color=purple>OnCardsSpawned</color>");
-            Debug.Log(cards.Count);
+            //Debug.Log("<color=purple>OnCardsSpawned</color>");
+            //Debug.Log(cards.Count);
             foreach(var card in cards)
             {
                 CardBattleView view = GetCardView(card);

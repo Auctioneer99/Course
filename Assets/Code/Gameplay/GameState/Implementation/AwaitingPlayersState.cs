@@ -32,7 +32,7 @@ namespace Gameplay
         {
             if (GameController.PlayerManager.AreAllPrepared())
             {
-                GameController.Logger.Log("AwaitingPlayersState Players are ready");
+                //GameController.Logger.Log("AwaitingPlayersState Players are ready");
                 SwitchState(EGameState.Init);
 
             }

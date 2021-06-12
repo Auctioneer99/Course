@@ -50,7 +50,7 @@ namespace Gameplay
 
         public Player SetupPlayer(EPlayer eplayer, int connection)
         {
-            Debug.Log("[Player Manager] Incoming player " + eplayer);
+            //Debug.Log("[Player Manager] Incoming player " + eplayer);
             if (Players.TryGetValue(eplayer, out Player p))
             {
                 if (p == null)

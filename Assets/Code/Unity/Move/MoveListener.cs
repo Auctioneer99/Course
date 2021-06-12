@@ -53,11 +53,9 @@ namespace Gameplay.Unity
 
         private void OnCardsSpawned(List<Card> cards)
         {
-            Debug.Log("<color=purple>OnCardsSpawned</color>");
-            Debug.Log(cards.Count);
             foreach (var card in cards)
             {
-                Debug.Log(card);
+                //Debug.Log(card);
                 CardBattleView view = CardViewManager.GetCardView(card);
 
                 view.transform.position = new Vector3(0, 0, 0);

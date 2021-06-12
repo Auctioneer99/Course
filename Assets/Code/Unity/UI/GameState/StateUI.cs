@@ -35,8 +35,8 @@ namespace Gameplay.Unity
 
         private void OnGameStateChanged(AGameState from, AGameState to)
         {
-            Debug.Log(from?.ToString());
-                Debug.Log(to?.ToString());
+            //Debug.Log(from?.ToString());
+            //Debug.Log(to?.ToString());
             _text.text = to.EGameState.ToString();
         }
     }

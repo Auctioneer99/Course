@@ -59,7 +59,7 @@ namespace Gameplay
             {
                 SpawnDefinition spawn = new SpawnDefinition(GameController.CardManager,
                     card,
-                    new Position((int)Player, ELocation.Deck));
+                    new Position(Player, ELocation.Deck));
                 spawns.Add(spawn);
             }
 
@@ -69,6 +69,7 @@ namespace Gameplay
 
             GameController.ActionDistributor.Add(spawnAction);
         }
+
         private void Shuffle<T>(List<T> list)
         {
             RandomGenerator rand = GameController.RandomGenerator;

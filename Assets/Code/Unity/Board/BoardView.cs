@@ -53,7 +53,8 @@ namespace Gameplay.Unity
         {
             _controller = game;
 
-            _controller.EventManager.OnSnapshotRestored.VisualEvent.AddListener(OnSnapshotRestored);
+            //_controller.EventManager.OnSnapshotRestored.VisualEvent.AddListener();
+            _controller.GameInstance.SnapshotRestored.VisualEvent.AddListener(OnSnapshotRestored);
             _controller.EventManager.OnPlayerSetup.VisualEvent.AddListener(OnPlayerSetup);
         }
 
@@ -73,21 +74,26 @@ namespace Gameplay.Unity
             }
         }
 
-        private void OnSnapshotRestored()
+        private void OnSnapshotRestored(GameInstance instance)
         {
-            if (_controller.IsInitialized)
-            {
-                BattlefieldController.SetupField(_controller.BoardManager.Battlefield);
-            }
 
+            Debug.Log("<color=green>Initialize boardView</color>");
 
-            _boardSideViews = new Dictionary<EPlayer, BoardSideView>(_controller.PlayerManager.Players.Count);
+            _boardSideViews = new Dictionary<EPlayer, BoardSideView>(_controller.PlayerManager.Players.Count + 1);
             foreach(var side in _controller.BoardManager.Sides)
             {
                 BoardSideView view = Instantiate(BoadSideViewPrefab, this.transform);
                 view.Initialize(this, side.EPlayer);
                 _boardSideViews.Add(side.EPlayer, view);
             }
+
+            if (_controller.IsInitialized)
+            {
+                BattlefieldController.SetupField(_controller.BoardManager.Battlefield);
+            }
+            //BoardSideView neutralView = Instantiate(BoadSideViewPrefab, this.transform);
+            //neutralView.Initialize(this, EPlayer.Neutral);
+            //_boardSideViews.Add(EPlayer.Neutral, neutralView);
             /*
             if (_controller.PlayerManager.LocalUserId.IsPlayer())
             {

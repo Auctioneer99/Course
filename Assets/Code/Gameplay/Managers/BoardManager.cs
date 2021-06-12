@@ -28,10 +28,10 @@ namespace Gameplay
         {
             foreach(var playerSettings in settings.BattlefieldPlayerSettings)
             {
-                var side = GetBoardSide(playerSettings.EPlayer);
+                var side = GetBoardSide(playerSettings.Key);
                 if (side != null)
                 {
-                    side.Initialize(playerSettings);
+                    side.Initialize(playerSettings.Value);
                 }
             }
             Battlefield.Setup(settings);

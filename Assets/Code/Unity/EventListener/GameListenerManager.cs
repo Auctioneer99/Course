@@ -89,11 +89,8 @@ namespace Gameplay.Unity
             {
                 _listeners.Add(entry);
             }
-            Debug.Log($"Adding {_listeners.Count}");
 
-            Debug.Log(Game);
-            Debug.Log("-------------");
-            if(Game != null && Game.IsInitialized)
+            if(Game != null)
             {
                 entry.Attach(Game, wasJustInitialized);
             }
@@ -153,7 +150,7 @@ namespace Gameplay.Unity
                 Debug.Log("CANT ADD LISTENERS !!!!!!!!!!!!");
                 return;
             }
-            Debug.Log(_listeners.Count);
+
             foreach (var entry in _listeners)
             {
                 if (entry.MarkedForRemove == false)

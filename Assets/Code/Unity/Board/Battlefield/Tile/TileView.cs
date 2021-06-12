@@ -11,13 +11,18 @@ namespace Gameplay.Unity
     {
         public override ELocation ELocation => ELocation.Field;
 
-        public override void Attach(GameController game, bool wasJustInitialized)
+        public void Initialize(BoardSideView sideView, Tile tile)
         {
-            base.Attach(game, wasJustInitialized);
-
+            BoardSideView = sideView;
+            Location = tile;
 
             Renderer renderer = GetComponent<Renderer>();
-            //Debug.Log(Location.BoardSide.EPlayer);
+            if (sideView == null)
+            {
+                renderer.material.color = Color.red;
+                return;
+            }
+
             switch (Location.BoardSide.EPlayer)
             {
                 case EPlayer.Neutral:

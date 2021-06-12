@@ -26,7 +26,8 @@ namespace Gameplay.Unity
 
         public override void OnMouseClick()
         {
-            Debug.Log("Ingame local");
+            Debug.Log(Player.ToString());
+            Debug.Log(GameController.BoardManager.GetBoardSide(Player.EPlayer).ToString());
         }
     }
 }

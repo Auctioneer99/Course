@@ -13,12 +13,15 @@ namespace Gameplay
 
         readonly public short X, Y;
 
+        readonly public EPlayer Player;
+
         public short Z => (short)(-X - Y);
 
-        public TileDefinition(short x, short y)
+        public TileDefinition(EPlayer player, short x, short y)
         {
             X = x;
             Y = y;
+            Player = player;
         }
 
         public override int GetHashCode()

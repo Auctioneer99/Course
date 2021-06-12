@@ -25,7 +25,7 @@ namespace Gameplay
 
         public override void Send(AAction action)
         {
-            Debug.Log("[Local Connector] Sending " + action.EAction + (Instance.HasAuthority ? " Authority side" : " Client Side"));
+            //Debug.Log("[Local Connector] Sending " + action.EAction + (Instance.HasAuthority ? " Authority side" : " Client Side"));
             if (Instance.HasAuthority)
             {
                 if (action is ITargetedAction tAction)
@@ -74,7 +74,7 @@ namespace Gameplay
         {
             if (CanHandleMessage(sender, action) == false)
             {
-                Debug.Log("[Network Manager] Cant handle message");
+                Debug.Log($"[Network Manager] Cant handle message: sender = {sender.Role}, {sender.ConnectionId}, action = {action.EAction}");
                 return;
             }
             GameController gc = Instance.Controller;
@@ -96,12 +96,12 @@ namespace Gameplay
             bool isPlayerAction = action is APlayerAction;
             bool isAuthorityAction = action is IAuthorityAction;
             //EPlayer senderRole = sender.Role;
-            Debug.Log("[Local Connector] Can handle " + action.EAction + " " + (Instance.HasAuthority ? "Authority side" : "Client Side"));
+            //Debug.Log("[Local Connector] Can handle " + action.EAction + " " + (Instance.HasAuthority ? "Authority side" : "Client Side"));
             if (Instance.HasAuthority)
             {
                 if (isPlayerAction)
                 {
-                    Debug.Log("Yes");
+                    //Debug.Log("Yes");
                     return true;
                 }
             }
@@ -109,12 +109,12 @@ namespace Gameplay
             {
                 if (isAuthorityAction)
                 {
-                    Debug.Log("Yes");
+                    //Debug.Log("Yes");
                     return true;
                 }
             }
 
-            Debug.Log("No");
+            //Debug.Log("No");
             return false;
         }
     }

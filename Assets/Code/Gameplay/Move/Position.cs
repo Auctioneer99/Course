@@ -17,15 +17,25 @@ namespace Gameplay
         public static readonly Position Null = new Position { Index = UNDEFINED, Location = ELocation.Undefined, Id = 0 };
 
         public int Id;
+        public EPlayer Player;
         public ELocation Location;
         public int Index;
 
         public bool IsExist => Location != ELocation.Undefined;
 
-
-        public Position(int id, ELocation location, int index = LAST)
+        public Position(EPlayer player, ELocation location, int index = LAST)
         {
-            Id = id;
+            Id = (int)player;
+            Player = player;
+            Location = location;
+            Index = index;
+        }
+
+
+        public Position(TileDefinition definition, ELocation location, int index = LAST)
+        {
+            Id = definition.GetHashCode();
+            Player = definition.Player;
             Location = location;
             Index = index;
         }
@@ -33,6 +43,7 @@ namespace Gameplay
         public Position(Packet packet)
         {
             Id = packet.ReadInt();
+            Player = packet.ReadEPlayer();
             Location = packet.ReadELocation();
             Index = packet.ReadInt();
         }
@@ -54,6 +65,7 @@ namespace Gameplay
         public void ToPacket(Packet packet)
         {
             packet.Write(Id)
+                .Write(Player)
                 .Write(Location)
                 .Write(Index);
         }
@@ -61,6 +73,7 @@ namespace Gameplay
         public static bool operator ==(Position a, Position b)
         {
             return a.Id == b.Id &&
+                a.Player == b.Player &&
                 a.Index == b.Index &&
                 a.Location == b.Location;
         }

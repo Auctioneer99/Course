@@ -116,7 +116,7 @@ namespace Gameplay
 
         private void UpdateIndexes()
         {
-            Position position = new Position((int)Player, ELocation);
+            Position position = new Position(Player, ELocation);
             for(int i = 0, count = Cards.Count; i < count; i++)
             {
                 position.Index = i;
@@ -146,6 +146,17 @@ namespace Gameplay
             {
                 packet.Write(c.Id);
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[Location]");
+            sb.AppendLine($"Location = {ELocation}");
+            sb.AppendLine($"Capacity = {Capacity}");
+            sb.AppendLine($"CardsCount = {Cards.Count}");
+
+            return sb.ToString();
         }
     }
 }

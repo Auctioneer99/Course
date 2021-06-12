@@ -54,7 +54,7 @@ namespace Gameplay
                 {
                     if (AreFinished())
                     {
-                        Debug.Log("[AGameState] AreFinished");
+                        //Debug.Log("[AGameState] AreFinished");
                         OnFinished();
                     }
                 }

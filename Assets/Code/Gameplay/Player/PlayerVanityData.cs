@@ -23,16 +23,6 @@ namespace Gameplay
             FromPacket(packet);
         }
 
-        public void FromPacket(Packet packet)
-        {
-            
-        }
-
-        public void ToPacket(Packet packet)
-        {
-            
-        }
-
         public PlayerVanityData Clone()
         {
             PlayerVanityData data = new PlayerVanityData();
@@ -42,7 +32,24 @@ namespace Gameplay
 
         public void Copy(PlayerVanityData other)
         {
-            
+
+        }
+
+        public void FromPacket(Packet packet)
+        {
+
+        }
+
+        public void ToPacket(Packet packet)
+        {
+
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[PlayerVanityData]");
+            return sb.ToString();
         }
     }
 }

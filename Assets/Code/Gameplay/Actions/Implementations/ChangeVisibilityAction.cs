@@ -6,27 +6,22 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class MoveAction : AAction, IAuthorityAction
+    public class ChangeVisibilityAction : AAction
     {
-        public override EAction EAction => EAction.Move;
+        public override EAction EAction => EAction.ChangeVisibility;
 
-        public List<MoveDefinition> Moves { get; private set; }
+        public List<VisibilityChangeDefinition> Changes { get; private set; }
 
-        public new MoveAction Initialize()
+        public new ChangeVisibilityAction Initialize()
         {
             base.Initialize();
 
-            Moves = new List<MoveDefinition>();
             return this;
         }
 
         protected override void ApplyImplementation()
         {
-            foreach (var def in Moves)
-            {
-                Card card = GameController.CardManager.GetCard(def.CardId);
-                GameController.BoardManager.Move(card, def.To);
-            }
+            throw new NotImplementedException();
         }
 
         protected override void AttributesFrom(Packet packet)
@@ -41,9 +36,7 @@ namespace Gameplay
 
         protected override void CopyImplementation(AAction copyFrom, GameController controller)
         {
-            MoveAction other = copyFrom as MoveAction;
-
-            Moves = new List<MoveDefinition>(other.Moves);
+            throw new NotImplementedException();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Gameplay
         public int IncomingConnection(AConnector connection)
         {
             int id = InitializeConnection(connection, EPlayer.Spectators);
-            _logger.Log("[Network Manager] Sending initial packet");
+            //_logger.Log("[Network Manager] Sending initial packet");
             Snapshot snapshot = Snapshot.Create(Host.Instance, EPlayer.Spectators);
             AAction initialization = Host.Instance.Controller.ActionFactory.Create<ConnectInitializationAction>()
                 .Initialize(id, EPlayer.Spectators, snapshot);
@@ -56,7 +56,7 @@ namespace Gameplay
         {
             connection.Manager = this;
             _connectionPool.Add(connection.ConnectionId, connection);
-            _logger.Log("[Network Manager] Socket setted up " + connection.ConnectionId);
+            //_logger.Log("[Network Manager] Socket setted up " + connection.ConnectionId);
         }
 
         public void SendToHost(AConnector sender, AAction action)
@@ -86,13 +86,13 @@ namespace Gameplay
                 .Where(connection => group.Contains(connection.Value.Role))
                 .Select(connection => connection.Key)
                 .ToArray();
-            Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + string.Join(", ", receivers));
+            //Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + string.Join(", ", receivers));
             _messages.Enqueue(new NetworkMessage(sender, action, receivers));
         }
 
         public void SendToTarget(AConnector sender, AAction action, int target)
         {
-            Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + target);
+            //Debug.Log("[Network Manager] Enqueue packet " + action.ToString() + " : " + target);
             _messages.Enqueue(new NetworkMessage(sender, action, target));
         }
 

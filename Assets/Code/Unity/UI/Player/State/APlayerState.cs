@@ -20,7 +20,7 @@ namespace Gameplay.Unity
 
         public void OnMouseEnter()
         {
-            Debug.Log(Player?.ToString());
+            //Debug.Log(Player?.ToString());
         }
 
         public void OnMouseLeave()

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay.Unity
 {
-    public abstract class BoardSideView : MonoBehaviour, IGameListener
+    public class BoardSideView : MonoBehaviour, IGameListener
     {
         protected GameController _controller;
 

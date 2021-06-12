@@ -2953,49 +2953,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c9e51f48111037a40aec53bd1df11efd, type: 3}
   m_PrefabInstance: {fileID: 285652074}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &286428753
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 286428755}
-  - component: {fileID: 286428754}
-  m_Layer: 0
-  m_Name: LocalBoardSideView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &286428754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286428753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fa12454bc7c568479dfa382f0d35daf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &286428755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286428753}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1760806453}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &291036551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13269,49 +13226,6 @@ Transform:
   m_Father: {fileID: 1670978302}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -14.658, z: 0}
---- !u!1 &1736575321
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1736575322}
-  - component: {fileID: 1736575323}
-  m_Layer: 0
-  m_Name: BoardSidesController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1736575322
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736575321}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1760806453}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1736575323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736575321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 397e74fa243c1ff4da2278c35975907c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1737875993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13490,8 +13404,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ae25f1b7650554eab227e2ae72c504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoadSideViewPrefab: {fileID: -7885152452245199041, guid: 5e0d5578d021f6a40a711adb2c89ad8d, type: 3}
+  LocalBoardSideViewPrefab: {fileID: 5525577464359193078, guid: 92690f15310fd59429527d744c42bc1b, type: 3}
   BattlefieldController: {fileID: 888687439}
-  LocalBoardSideView: {fileID: 286428754}
 --- !u!4 &1760806453
 Transform:
   m_ObjectHideFlags: 0
@@ -13504,8 +13419,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 888687440}
-  - {fileID: 286428755}
-  - {fileID: 1736575322}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
