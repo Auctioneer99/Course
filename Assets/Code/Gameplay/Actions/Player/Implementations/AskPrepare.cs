@@ -20,9 +20,16 @@ namespace Gameplay
             {
                 return false;
             }
-
-            return GameController.PlayerManager.GetPlayer(EPlayer).IsPrepared != Preparation && 
-                GameController.StateMachine.ECurrentState == EGameState.AwaitingPlayers;
+            if (GameController.HasAuthority)
+            {
+                return GameController.PlayerManager.GetPlayer(EPlayer).IsPrepared != Preparation &&
+                    GameController.StateMachine.ECurrentState == EGameState.AwaitingPlayers;
+            }
+            else
+            {
+                return GameController.PlayerManager.GetPlayer(GameController.PlayerManager.LocalUserId)?.IsPrepared != Preparation &&
+                    GameController.StateMachine.ECurrentState == EGameState.AwaitingPlayers;
+            }
         }
 
         public AskPrepare Initialize(bool toPrepare)
@@ -55,6 +62,15 @@ namespace Gameplay
         protected override void PlayerCopyImplementation(APlayerAction copyFrom, GameController controller)
         {
             Preparation = (copyFrom as AskPrepare).Preparation;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(base.ToString());
+            sb.AppendLine($"Player = {EPlayer}");
+            sb.AppendLine($"Preparation = {Preparation}");
+            return sb.ToString();
         }
     }
 }

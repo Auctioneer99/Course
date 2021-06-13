@@ -37,7 +37,6 @@ namespace Gameplay
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("[AConnector]");
             sb.AppendLine($"IsConnected = {IsConnected}");
             sb.AppendLine($"ConnectionId = {ConnectionId}");
             sb.AppendLine($"Role = {Role}");

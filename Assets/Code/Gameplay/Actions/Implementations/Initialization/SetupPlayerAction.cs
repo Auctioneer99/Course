@@ -27,6 +27,7 @@
             SetupPlayerAction other = copyFrom as SetupPlayerAction;
 
             Player = other.Player;
+            Connection = other.Connection;
             Info = other.Info.Clone();
         }
 
@@ -34,21 +35,6 @@
         {
             Player player = GameController.PlayerManager.SetupPlayer(Player, Connection);
             player.Info = Info;
-
-
-            /*
-            player.Info = Info;
-
-            if (GameController.HasAuthority)
-            {
-                GameController.GameInstance.Settings.PlayersSettings[Player] = new PlayerSettings(Player, Info);
-                SetPlayerStatusAction action = GameController.ActionFactory.Create<SetPlayerStatusAction>()
-                    .Initialize(Player, EPlayerStatus.Finished);
-                //RequestPlayerFinishedReport request = GameController.ActionFactory.Create<RequestPlayerFinishedReport>()
-                //        .Initialize(Connection);
-                GameController.ActionDistributor.Add(action, true);
-                //GameController.GameInstance.Settings.GetPlayerSettings(Player).PlayerInfo = Info;
-            }*/
 
             GameController.EventManager.OnPlayerSetup.Invoke(player);
         }

@@ -9,9 +9,26 @@ namespace Gameplay
 {
     public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IStateObjectCloneable<PlayerManager>
     {
+        public BattleEvent<EPlayer> PerspectiveChanged;
+
         public Dictionary<EPlayer, Player> Players { get; private set; }
 
-        //public EPlayer PerspectivePlayer { get; private set; }
+        public EPlayer PerspectivePlayer 
+        { 
+            get
+            {
+                return _perspective;
+            }
+            private set
+            {
+                if (value != _perspective)
+                {
+                    _perspective = value;
+                    PerspectiveChanged.Invoke(value);
+                }
+            }
+        }
+        public EPlayer _perspective = EPlayer.Undefined;
         public EPlayer LocalUserId => GameController.Network.Role;
         public EPlayer CurrentPlayerId { get; private set; }
 
@@ -22,6 +39,7 @@ namespace Gameplay
 
         public PlayerManager(GameController controller) : base(controller)
         {
+            PerspectiveChanged = new BattleEvent<EPlayer>(controller);
             int count = controller
                 .GameInstance
                 .Settings
@@ -50,7 +68,6 @@ namespace Gameplay
 
         public Player SetupPlayer(EPlayer eplayer, int connection)
         {
-            //Debug.Log("[Player Manager] Incoming player " + eplayer);
             if (Players.TryGetValue(eplayer, out Player p))
             {
                 if (p == null)
@@ -59,6 +76,12 @@ namespace Gameplay
                     Players[eplayer] = player;
 
                     GameController.Network.Manager.GetConnection(connection).Role = eplayer;
+
+                    if (LocalUserId == eplayer)
+                    {
+                        PerspectivePlayer = eplayer;
+                    }
+
                     return player;
                 }
                 else

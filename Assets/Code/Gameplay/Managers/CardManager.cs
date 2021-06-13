@@ -42,7 +42,7 @@ namespace Gameplay
             return id < Cards.Length ? Cards[id] : null;
         }
 
-        public Card Register(ushort id, CardDefinition definition, Position position)
+        public Card Register(ushort id, CardDefinition definition)
         {
             Card card = Create(id, definition);//new Position(position.Id, ELocation.Spawn));
 
@@ -56,8 +56,7 @@ namespace Gameplay
             }
 
             Cards[id] = card;
-
-            GameController.BoardManager.Move(card, position);
+            //GameController.BoardManager.Move(card, position);
 
             return card;
         }

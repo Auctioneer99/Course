@@ -27,6 +27,7 @@ namespace Gameplay
             user.Initialize(mainsocketid, group);
             Host = user;
             Add(user);
+            //Debug.Log("Host = " + user.ToString());
         }
 
         public int IncomingConnection(AConnector connection)
@@ -49,6 +50,7 @@ namespace Gameplay
             connection.Initialize(id, group);
             ConnectionCounter++;
             Add(connection);
+            //Debug.Log("Client = " + connection.ToString());
             return id;
         }
 
@@ -140,6 +142,17 @@ namespace Gameplay
             {
                 _connectionPool[target].HandleMessage(sender, action);
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[NetworkManager]");
+            foreach(var connection in _connectionPool)
+            {
+                sb.Append(connection.Value.ToString());
+            }
+            return sb.ToString();
         }
     }
 }

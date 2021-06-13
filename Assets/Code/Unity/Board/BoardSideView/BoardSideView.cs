@@ -16,14 +16,6 @@ namespace Gameplay.Unity
         public BoardSide BoardSide { get; private set; }
 
 
-
-
-
-        public virtual LocationView GetLocationView(Position position)
-        {
-            return null;
-        }
-
         public void Initialize(BoardView boardView, EPlayer player)
         {
             BoardView = boardView;

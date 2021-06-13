@@ -59,7 +59,7 @@ namespace Gameplay.Unity
                 CardBattleView view = CardViewManager.GetCardView(card);
 
                 view.transform.position = new Vector3(0, 0, 0);
-                view.enabled = false;
+                view.ToggleVisibility(false);
 
                 SetCardPosition(view, card.Position);
             }
@@ -67,21 +67,18 @@ namespace Gameplay.Unity
 
         private void SetCardPosition(CardBattleView card, Position position)
         {
-            /*
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("[SetCardPosition]");
-            sb.AppendLine($"CardId = {card.Card.Id}");
-            sb.AppendLine(position.ToString());
-
-            Debug.Log(sb.ToString());
-            */
             LocationView locView = BoardView.GetLocationView(position);
 
-            if (position.Location == ELocation.Field)
+            if (position.Location.Contains(ELocation.Field | ELocation.Hand))
             {
-                card.enabled = true;
-                card.transform.position = locView.transform.position + new Vector3(0, 10, 0);
+                card.ToggleVisibility(true);
             }
+            else
+            {
+                card.ToggleVisibility(false);
+            }
+            Debug.Log("<color=green>Setting position</color>" + "\n" + position.ToString() + "\n" + card.Card.ToString());
+            locView?.HandleMove(card);
         }
     }
 }

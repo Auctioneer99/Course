@@ -25,5 +25,10 @@
             packet.Write((short)location);
             return packet;
         }
+
+        public static bool Contains(this ELocation origin, ELocation other)
+        {
+            return (origin & other) > 0;
+        }
     }
 }

@@ -27,6 +27,12 @@ namespace Gameplay
         {
             AAction action = Activator.CreateInstance(type) as AAction;
             action.GameController = _gameController;
+
+            if (action is APlayerAction playerAction)
+            {
+                playerAction.ConnectionId = _gameController.Network.ConnectionId;
+            }
+
             return action;
         }
     }

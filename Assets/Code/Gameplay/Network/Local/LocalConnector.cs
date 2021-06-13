@@ -54,10 +54,6 @@ namespace Gameplay
             }
             else
             {
-                if (action is APlayerAction pAction)
-                {
-                    pAction.ConnectionId = ConnectionId;
-                }
                 Manager.SendToHost(this, action);
             }
         }
@@ -74,7 +70,9 @@ namespace Gameplay
         {
             if (CanHandleMessage(sender, action) == false)
             {
-                Debug.Log($"[Network Manager] Cant handle message: sender = {sender.Role}, {sender.ConnectionId}, action = {action.EAction}");
+                Debug.Log(Manager.ToString());
+                Debug.Log($"[Network Manager] Current Side = { (Instance.HasAuthority ? "server" : "client") }");
+                Debug.Log($"[Network Manager] Cant handle message: sender = {sender.ToString()}");
                 return;
             }
             GameController gc = Instance.Controller;
@@ -93,29 +91,39 @@ namespace Gameplay
 
         private bool CanHandleMessage(AConnector connector, AAction action)
         {
-            bool isPlayerAction = action is APlayerAction;
+            APlayerAction playerAction = action as APlayerAction;
             bool isAuthorityAction = action is IAuthorityAction;
-            //EPlayer senderRole = sender.Role;
-            //Debug.Log("[Local Connector] Can handle " + action.EAction + " " + (Instance.HasAuthority ? "Authority side" : "Client Side"));
             if (Instance.HasAuthority)
             {
-                if (isPlayerAction)
+                if (playerAction != null)
                 {
-                    //Debug.Log("Yes");
+                    if (connector.Role != playerAction.EPlayer)
+                    {
+                        return false;
+                    }
                     return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             else
             {
                 if (isAuthorityAction)
                 {
-                    //Debug.Log("Yes");
                     return true;
                 }
             }
-
-            //Debug.Log("No");
             return false;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[LocalConnector]");
+            sb.Append(base.ToString());
+            return sb.ToString();
         }
     }
 }

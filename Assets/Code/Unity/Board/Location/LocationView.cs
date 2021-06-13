@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay.Unity
 {
-    public abstract class LocationView : MonoBehaviour, IGameListener
+    public abstract class LocationView : MonoBehaviour
     {
         public BoardSideView BoardSideView { get; protected set; }
         public Location Location { get; protected set; }
@@ -21,19 +21,6 @@ namespace Gameplay.Unity
             Location = BoardSideView.BoardSide.GetLocation(ELocation);
         }
 
-        public virtual void Attach(GameController game, bool wasJustInitialized)
-        {
-            _controller = game;
-        }
-
-        public void Detach(GameController game)
-        {
-            
-        }
-
-        public void OnGameEndedCleanup()
-        {
-            
-        }
+        public abstract void HandleMove(CardBattleView card);
     }
 }

@@ -73,8 +73,8 @@ namespace Gameplay
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[Card]");
             sb.AppendLine($"Id = {Id}");
-            sb.AppendLine($"Position = {Position}");
-            sb.AppendLine($"Definition = {Definition}");
+            sb.AppendLine($"Position = {Position.ToString()}");
+            sb.AppendLine($"Definition = {Definition.ToString()}");
             sb.AppendLine($"Visibility = {EVisibility}");
             return sb.ToString();
         }

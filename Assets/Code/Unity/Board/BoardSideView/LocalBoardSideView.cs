@@ -11,28 +11,48 @@ namespace Gameplay.Unity
     {
         public EPlayer LocalPlayer => _controller.PlayerManager.LocalUserId;
 
+        [SerializeField]
+        public HandView Hand;
+
+        public Dictionary<ELocation, LocationView> Locations;
+
+        private void Start()
+        {
+            Locations = new Dictionary<ELocation, LocationView>
+            {
+                { ELocation.Hand, Hand },
+            };
+        }
+
         public override void Attach(GameController game, bool wasJustInitialized)
         {
             _controller = game;
 
-            _controller.EventManager.OnPlayerSetup.VisualEvent.AddListener(OnPlayerSetup);
-        }
-
-        public void Setup()
-        {
-            Player player = _controller.PlayerManager.LocalUser;
-            OnPlayerSetup(player);
-
-        }
-
-        private void OnPlayerSetup(Player player)
-        {
-            if (LocalPlayer == player.EPlayer)
+            if(_controller.IsInitialized)
             {
-                //Player = player;
-
-                //attaching events;
+                ChangePerspectiveView(_controller.PlayerManager.PerspectivePlayer);
             }
+
+            _controller.PlayerManager.PerspectiveChanged.VisualEvent.AddListener(ChangePerspectiveView);
+        }
+
+        public LocationView GetLocationView(Position position)
+        {
+            Locations.TryGetValue(position.Location, out LocationView view);
+            return view;
+        }
+
+        private void ChangePerspectiveView(EPlayer player)
+        {
+            if (EPlayer == EPlayer.Undefined)
+            {
+                return;
+            }
+
+            BoardSideView view = BoardView.GetBoardSideView(player);
+
+            Hand.Initialize(view);
+
         }
     }
 

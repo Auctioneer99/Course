@@ -88,6 +88,7 @@ namespace Gameplay
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[Postion]");
             sb.AppendLine($"Id = {Id}");
+            sb.AppendLine($"Player = {Player}");
             sb.AppendLine($"Location = {Location}");
             sb.AppendLine($"Index = {Index}");
 

@@ -11,15 +11,14 @@ namespace Gameplay.Unity
     {
         [SerializeField]
         private BoardSideView BoadSideViewPrefab;
-        [SerializeField]
-        private LocalBoardSideView LocalBoardSideViewPrefab;
 
         [SerializeField]
         private BattlefieldController BattlefieldController;
+        [SerializeField]
+        private LocalBoardSideView LocalBoardSideView;
 
         private GameController _controller;
         private Dictionary<EPlayer, BoardSideView> _boardSideViews;
-        private LocalBoardSideView _localBoardSideView;
 
         private void Start()
         {
@@ -45,8 +44,11 @@ namespace Gameplay.Unity
                 return BattlefieldController.GetTileView(position);
             }
 
-            BoardSideView view = GetBoardSideView(position.Id.GetEPlayer());
-            return view?.GetLocationView(position);
+            if (position.Player == LocalBoardSideView.EPlayer)
+            {
+                return LocalBoardSideView.GetLocationView(position);
+            }
+            return null;
         }
 
         public void Attach(GameController game, bool wasJustInitialized)
@@ -70,7 +72,7 @@ namespace Gameplay.Unity
         {
             if (_controller.Network.ConnectionId == player.ConnectionId)
             {
-                //LocalBoardSideView.Initialize(player);
+                LocalBoardSideView.Initialize(this, player.EPlayer);
             }
         }
 

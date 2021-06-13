@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay.Unity
 {
-    public class CardViewManager : MonoBehaviour, IGameListener
+    public class CardViewManager : ASingleton<CardViewManager>, IGameListener
     {
         private const int DEFAULT_BUFFER_SIZE = 64;
 
@@ -25,22 +25,6 @@ namespace Gameplay.Unity
         public void Attach(GameController game, bool wasJustInitialized)
         {
             _controller = game;
-
-            //_controller.EventManager.CardsSpawned.VisualEvent.AddListener(OnCardsSpawned);
-            //Debug.Log("<color=purple>Attaching</color>");
-        }
-
-        private void OnCardsSpawned(List<Card> cards)
-        {
-            //Debug.Log("<color=purple>OnCardsSpawned</color>");
-            //Debug.Log(cards.Count);
-            foreach(var card in cards)
-            {
-                CardBattleView view = GetCardView(card);
-
-                view.transform.position = new Vector3(0, 0, 0);
-                view.enabled = false;
-            }
         }
 
         public CardBattleView GetCardView(Card card, bool createIfNull = true)
@@ -67,6 +51,7 @@ namespace Gameplay.Unity
             GameObject cardObject = Instantiate(CardPrefab, this.transform);
 
             CardBattleView view = cardObject.GetComponent<CardBattleView>();
+            view.ToggleVisibility(false);
 
             view.Initialize(card);
 

@@ -120,7 +120,7 @@ namespace Gameplay
                 {
                     if (action is ITargetedAction targetedAction)
                     {
-                        return targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
+                        canSend = targetedAction.Target.Contains(NetworkTarget.TargetPlayer)
                             && targetedAction.Connection != -1;
                     }
                 }
@@ -128,12 +128,11 @@ namespace Gameplay
             else
             {
                 bool isAuthoritativeAction = action is IAuthorityAction;
-
-                if ((isClientAction || isAuthoritativeAction) == false)
+                canSend = isClientAction && !isAuthoritativeAction;
+                if (!isClientAction && !isAuthoritativeAction)
                 {
-                    throw new System.Exception("Unauthorized action send");
+                    throw new System.Exception("Invalid action has been sent from client");
                 }
-                return !isAuthoritativeAction && isClientAction;
             }
             return canSend;
         }

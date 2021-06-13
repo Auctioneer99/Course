@@ -33,8 +33,7 @@ namespace Gameplay
 
             Card spawner = GameController.CardManager.GetCard(SpawnerId);
 
-            //Debug.Log("<color=green>Spawns</color>");
-            //Debug.Log(Spawns.Count);
+            MoveAction moveAction = GameController.ActionFactory.Create<MoveAction>().Initialize();
             foreach (var spawn in Spawns)
             {
                 Location location = GameController.BoardManager.GetLocation(spawn.Position);
@@ -45,15 +44,15 @@ namespace Gameplay
                     Spawns.Remove(spawn);
                     continue;
                 }
-                //Debug.Log("<color=blue>registred</color>");
-                Card card = GameController.CardManager.Register(spawn.CardId, spawn.Definition, spawn.Position);
+                Card card = GameController.CardManager.Register(spawn.CardId, spawn.Definition);
                 spawnedCards.Add(card);
 
+                MoveDefinition move = new MoveDefinition(card, spawn.Position, 0);
+                moveAction.Moves.Add(move);
             }
-            GameController.EventManager.CardsSpawned.Invoke(spawnedCards);
 
-            /////
-            /////
+            GameController.EventManager.CardsSpawned.Invoke(spawnedCards);
+            GameController.ActionDistributor.Add(moveAction);
         }
 
         public void Censor(EPlayer player)

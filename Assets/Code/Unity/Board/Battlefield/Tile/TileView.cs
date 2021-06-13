@@ -11,6 +11,11 @@ namespace Gameplay.Unity
     {
         public override ELocation ELocation => ELocation.Field;
 
+        public override void HandleMove(CardBattleView card)
+        {
+            card.transform.position = transform.position + new Vector3(0, 10, 0);
+        }
+
         public void Initialize(BoardSideView sideView, Tile tile)
         {
             BoardSideView = sideView;

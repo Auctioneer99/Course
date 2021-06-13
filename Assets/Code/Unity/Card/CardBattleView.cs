@@ -11,9 +11,28 @@ namespace Gameplay
     {
         public Card Card { get; private set; }
 
+        private GameObject _parent;
+
+        private void Awake()
+        {
+            _parent = gameObject;
+        }
+
         public void Initialize(Card card)
         {
             Card = card;
+        }
+
+        public void ToggleVisibility(bool toDisplay)
+        {
+            if (toDisplay)
+            {
+                _parent.SetActive(true);
+            }
+            else
+            {
+                _parent.SetActive(false);
+            }
         }
     }
 }
