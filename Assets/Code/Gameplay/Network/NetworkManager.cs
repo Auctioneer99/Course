@@ -106,7 +106,7 @@ namespace Gameplay
         public void SendExeptTarget(AConnector sender, AAction action, int target)
         {
             _messages.Enqueue(new NetworkMessage(sender, action, _connectionPool.Keys
-                .Except(new List<int>() { target })
+                .Except(new[] { target })
                 .ToArray()));
         }
 

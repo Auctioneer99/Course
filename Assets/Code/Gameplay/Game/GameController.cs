@@ -35,10 +35,13 @@ namespace Gameplay
         public PauseManager PauseManager { get; private set; }
         //public TimeManager TimeManager { get; private set; }
 
+        public VisibilityChanger VisibilityChanger { get; private set; }
+
         public GameInstance GameInstance { get; private set; }
 
         public GameController(GameInstance instance, bool isMainController)
         {
+            VisibilityChanger = new VisibilityChanger(this);
             //Network = new LocalConnector(this);
             GameInstance = instance;
             ActionFactory = new ActionFactory(this);

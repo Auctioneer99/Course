@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 
 namespace Gameplay
@@ -30,7 +31,14 @@ namespace Gameplay
             {
                 if (action is ITargetedAction tAction)
                 {
-                    Manager.SendToTarget(this, action, tAction.Connection);
+                    switch (tAction.Target)
+                    {
+                        case NetworkTarget.TargetPlayer:
+                            Manager.SendToTarget(this, action, tAction.Connection);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
                 }
                 else
                 {

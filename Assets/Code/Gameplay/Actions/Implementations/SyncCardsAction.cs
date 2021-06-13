@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class SyncCardsAction : AAction, IAuthorityAction
+    public class SyncCardsAction : AAction, IAuthorityAction, ITargetedAction
     {
         public override EAction EAction => EAction.SyncCards;
 
@@ -14,6 +14,10 @@ namespace Gameplay
 
         public List<Card> CardsToReveal { get; private set; }
         public List<ushort> CardsToHide { get; private set; }
+
+        public int Connection { get; private set; }
+
+        public NetworkTarget Target => NetworkTarget.TargetPlayer;
 
         public SyncCardsAction Initialize(EPlayer player, ChangeVisibilityAction action)
         {
@@ -34,10 +38,10 @@ namespace Gameplay
 
         private void Add(Card card, VisibilityChangeDefinition definition)
         {
-            //if (definition.Target == EPlayer.Undefined)
-            //{
-            //    definition.Target = card.Position.Player;
-            //}
+            if (definition.Target == EPlayer.Undefined)
+            {
+                definition.Target = card.Position.Player;
+            }
 
             if (definition.TargetVisibility.IsVisibleTo(definition.Target, Player))
             {
@@ -50,7 +54,6 @@ namespace Gameplay
                     CardsToHide.Add(card.Id);
                 }
             }
-
         }
 
         protected override void ApplyImplementation()
