@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IStateObjectCloneable<PlayerManager>
+    public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IStateObject<PlayerManager>
     {
         public BattleEvent<EPlayer> PerspectiveChanged;
 
@@ -29,7 +29,7 @@ namespace Gameplay
             }
         }
         public EPlayer _perspective = EPlayer.Undefined;
-        public EPlayer LocalUserId => GameController.Network.Role;
+        public EPlayer LocalUserId => GameController.Network != null ? GameController.Network.Role : EPlayer.Undefined;
         public EPlayer CurrentPlayerId { get; private set; }
 
         public Player LocalUser => GetPlayer(LocalUserId);
@@ -192,7 +192,11 @@ namespace Gameplay
             for(int i = 0; i < count; i++)
             {
                 EPlayer key = packet.ReadEPlayer();
-                Player value = new Player(this, packet);
+                Player value = null;
+                if (packet.ReadBool())
+                {
+                    value = new Player(this, packet);
+                }
                 Players.Add(key, value);
             }
         }
@@ -204,8 +208,16 @@ namespace Gameplay
 
             foreach(var p in Players)
             {
-                packet.Write(p.Key)
-                    .Write(p.Value);
+                packet.Write(p.Key);
+                if (p.Value == null)
+                {
+                    packet.Write(false);
+                }
+                else
+                {
+                    packet.Write(true)
+                        .Write(p.Value);
+                }
             }
         }
 
@@ -219,22 +231,15 @@ namespace Gameplay
             }
         }
 
-        public PlayerManager Clone(GameController controller)
-        {
-            PlayerManager pm = new PlayerManager(controller);
-            pm.Copy(this, controller);
-            return pm;
-        }
-
         public void Copy(PlayerManager other, GameController controller)
         {
-            GameController = controller;
             //LocalUserId = other.LocalUserId;
             CurrentPlayerId = other.CurrentPlayerId;
 
             Players.Clear();
             foreach (var p in other.Players)
             {
+                Debug.Log(p);
                 if (p.Value == null)
                 {
                     Players.Add(p.Key, null);

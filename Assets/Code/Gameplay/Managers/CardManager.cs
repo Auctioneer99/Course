@@ -64,7 +64,7 @@ namespace Gameplay
         public Card Create(ushort id, CardDefinition definition)
         {
             Card card = new Card(this);
-            card.Initialize(id, definition, Position.Null);
+            card.Initialize(GameController.GameRuntimeData, id, definition, Position.Null);
             return card;
         }
 

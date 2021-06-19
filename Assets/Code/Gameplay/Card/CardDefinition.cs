@@ -27,6 +27,16 @@ namespace Gameplay
             packet.Write(TemplateId);
         }
 
+        public static bool operator == (CardDefinition a, CardDefinition b)
+        {
+            return a.TemplateId == b.TemplateId;
+        }
+
+        public static bool operator !=(CardDefinition a, CardDefinition b)
+        {
+            return a.TemplateId != b.TemplateId;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

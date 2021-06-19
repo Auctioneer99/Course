@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using UnityEngine;
 
 namespace Gameplay
 {
@@ -10,6 +11,8 @@ namespace Gameplay
 
         public Settings Settings { get; private set; }
 
+        public GameData GameData { get; private set; }
+
         public LocalConnector Network { get; private set; }
 
         public EGameMode Mode { get; private set; }
@@ -18,15 +21,14 @@ namespace Gameplay
 
         public BattleEvent<GameInstance> SnapshotRestored;
 
-        private GameInstance() { }
-
         public GameInstance(Packet packet)
         {
             FromPacket(packet);
         }
 
-        public GameInstance(EGameMode mode, Settings settings)
+        public GameInstance(GameData gameData, EGameMode mode, Settings settings)
         {
+            GameData = gameData;
             string color = mode == EGameMode.Server ? "red" : "blue";
             Logger = new Logger(color);
 
@@ -72,15 +74,15 @@ namespace Gameplay
 
         public GameInstance Clone()
         {
-            GameInstance gi = new GameInstance();
+            GameInstance gi = new GameInstance(GameData, Mode, Settings);
             gi.Copy(this);
             return gi;
         }
 
         public void Copy(GameInstance other)
         {
-            Settings = other.Settings.Clone();
-            Controller = other.Controller.Clone(this);
+            Settings.Copy(other.Settings);
+            Controller.Copy(other.Controller);
             Mode = other.Mode;
         }
 
@@ -93,10 +95,15 @@ namespace Gameplay
 
         public void FromPacket(Packet packet)
         {
+            Debug.Log(string.Join(", ", packet.ToArray()));
+            Debug.Log(1);
             Mode = packet.ReadEGameMode();
-            Settings = new Settings(packet);
-            Controller = new GameController(this, true);
+            Debug.Log(2);
+            Settings.FromPacket(packet);
+            Debug.Log(3);
+            //Controller = new GameController(this, true);
             Controller.FromPacket(packet);
+            Debug.Log(4);
         }
 
         public override string ToString()

@@ -17,11 +17,13 @@ namespace Gameplay.Unity
         private int _pauseId = -1;
 
         public GameListenerManager Listener { get; private set; }
+        public GameData GameData { get; private set; }
 
         protected override void Awake()
         {
             base.Awake();
             Listener = new GameListenerManager();
+            GameData = GameData.Create();
         }
 
         public void Start()
@@ -65,7 +67,7 @@ namespace Gameplay.Unity
 
         public void SetupClient()
         {
-            GameInstance server = new GameInstance(EGameMode.Server, new Settings(1));
+            GameInstance server = new GameInstance(GameData, EGameMode.Server, new Settings(1));
             ServerDefinition serverDef = ServerDefinition.SetupOnline(server, 8000);
             serverDef.Start();
             LocalNetwork = server.Controller.Network.Manager;
@@ -77,7 +79,7 @@ namespace Gameplay.Unity
             //clientdef1.ConnectToOnline("localhost", 8000);
 
 
-            GameInstance client2 = new GameInstance(EGameMode.Client, new Settings(0));
+            GameInstance client2 = new GameInstance(GameData, EGameMode.Client, new Settings(0));
             Listener.SetGame(client2);
 
             ClientDefinition clientdef2 = new ClientDefinition(client2);

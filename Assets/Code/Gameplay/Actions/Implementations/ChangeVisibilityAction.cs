@@ -16,12 +16,29 @@ namespace Gameplay
         {
             base.Initialize();
 
+            Changes = new List<VisibilityChangeDefinition>(4);
+
             return this;
+        }
+
+        public void Add(Card card, ECardVisibility targetVisibility, EPlayer targetPlayer = EPlayer.Undefined, bool shouldBeHiddenForClient = true)
+        {
+            if (targetPlayer == EPlayer.Undefined)
+            {
+                targetPlayer = card.Position.Player;
+            }
+
+            var definition = new VisibilityChangeDefinition(card.Id, targetVisibility, targetPlayer, shouldBeHiddenForClient);
+            Changes.Add(definition);
         }
 
         protected override void ApplyImplementation()
         {
-            throw new NotImplementedException();
+            foreach(var def in Changes)
+            {
+                Card card = GameController.CardManager.GetCard(def.Card);
+                card.EVisibility = def.TargetVisibility;
+            }
         }
 
         protected override void AttributesFrom(Packet packet)
@@ -36,7 +53,9 @@ namespace Gameplay
 
         protected override void CopyImplementation(AAction copyFrom, GameController controller)
         {
-            throw new NotImplementedException();
+            ChangeVisibilityAction other = copyFrom as ChangeVisibilityAction;
+
+            Changes = new List<VisibilityChangeDefinition>(other.Changes);
         }
     }
 }

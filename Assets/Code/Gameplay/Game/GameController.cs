@@ -35,13 +35,23 @@ namespace Gameplay
         public PauseManager PauseManager { get; private set; }
         //public TimeManager TimeManager { get; private set; }
 
-        public VisibilityChanger VisibilityChanger { get; private set; }
+        public VisibilityManager VisibilityManager { get; private set; }
 
         public GameInstance GameInstance { get; private set; }
 
-        public GameController(GameInstance instance, bool isMainController)
+        public GameRuntimeData GameRuntimeData { get; private set; }
+
+        public GameController(GameInstance instance, bool isMainController, GameRuntimeData data = null)
         {
-            VisibilityChanger = new VisibilityChanger(this);
+            if (data == null)
+            {
+                GameRuntimeData = instance.GameData.CreateRuntime();
+            }
+            else
+            {
+                GameRuntimeData = data;
+            }
+            VisibilityManager = new VisibilityManager(this);
             //Network = new LocalConnector(this);
             GameInstance = instance;
             ActionFactory = new ActionFactory(this);
@@ -171,7 +181,7 @@ namespace Gameplay
             IsInitialized = controller.IsInitialized;
             Status = controller.Status;
             StateMachine = controller.StateMachine.Clone(this);
-            PlayerManager = controller.PlayerManager.Clone(this);
+            PlayerManager.Copy(controller.PlayerManager, controller);
             //TimeManager = controller.TimeManager.Clone(this);
         }
 

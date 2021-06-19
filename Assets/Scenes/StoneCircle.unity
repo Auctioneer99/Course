@@ -3381,7 +3381,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 393758549}
-  - component: {fileID: 393758548}
   m_Layer: 0
   m_Name: GameTest
   m_TagString: Untagged
@@ -3389,18 +3388,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &393758548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 393758547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28a844107af6f1f4d81f854238c58719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &393758549
 Transform:
   m_ObjectHideFlags: 0
@@ -5654,6 +5641,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &833790631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 833790633}
+  - component: {fileID: 833790632}
+  m_Layer: 0
+  m_Name: LocalBoardSide
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &833790632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833790631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa12454bc7c568479dfa382f0d35daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hand: {fileID: 1388371987}
+--- !u!4 &833790633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833790631}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1388371988}
+  m_Father: {fileID: 1082631432}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834237829
 GameObject:
   m_ObjectHideFlags: 0
@@ -7712,7 +7744,8 @@ Transform:
   m_LocalRotation: {x: 0.35528898, y: -0.6113671, z: 0.35528898, w: 0.6113671}
   m_LocalPosition: {x: 1756, y: 2264, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 833790633}
   m_Father: {fileID: 347794929}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60.325, y: -90, z: 0}
@@ -10209,6 +10242,49 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b2bf664af32de774cbfc4e95bb34596b, type: 3}
   m_PrefabInstance: {fileID: 1367709719}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1388371986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1388371988}
+  - component: {fileID: 1388371987}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1388371987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388371986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463faf138e2614a43883316f92651198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1388371988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388371986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 833790633}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1392041832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13405,8 +13481,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoadSideViewPrefab: {fileID: -7885152452245199041, guid: 5e0d5578d021f6a40a711adb2c89ad8d, type: 3}
-  LocalBoardSideViewPrefab: {fileID: 5525577464359193078, guid: 92690f15310fd59429527d744c42bc1b, type: 3}
   BattlefieldController: {fileID: 888687439}
+  LocalBoardSideView: {fileID: 833790632}
 --- !u!4 &1760806453
 Transform:
   m_ObjectHideFlags: 0

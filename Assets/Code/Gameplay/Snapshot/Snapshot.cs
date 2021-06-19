@@ -9,6 +9,8 @@ namespace Gameplay
 {
     public class Snapshot : IDeserializable, IStateObjectCloneable<Snapshot>
     {
+        public Packet GameInstancePacket { get; private set; }
+
         public GameInstance GameInstance { get; private set; }
         //public Settings Settings { get; private set; }
         //public GameController GameController { get; private set; }
@@ -17,6 +19,8 @@ namespace Gameplay
 
         private Snapshot(GameInstance instance)
         {
+            //GameInstancePacket = new Packet();
+            //GameInstancePacket.Write(instance);
             //Settings = controller.GameInstance.Settings.Clone(controller);
             GameInstance = instance.Clone();
         }
@@ -28,8 +32,9 @@ namespace Gameplay
 
         public static Snapshot Create(GameInstance instance, EPlayer player)
         {
-            Snapshot snapshot = new Snapshot(instance);
-            snapshot.GameInstance.Censor(player);
+            GameInstance newInst = instance.Clone();
+            newInst.Censor(player);
+            Snapshot snapshot = new Snapshot(newInst);
             //snapshot.Settings.Censor(player);
             //Debug.Log("Snapshot created ");
             //Debug.Log(snapshot.Settings);
@@ -38,7 +43,10 @@ namespace Gameplay
 
         public void Restore(GameInstance instance)
         {
+            //Debug.Log(string.Join(", ", GameInstancePacket.ToArray()));
             instance.Copy(GameInstance);
+            //instance.FromPacket(GameInstancePacket);
+            //instance.Copy(GameInstance);
             instance.SnapshotRestored.Invoke(instance);
             Debug.Log(instance.ToString());
             //controller.GameInstance.Settings.Copy(GameInstance.Settings, controller);
@@ -53,14 +61,20 @@ namespace Gameplay
 
         public void FromPacket(Packet packet)
         {
-            GameInstance = new GameInstance(packet);
+            //int len = packet.ReadInt();
+          //  GameInstancePacket = packet;// new Packet(packet.ReadBytes(len));
+            //GameInstance = new GameInstance(packet);
             //GameController = new GameController(packet);
             //Settings = new Settings(packet);
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(GameInstance);
+            //var arr = GameInstancePacket.ToArray();
+          //  packet
+                //.Write(arr.Length)
+          //      .Write(GameInstance);
+            //packet.Write(GameInstance);
         }
         /*
         public void Censor(EPlayer player)
@@ -77,6 +91,7 @@ namespace Gameplay
 
         public void Copy(Snapshot other, GameController controller)
         {
+            //GameInstancePacket = other.GameInstancePacket;
             GameInstance = other.GameInstance.Clone();
         }
     }

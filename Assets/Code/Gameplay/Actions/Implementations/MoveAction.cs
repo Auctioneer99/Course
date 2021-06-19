@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class MoveAction : AAction, IAuthorityAction
+    public class MoveAction : AAction, IAuthorityAction, IVisibilityChangeRequester
     {
         public override EAction EAction => EAction.Move;
 
@@ -22,10 +22,23 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
+            GameController.VisibilityManager.ChangeVisibility(this);
+
             foreach (var def in Moves)
             {
                 Card card = GameController.CardManager.GetCard(def.CardId);
                 GameController.BoardManager.Move(card, def.To);
+            }
+        }
+
+        public void AddCardsToChangeVisibility(ChangeVisibilityAction action)
+        {
+            foreach(var move in Moves)
+            {
+                Card card = GameController.CardManager.GetCard(move.CardId);
+                bool shouldHide = move.From.Player == move.To.Player && ELocation.Field.Contains(move.To.Location);
+
+                action.Add(card, VisibilityManager.GetTargetVisibilityWhenMoving(card, move.From, move.To), move.To.Player, shouldHide);
             }
         }
 

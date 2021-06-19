@@ -12,8 +12,10 @@ namespace Gameplay
 
         public EPlayer Player { get; private set; }
 
-        public List<Card> CardsToReveal { get; private set; }
+        public List<ushort> CardsToReveal { get; private set; }
         public List<ushort> CardsToHide { get; private set; }
+
+        public Packet CardsToRevealData { get; private set; }
 
         public int Connection { get; private set; }
 
@@ -24,6 +26,7 @@ namespace Gameplay
             base.Initialize();
 
             Player = player;
+            CardsToRevealData = new Packet();
             foreach(var def in action.Changes)
             {
                 Card card = GameController.CardManager.GetCard(def.Card);
@@ -36,6 +39,11 @@ namespace Gameplay
             return this;
         }
 
+        public override bool IsValid()
+        {
+            return  (CardsToHide.Count > 0 || CardsToReveal.Count > 0) && base.IsValid();
+        }
+
         private void Add(Card card, VisibilityChangeDefinition definition)
         {
             if (definition.Target == EPlayer.Undefined)
@@ -45,7 +53,8 @@ namespace Gameplay
 
             if (definition.TargetVisibility.IsVisibleTo(definition.Target, Player))
             {
-                CardsToReveal.Add(card);
+                CardsToReveal.Add(card.Id);
+                CardsToRevealData.Write(card);
             }
             else
             {
@@ -58,7 +67,20 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
-            throw new NotImplementedException();
+            if (GameController.HasAuthority == false)
+            {
+                foreach (var id in CardsToReveal)
+                {
+                    Card cardToSync = GameController.CardManager.GetCard(id);
+                    cardToSync.FromPacket(GameController, CardsToRevealData);
+                }
+
+                foreach(var id in CardsToHide)
+                {
+                    Card card = GameController.CardManager.GetCard(id);
+                    card.Hide();
+                }
+            }
         }
 
         protected override void AttributesFrom(Packet packet)
@@ -73,7 +95,14 @@ namespace Gameplay
 
         protected override void CopyImplementation(AAction copyFrom, GameController controller)
         {
-            throw new NotImplementedException();
+            SyncCardsAction other = copyFrom as SyncCardsAction;
+            Connection = other.Connection;
+            CardsToHide = new List<ushort>(other.CardsToHide.Count);
+            CardsToHide.Copy(other.CardsToHide);
+            CardsToReveal = new List<ushort>(other.CardsToReveal.Count);
+            CardsToReveal.Copy(other.CardsToReveal);
+            CardsToRevealData = new Packet();
+            CardsToRevealData.Write(other.CardsToRevealData.ToArray());
         }
     }
 }

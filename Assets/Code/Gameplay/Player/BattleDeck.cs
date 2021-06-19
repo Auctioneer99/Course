@@ -32,11 +32,11 @@ namespace Gameplay
         public static BattleDeck Default()
         {
             string name = "TemplateDeck 1";
-            CardDefinition leader = new CardDefinition(1);
+            CardDefinition leader = new CardDefinition(2);
             List<CardDefinition> cards = new List<CardDefinition>(30);
             for( int i = 0; i < 30; i++)
             {
-                cards.Add(new CardDefinition(i + 22));
+                cards.Add(new CardDefinition(3));
             }
 
             return new BattleDeck(name, leader, cards);

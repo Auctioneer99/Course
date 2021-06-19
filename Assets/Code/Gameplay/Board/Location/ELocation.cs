@@ -10,7 +10,6 @@
         Field = 1 << 4,
 
         Spawn = 1 << 5,
-
     }
 
     public static class ELocationExtension
