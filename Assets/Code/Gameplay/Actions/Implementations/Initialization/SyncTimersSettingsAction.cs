@@ -1,10 +1,16 @@
-﻿namespace Gameplay
+﻿using System.Collections.Generic;
+
+namespace Gameplay
 {
     public class SyncTimersSettingsAction : AAction, IAuthorityAction
     {
         public override EAction EAction => EAction.SyncTimersSettings;
 
         public TimerSettings Settings { get; private set; }
+
+        public SyncTimersSettingsAction()
+        {
+        }
 
         public SyncTimersSettingsAction Initialize(TimerSettings settings)
         {
@@ -21,20 +27,19 @@
 
         protected override void CopyImplementation(AAction copyFrom, GameController controller)
         {
-            //Settings = (copyFrom as SyncTimersSettingsAction).Settings.Clone(controller);
+            Settings.Copy((copyFrom as SyncTimersSettingsAction).Settings);
         }
 
         protected override void ApplyImplementation()
         {
-            /*
             if (GameController.HasAuthority == false)
             {
                 TimerSettings currentSettings = GameController.GameInstance.Settings.TimerSettings;
                 currentSettings.EnableTimers = Settings.EnableTimers;
-                currentSettings.Timers = Settings.Timers;
+                currentSettings.StateTimers = new List<StateTimerDefinition>(Settings.StateTimers);
 
-                GameController.TimeManager.SetupTimers();
-            }*/
+                GameController.StateMachine.TimeManager.SetupTimers();
+            }
         }
 
         protected override void AttributesFrom(Packet packet)

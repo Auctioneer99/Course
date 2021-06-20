@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Gameplay
 {
-    public class TimerSettings : IDeserializable, IStateObject<TimerSettings>
+    public struct TimerSettings : IDeserializable, IStateObject<TimerSettings>
     {
         public bool EnableTimers;
         public List<StateTimerDefinition> StateTimers;
-
-        public TimerSettings()
-        {
-
-        }
 
         public TimerSettings(bool enableTimers)
         {
@@ -20,23 +16,16 @@ namespace Gameplay
             {
                 StateTimers = TimerFactory.CreateDefaultDefinitions();
             }
-        }
-
-        public TimerSettings(Packet packet)
-        {
-            FromPacket(packet);
-        }
-
-        public TimerSettings(List<StateTimerDefinition> definitions)
-        {
-            EnableTimers = true;
-            StateTimers.AddRange(definitions);
+            else
+            {
+                StateTimers = null;
+            }
         }
 
         public void Copy(TimerSettings other)
         {
             EnableTimers = other.EnableTimers;
-            StateTimers = other.StateTimers.Clone();
+            StateTimers = new List<StateTimerDefinition>(other.StateTimers);
         }
 
         public void FromPacket(Packet packet)
@@ -54,6 +43,20 @@ namespace Gameplay
         {
             packet.Write(EnableTimers)
                 .Write(StateTimers);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[TimerSettings]");
+            sb.AppendLine($"EnableTimers = {EnableTimers}");
+            sb.AppendLine("Timers");
+            foreach (var t in StateTimers)
+            {
+                sb.Append(t.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

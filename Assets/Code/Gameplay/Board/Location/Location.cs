@@ -156,6 +156,11 @@ namespace Gameplay
             sb.AppendLine($"Capacity = {Capacity}");
             sb.AppendLine($"CardsCount = {Cards.Count}");
 
+            foreach(var card in Cards)
+            {
+                sb.Append(card.ToString());
+            }
+
             return sb.ToString();
         }
     }

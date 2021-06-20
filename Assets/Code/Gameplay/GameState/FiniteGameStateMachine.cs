@@ -100,7 +100,7 @@ namespace Gameplay
         public void Copy(FiniteGameStateMachine other, GameController controller)
         {
             CurrentState = other.CurrentState == null ? null : _states[other.ECurrentState];
-            TimeManager.Copy(other.TimeManager, GameController);
+            TimeManager.Copy(other.TimeManager, controller);
         }
 
         public void Censor(EPlayer player)

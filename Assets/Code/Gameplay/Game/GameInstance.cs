@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class GameInstance : ICensored, IDeserializable
+    public class GameInstance : ICensored, IDeserializable, IStateObject<GameInstance>
     {
         public Logger Logger { get; private set; }
 
@@ -21,11 +21,6 @@ namespace Gameplay
 
         public BattleEvent<GameInstance> SnapshotRestored;
 
-        public GameInstance(Packet packet)
-        {
-            FromPacket(packet);
-        }
-
         public GameInstance(GameData gameData, EGameMode mode, Settings settings)
         {
             GameData = gameData;
@@ -37,7 +32,7 @@ namespace Gameplay
             Network = new LocalConnector(this);
             Controller = new GameController(this, true);
             SnapshotRestored = new BattleEvent<GameInstance>(Controller);
-
+            /*
             if (HasAuthority == false)
             {
                 Settings.TimerSettings.EnableTimers = false;
@@ -45,7 +40,7 @@ namespace Gameplay
             else
             {
                 Settings.TimerSettings.EnableTimers = true;
-            }
+            }*/
         }
 
         public void Start()
@@ -82,6 +77,7 @@ namespace Gameplay
         public void Copy(GameInstance other)
         {
             Settings.Copy(other.Settings);
+            Debug.Log(Settings.ToString());
             Controller.Copy(other.Controller);
             Mode = other.Mode;
         }

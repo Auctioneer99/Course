@@ -15,11 +15,6 @@ namespace Gameplay
         public Dictionary<EPlayer, PlayerSettings> PlayersSettings { get; private set; }
         public BattlefieldSettings BattlefieldSettings { get; private set; }
 
-        public Settings()
-        {
-
-        }
-
         public Settings(int playersCount)
         {
             PlayersCount = playersCount;
@@ -31,11 +26,6 @@ namespace Gameplay
             }
             TimerSettings = new TimerSettings(true);
             BattlefieldSettings = BattlefieldFactory.DefaultCreate(playersCount);
-        }
-
-        public Settings(Packet packet)
-        {
-            FromPacket(packet);
         }
 
         public PlayerSettings GetPlayerSettings(EPlayer player)
@@ -59,7 +49,7 @@ namespace Gameplay
                 }
                 PlayersSettings[id] = player;
             }
-            TimerSettings = new TimerSettings(packet);
+            TimerSettings.FromPacket(packet);
         }
 
         public void ToPacket(Packet packet)
@@ -108,6 +98,7 @@ namespace Gameplay
                 sb.Append($"\n\tPlace for = {p.Key}");
                 sb.Append($"\n\t{p.Value}");
             }
+            sb.Append(TimerSettings.ToString());
             return sb.ToString();
         }
     }

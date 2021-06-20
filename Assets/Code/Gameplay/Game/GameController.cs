@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class GameController : ICensored, IDeserializable
+    public class GameController : ICensored, IDeserializable, IStateObject<GameController>
     {
         public bool HasAuthority => GameInstance.HasAuthority;
 
@@ -169,13 +169,13 @@ namespace Gameplay
             
         }
 
-        public void Copy(GameController controller)
+        public void Copy(GameController other)
         {
-            IsInitialized = controller.IsInitialized;
-            Status = controller.Status;
-            StateMachine.Copy(controller.StateMachine, controller);
-            PlayerManager.Copy(controller.PlayerManager, controller);
-            BoardManager.Copy(controller.BoardManager, controller);
+            IsInitialized = other.IsInitialized;
+            Status = other.Status;
+            StateMachine.Copy(other.StateMachine, other);
+            PlayerManager.Copy(other.PlayerManager, other);
+            BoardManager.Copy(other.BoardManager, other);
             //TimeManager = controller.TimeManager.Clone(this);
         }
 

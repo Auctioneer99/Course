@@ -48,6 +48,7 @@ namespace Gameplay.Unity
 
         private void OnStateTimerStarted(StateTimer timer)
         {
+            Debug.Log(timer);
             //_timerUI = timer;
             _timerUI.StateTimer = timer;
             _timerUI.ToggleTimer(true);

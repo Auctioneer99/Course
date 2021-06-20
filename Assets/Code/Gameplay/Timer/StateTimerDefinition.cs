@@ -1,4 +1,6 @@
-﻿namespace Gameplay
+﻿using System.Text;
+
+namespace Gameplay
 {
     public struct StateTimerDefinition : ISerializable, IStateObjectCloneable<StateTimerDefinition>
     {
@@ -34,6 +36,15 @@
         {
             packet.Write(EGameState)
                 .Write(TimerDefinition);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[StateTimerDefinition]");
+            sb.AppendLine($"GameState = {EGameState}");
+            sb.Append(TimerDefinition.ToString());
+            return sb.ToString();
         }
     }
 }
