@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Gameplay
 {
-    public class TimeManager : IRuntimeDeserializable, ICensored
+    public class TimeManager : IRuntimeDeserializable, ICensored, IRuntimeStateObject<TimeManager>
     {
         public FiniteGameStateMachine FiniteGameStateMachine { get; private set; }
 
@@ -109,28 +109,23 @@ namespace Gameplay
             return null;
         }
 
-        public TimeManager Clone(FiniteGameStateMachine fsm)
+        public void Copy(TimeManager other, GameController controller)
         {
-            TimeManager manager = new TimeManager();
-            manager.Copy(this, fsm);
-            return manager;
-        }
-
-        public void Copy(TimeManager other, FiniteGameStateMachine fsm)
-        {
-            FiniteGameStateMachine = fsm;
-
             _previousTime = other._previousTime;
             GameTime = other.GameTime;
             DeltaTime = other.DeltaTime;
 
-            foreach(var t in other._stateTimers)
+            SetupTimers();
+            int count = _stateTimers.Count;
+            for (int i = 0; i < count; i++)
             {
+                _stateTimers[i].Copy(other._stateTimers[i], controller);
+            }
+                /*
                 StateTimer timer = t.Clone(fsm.GameController);
                 _stateTimers.Add(timer);
                 AGameState gameState = FiniteGameStateMachine.GetState(timer.EGameState);
-                gameState.SetupTimer(timer);
-            }
+                gameState.SetupTimer(timer);*/
             /*
             SetupTimers();
             int count = _stateTimers.Count;
@@ -157,13 +152,14 @@ namespace Gameplay
             DeltaTime = packet.ReadLong();
 
             int count = packet.ReadInt();
+            /*
             for (int i = 0; i < count; i++)
             {
                 StateTimer timer = new StateTimer(this, packet);
                 _stateTimers.Add(timer);
                 AGameState gameState = FiniteGameStateMachine.GetState(timer.EGameState);
                 gameState.SetupTimer(timer);
-            }
+            }*/
 
             //SetupTimers();
             /*

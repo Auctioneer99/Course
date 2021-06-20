@@ -31,7 +31,7 @@ namespace Gameplay
 
             Connection = action.Connection;
             PlayerGroup = action.PlayerGroup;
-            Snapshot = action.Snapshot.Clone(controller);
+            Snapshot = action.Snapshot.Clone();
         }
 
         protected override void ApplyImplementation()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IStateObject<PlayerManager>
+    public class PlayerManager : AManager, ICensored, IRuntimeDeserializable, IRuntimeStateObject<PlayerManager>
     {
         public BattleEvent<EPlayer> PerspectiveChanged;
 
@@ -66,13 +66,14 @@ namespace Gameplay
             }
         }
 
-        public Player SetupPlayer(EPlayer eplayer, int connection)
+        public Player SetupPlayer(EPlayer eplayer, PlayerInfo info, int connection)
         {
             if (Players.TryGetValue(eplayer, out Player p))
             {
                 if (p == null)
                 {
                     Player player = new Player(this, eplayer, connection);
+                    player.Info = info;
                     Players[eplayer] = player;
 
                     GameController.Network.Manager.GetConnection(connection).Role = eplayer;
@@ -81,12 +82,10 @@ namespace Gameplay
                     {
                         PerspectivePlayer = eplayer;
                     }
-
                     return player;
                 }
                 else
                 {
-                    Debug.Log(p.ToString());
                     throw new Exception("Player already set");
                 }
             }
@@ -239,7 +238,6 @@ namespace Gameplay
             Players.Clear();
             foreach (var p in other.Players)
             {
-                Debug.Log(p);
                 if (p.Value == null)
                 {
                     Players.Add(p.Key, null);

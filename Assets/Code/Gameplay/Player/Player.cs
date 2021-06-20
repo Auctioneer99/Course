@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public class Player : ICensored, IStateObjectCloneable<Player>, IRuntimeDeserializable
+    public class Player : ICensored, IRuntimeStateObjectCloneable<Player>, IRuntimeDeserializable
     {
         public BattleEvent<bool> Prepared;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class Card : IStateObjectCloneable<Card>, IRuntimeDeserializable, ICensored
+    public class Card : IRuntimeStateObjectCloneable<Card>, IRuntimeDeserializable, ICensored
     {
         public BattleEvent<ECardVisibility, ECardVisibility> VisibilityChanged { 
             get
@@ -216,7 +216,7 @@ namespace Gameplay
             battleEvent = new BattleEvent(GameController);
             if (shouldChangeVisuals && _shouldCreateVisuals)
             {
-                battleEvent.VisualEvent.AddListener(_becomeVisualyInconsistentState.Invoke);
+                battleEvent.VisualEvent.AddListener(() => BecomeVisualyInconsistentState.Invoke());
             }
         }
 
@@ -225,7 +225,7 @@ namespace Gameplay
             battleEvent = new BattleEvent<T>(GameController);
             if (shouldChangeVisuals && _shouldCreateVisuals)
             {
-                battleEvent.VisualEvent.AddListener(_becomeVisualyInconsistentState.Invoke);
+                battleEvent.VisualEvent.AddListener((_) => BecomeVisualyInconsistentState.Invoke());
             }
         }
 
@@ -234,7 +234,7 @@ namespace Gameplay
             battleEvent = new BattleEvent<T1, T2>(GameController);
             if (shouldChangeVisuals && _shouldCreateVisuals)
             {
-                battleEvent.VisualEvent.AddListener(_becomeVisualyInconsistentState.Invoke);
+                battleEvent.VisualEvent.AddListener((_, __) => BecomeVisualyInconsistentState.Invoke());
             }
         }
 
@@ -243,7 +243,7 @@ namespace Gameplay
             battleEvent = new BattleEvent<T1, T2, T3>(GameController);
             if (shouldChangeVisuals && _shouldCreateVisuals)
             {
-                battleEvent.VisualEvent.AddListener(_becomeVisualyInconsistentState.Invoke);
+                battleEvent.VisualEvent.AddListener((_, __, ___) => BecomeVisualyInconsistentState.Invoke());
             }
         }
 

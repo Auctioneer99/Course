@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class RoundManager : AManager, IStateObjectCloneable<RoundManager>, IRuntimeDeserializable
+    public class RoundManager : AManager, IRuntimeStateObjectCloneable<RoundManager>, IRuntimeDeserializable
     {
         public const int MAX_ROUND_COUNT = 25;
 

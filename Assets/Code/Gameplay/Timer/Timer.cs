@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Gameplay
 {
-    public class Timer : IRuntimeDeserializable, IStateObjectCloneable<Timer>, ICensored
+    public class Timer : IRuntimeDeserializable, IRuntimeStateObject<Timer>, ICensored
     {
         public const int TIME_BUFFER_FOR_AUTHORITY_SIDE = 2000;
 
@@ -24,24 +24,11 @@ namespace Gameplay
 
         private int _timeRemaining;
 
-        private Timer() { }
-
-        public Timer(GameController controller, Packet packet)
-        {
-            FromPacket(controller, packet);
-            Initialize();
-        }
-
         public Timer(GameController controller, TimerDefinition definition)
         {
             GameController = controller;
             Definition = definition;
             ETimerState = ETimerState.Stopped;
-            Initialize();
-        }
-
-        private void Initialize()
-        {
             Started = new BattleEvent<Timer>(GameController);
             Elapsed = new BattleEvent<Timer>(GameController);
         }
@@ -90,22 +77,11 @@ namespace Gameplay
             Elapsed.Invoke(this);
         }
 
-        public Timer Clone(GameController controller)
-        {
-            Timer timer = new Timer();
-            timer.Copy(this, controller);
-            return timer;
-        }
-
         public void Copy(Timer other, GameController controller)
         {
-            GameController = controller;
-            Definition = other.Definition.Clone();
-            //Duration = other.Duration;
+            Definition.Copy(other.Definition);
             ETimerState = other.ETimerState;
             _timeRemaining = other._timeRemaining;
-
-            Initialize();
         }
 
         public void Censor(EPlayer player)
@@ -120,8 +96,6 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            GameController = controller;
-            //Duration = packet.ReadInt();
             _timeRemaining = packet.ReadInt();
             ETimerState = packet.ReadETimerState();
             Definition = new TimerDefinition(packet);

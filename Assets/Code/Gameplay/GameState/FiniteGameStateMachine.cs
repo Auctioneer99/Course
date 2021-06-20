@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Gameplay
 {
-    public class FiniteGameStateMachine : IStateObjectCloneable<FiniteGameStateMachine>, IRuntimeDeserializable, ICensored
+    public class FiniteGameStateMachine : IRuntimeStateObject<FiniteGameStateMachine>, IRuntimeDeserializable, ICensored
     {
         public GameController GameController { get; private set; }
         public TimeManager TimeManager { get; private set;}
@@ -13,13 +13,6 @@ namespace Gameplay
         private Dictionary<EGameState, AGameState> _states;
 
         public EGameState ECurrentState => CurrentState == null ? EGameState.Invalid : CurrentState.EGameState;
-
-        private FiniteGameStateMachine() { }
-
-        public FiniteGameStateMachine(GameController controller, Packet packet)
-        {
-            FromPacket(controller, packet);
-        }
 
         public FiniteGameStateMachine(GameController controller)
         {
@@ -104,20 +97,10 @@ namespace Gameplay
             GameController.Logger.Log($"FGSM After Transition {previousState?.EGameState} -> {state}");
         }
 
-        public FiniteGameStateMachine Clone(GameController controller)
-        {
-            FiniteGameStateMachine fsm = new FiniteGameStateMachine();
-            fsm.Copy(this, controller);
-            return fsm;
-        }
-
         public void Copy(FiniteGameStateMachine other, GameController controller)
         {
-            GameController = controller;
-            Initialize();
-
             CurrentState = other.CurrentState == null ? null : _states[other.ECurrentState];
-            TimeManager = other.TimeManager.Clone(this);
+            TimeManager.Copy(other.TimeManager, GameController);
         }
 
         public void Censor(EPlayer player)
@@ -127,9 +110,6 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            GameController = controller;
-            Initialize();
-
             EGameState currentState = packet.ReadEGameState();
             CurrentState = GetState(currentState);
 
@@ -140,7 +120,7 @@ namespace Gameplay
                 AGameState gameState = GetState(state);
                 gameState.FromPacket(controller, packet);
             }
-            TimeManager = new TimeManager(this, packet);
+            //TimeManager = new TimeManager(this, packet);
         }
 
         public void ToPacket(Packet packet)

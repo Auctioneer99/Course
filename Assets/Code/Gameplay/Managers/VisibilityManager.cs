@@ -61,6 +61,9 @@ namespace Gameplay
 
             switch (location)
             {
+                case ELocation.Undefined:
+                    return ECardVisibility.Noone;
+
                 case ELocation.Deck:
                     return ECardVisibility.Owner;
                 case ELocation.Field:

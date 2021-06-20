@@ -33,8 +33,7 @@
 
         protected override void ApplyImplementation()
         {
-            Player player = GameController.PlayerManager.SetupPlayer(Player, Connection);
-            player.Info = Info;
+            Player player = GameController.PlayerManager.SetupPlayer(Player, Info, Connection);
 
             GameController.EventManager.OnPlayerSetup.Invoke(player);
         }

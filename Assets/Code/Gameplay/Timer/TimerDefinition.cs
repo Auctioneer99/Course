@@ -2,17 +2,16 @@
 
 namespace Gameplay
 {
-    public class TimerDefinition : IDeserializable, ICloneable<TimerDefinition>
+    public struct TimerDefinition : ISerializable, IStateObject<TimerDefinition>
     {
         public int Duration { get; private set; }
 
         public int AuthorityBuffer { get; private set; }
 
-        private TimerDefinition() { }
-
         public TimerDefinition(Packet packet)
         {
-            FromPacket(packet);
+            Duration = packet.ReadInt();
+            AuthorityBuffer = packet.ReadInt();
         }
 
         public TimerDefinition(int duration, int buffer)
@@ -21,23 +20,10 @@ namespace Gameplay
             AuthorityBuffer = buffer;
         }
 
-        public TimerDefinition Clone()
-        {
-            TimerDefinition def = new TimerDefinition();
-            def.Copy(this);
-            return def;
-        }
-
         public void Copy(TimerDefinition other)
         {
             Duration = other.Duration;
             AuthorityBuffer = other.AuthorityBuffer;
-        }
-
-        public void FromPacket(Packet packet)
-        {
-            Duration = packet.ReadInt();
-            AuthorityBuffer = packet.ReadInt();
         }
 
         public void ToPacket(Packet packet)

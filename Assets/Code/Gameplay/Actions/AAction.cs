@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public abstract class AAction : IRuntimeDeserializable, IStateObjectCloneable<AAction>
+    public abstract class AAction : IRuntimeDeserializable, IRuntimeStateObjectCloneable<AAction>
     {
         public abstract EAction EAction { get; }
         public int NetworkActionNumber { get; set; }

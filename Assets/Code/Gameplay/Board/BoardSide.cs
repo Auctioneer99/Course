@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class BoardSide : IStateObject<BoardSide>, IRuntimeDeserializable
+    public class BoardSide : IRuntimeStateObjectCloneable<BoardSide>, IRuntimeDeserializable
     {
         public BoardManager BoardManager { get; private set; }
         public EPlayer EPlayer { get; private set; }
@@ -65,6 +65,13 @@ namespace Gameplay
             {
                 location.TryRemove(card);
             }
+        }
+
+        public BoardSide Clone(GameController controller)
+        {
+            BoardSide side = new BoardSide(controller.BoardManager, EPlayer);
+            side.Copy(this, controller);
+            return side;
         }
 
         public void Copy(BoardSide other, GameController controller)

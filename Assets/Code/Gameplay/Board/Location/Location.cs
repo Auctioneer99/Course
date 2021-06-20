@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class Location : IStateObject<Location>, IRuntimeDeserializable
+    public class Location : IRuntimeStateObject<Location>, IRuntimeDeserializable
     {
         public BattleEvent<Location> Changed { get; private set; }
 

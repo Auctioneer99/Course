@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class BoardManager : AManager
+    public class BoardManager : AManager, IRuntimeStateObject<BoardManager>
     {
         public Battlefield Battlefield { get; private set; }
         public BoardSide[] Sides { get; private set; }
@@ -57,7 +57,7 @@ namespace Gameplay
             }
             else
             {
-                BoardSide side = GetBoardSide((EPlayer)position.Id);
+                BoardSide side = GetBoardSide(position.Player);
                 return side?.GetLocation(position.Location);
             }
         }
@@ -116,13 +116,15 @@ namespace Gameplay
             {
                 if (currentPosition.IsExist)
                 {
-                    BoardSide side = GetBoardSide((EPlayer)currentPosition.Id);
+                    BoardSide side = GetBoardSide(currentPosition.Player);
                     side.Remove(card);
                 }
 
                 if (toPosition.IsExist)
                 {
-                    BoardSide side = GetBoardSide((EPlayer)toPosition.Id);
+                    Debug.Log("Trying to get boardside " + toPosition.Player);
+                    BoardSide side = GetBoardSide(toPosition.Player);
+                    Debug.Log(side);
                     side.Add(card, toPosition);
                 }
                 else
@@ -132,6 +134,16 @@ namespace Gameplay
             }
 
             return true;
+        }
+
+        public void Copy(BoardManager other, GameController controller)
+        {
+            int length = other.Sides.Length;
+            Sides = new BoardSide[length];
+            for (int i = 0; i < length; i++)
+            {
+                Sides[i] = other.Sides[i].Clone(controller);
+            }
         }
     }
 }

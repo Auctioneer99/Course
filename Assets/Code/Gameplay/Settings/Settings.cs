@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class Settings : IDeserializable, ICensored, ICloneable<Settings>
+    public class Settings : IDeserializable, ICensored, IStateObject<Settings>
     {
         public TimerSettings TimerSettings { get; private set;}
 
@@ -79,18 +79,12 @@ namespace Gameplay
             }
             packet.Write(TimerSettings);
         }
-        public Settings Clone()
-        {
-            Settings settings = new Settings();
-            settings.Copy(this);
-            return settings;
-        }
 
         public void Copy(Settings other)
         {
             PlayersCount = other.PlayersCount;
             PlayersSettings = other.PlayersSettings.Clone();
-            TimerSettings = other.TimerSettings.Clone();
+            TimerSettings.Copy(other.TimerSettings);
         }
 
         public void Censor(EPlayer player)

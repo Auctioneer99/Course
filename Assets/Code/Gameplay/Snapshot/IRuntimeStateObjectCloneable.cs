@@ -1,6 +1,6 @@
 ﻿namespace Gameplay
 {
-    public interface IStateObjectCloneable<T> : IStateObject<T>
+    public interface IRuntimeStateObjectCloneable<T> : IRuntimeStateObject<T>
     {
         T Clone(GameController controller);
     }

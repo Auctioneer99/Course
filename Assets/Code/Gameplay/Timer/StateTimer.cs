@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class StateTimer : IRuntimeDeserializable, IStateObjectCloneable<StateTimer>, ICensored
+    public class StateTimer : IRuntimeDeserializable, IRuntimeStateObject<StateTimer>, ICensored
     {
         public TimeManager TimeManager { get; private set; }
 
@@ -15,26 +15,12 @@ namespace Gameplay
 
         public GameController GameController => TimeManager.GameController;
 
-        private StateTimer() { }
-
-        public StateTimer(TimeManager manager, Packet packet)
-        {
-            FromPacket(manager.GameController, packet);
-
-            Initialize();
-        }
-
         public StateTimer(TimeManager manager, StateTimerDefinition definition)
         {
             TimeManager = manager;
             EGameState = definition.EGameState;
             Timer = new Timer(GameController, definition.TimerDefinition);
 
-            Initialize();
-        }
-
-        private void Initialize()
-        {
             Timer.Started.CoreEvent.AddListener(OnTimerStarted);
             Timer.Elapsed.CoreEvent.AddListener(OnTimerElapsed);
         }
@@ -54,20 +40,10 @@ namespace Gameplay
             GameController.EventManager.OnStateTimerElapsed.Invoke(this);
         }
 
-        public StateTimer Clone(GameController controller)
-        {
-            StateTimer timer = new StateTimer();
-            timer.Copy(this, controller);
-            return timer;
-        }
-
         public void Copy(StateTimer other, GameController controller)
         {
-            TimeManager = controller.StateMachine.TimeManager;
             EGameState = other.EGameState;
-            Timer = other.Timer.Clone(controller);
-
-            Initialize();
+            Timer.Copy(other.Timer, controller);
         }
 
         public void Censor(EPlayer player)
@@ -77,9 +53,8 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            TimeManager = controller.StateMachine.TimeManager;
             EGameState = packet.ReadEGameState();
-            Timer = new Timer(controller, packet);
+            Timer.FromPacket(controller, packet);
         }
 
         public void ToPacket(Packet packet)

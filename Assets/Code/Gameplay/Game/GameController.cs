@@ -169,19 +169,13 @@ namespace Gameplay
             
         }
 
-        public GameController Clone(GameInstance gi)
-        {
-            GameController gc = new GameController(gi, false);
-            gc.Copy(this);
-            return gc;
-        }
-
         public void Copy(GameController controller)
         {
             IsInitialized = controller.IsInitialized;
             Status = controller.Status;
-            StateMachine = controller.StateMachine.Clone(this);
+            StateMachine.Copy(controller.StateMachine, controller);
             PlayerManager.Copy(controller.PlayerManager, controller);
+            BoardManager.Copy(controller.BoardManager, controller);
             //TimeManager = controller.TimeManager.Clone(this);
         }
 

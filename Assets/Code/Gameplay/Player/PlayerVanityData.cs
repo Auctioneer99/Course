@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerVanityData : IDeserializable, ICloneable<PlayerVanityData>
+    public class PlayerVanityData : IDeserializable, IStateObjectCloneable<PlayerVanityData>
     {
         public PlayerVanityData()
         {

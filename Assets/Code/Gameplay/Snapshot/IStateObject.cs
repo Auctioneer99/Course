@@ -2,6 +2,6 @@
 {
     public interface IStateObject<T>
     {
-        void Copy(T other, GameController controller);
+        void Copy(T other);
     }
 }

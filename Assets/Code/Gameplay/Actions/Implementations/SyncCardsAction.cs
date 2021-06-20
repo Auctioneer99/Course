@@ -21,6 +21,12 @@ namespace Gameplay
 
         public NetworkTarget Target => NetworkTarget.TargetPlayer;
 
+        public SyncCardsAction()
+        {
+            CardsToReveal = new List<ushort>();
+            CardsToHide = new List<ushort>();
+        }
+
         public SyncCardsAction Initialize(EPlayer player, ChangeVisibilityAction action)
         {
             base.Initialize();

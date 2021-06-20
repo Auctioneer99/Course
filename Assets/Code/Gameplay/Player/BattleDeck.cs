@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class BattleDeck : IDeserializable, ICloneable<BattleDeck>, ICensored
+    public class BattleDeck : IDeserializable, IStateObjectCloneable<BattleDeck>, ICensored
     {
         public string Name = string.Empty;
         public CardDefinition Hero;

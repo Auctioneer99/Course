@@ -32,7 +32,7 @@ namespace Gameplay
             SpawnCardsAction spawnAction = GameController.ActionFactory.Create<SpawnCardsAction>()
                 .Initialize(0);
 
-            CardDefinition cardDef = new CardDefinition(88);
+            CardDefinition cardDef = new CardDefinition(2);
             Position pos = new Position(0, ELocation.Field);
 
             SpawnDefinition def = new SpawnDefinition(GameController.CardManager, cardDef, pos, null, ECardVisibility.All);

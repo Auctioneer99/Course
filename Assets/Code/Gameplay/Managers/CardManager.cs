@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class CardManager : AManager, IStateObject<CardManager>, IRuntimeDeserializable, ICensored
+    public class CardManager : AManager, IRuntimeStateObject<CardManager>, IRuntimeDeserializable, ICensored
     {
         public const int DEFAULT_BUFFER_SIZE = 64;
         public const int DEFAULT_BUFFER_INCREMENT = 16;

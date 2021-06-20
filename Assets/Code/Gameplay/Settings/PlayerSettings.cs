@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerSettings : IDeserializable, ICloneable<PlayerSettings>, ICensored
+    public class PlayerSettings : IDeserializable, IStateObjectCloneable<PlayerSettings>, ICensored
     {
         public EPlayer Player;
         public PlayerInfo PlayerInfo;
@@ -46,8 +46,8 @@ namespace Gameplay
 
         public void Copy(PlayerSettings other)
         {
-            PlayerInfo = other.PlayerInfo.Clone();
-            BattleDeck = other.BattleDeck.Clone();
+            PlayerInfo.Copy(other.PlayerInfo);
+            BattleDeck.Copy(other.BattleDeck);
         }
 
         public void FromPacket(Packet packet)

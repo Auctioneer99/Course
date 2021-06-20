@@ -82,14 +82,14 @@ namespace Gameplay
             GameInstance.Censor(player);
         }*/
 
-        public Snapshot Clone(GameController controller)
+        public Snapshot Clone()
         {
             Snapshot ss = new Snapshot();
-            ss.Copy(this, controller);
+            ss.Copy(this);
             return ss;
         }
 
-        public void Copy(Snapshot other, GameController controller)
+        public void Copy(Snapshot other)
         {
             //GameInstancePacket = other.GameInstancePacket;
             GameInstance = other.GameInstance.Clone();

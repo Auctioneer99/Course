@@ -2,7 +2,7 @@
 
 namespace Gameplay
 {
-    public abstract class AGameState : IStateObject<AGameState>, IRuntimeDeserializable
+    public abstract class AGameState : IRuntimeStateObject<AGameState>, IRuntimeDeserializable
     {
         public EGameState EGameState { get; private set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class Health: IStateObject<Health>, IRuntimeDeserializable
+    public class Health: IRuntimeStateObject<Health>, IRuntimeDeserializable
     {
         public CardData CardData { get; private set; }
 

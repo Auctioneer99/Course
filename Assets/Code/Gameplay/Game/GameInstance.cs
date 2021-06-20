@@ -95,15 +95,9 @@ namespace Gameplay
 
         public void FromPacket(Packet packet)
         {
-            Debug.Log(string.Join(", ", packet.ToArray()));
-            Debug.Log(1);
             Mode = packet.ReadEGameMode();
-            Debug.Log(2);
             Settings.FromPacket(packet);
-            Debug.Log(3);
-            //Controller = new GameController(this, true);
             Controller.FromPacket(packet);
-            Debug.Log(4);
         }
 
         public override string ToString()

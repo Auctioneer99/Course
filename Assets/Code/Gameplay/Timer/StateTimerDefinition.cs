@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gameplay
+﻿namespace Gameplay
 {
-    public class StateTimerDefinition : IDeserializable, ICloneable<StateTimerDefinition>
+    public struct StateTimerDefinition : ISerializable, IStateObjectCloneable<StateTimerDefinition>
     {
         public EGameState EGameState { get; private set; }
         public TimerDefinition TimerDefinition { get; private set; }
 
-        private StateTimerDefinition() { }
-
         public StateTimerDefinition(Packet packet)
         {
-            FromPacket(packet);
+            EGameState = packet.ReadEGameState();
+            TimerDefinition = new TimerDefinition(packet);
         }
 
         public StateTimerDefinition(EGameState state, TimerDefinition definition)
@@ -24,29 +17,23 @@ namespace Gameplay
             TimerDefinition = definition;
         }
 
-        public void FromPacket(Packet packet)
+        public StateTimerDefinition Clone()
         {
-            EGameState = packet.ReadEGameState();
-            TimerDefinition = new TimerDefinition(packet);
+            StateTimerDefinition definition = new StateTimerDefinition();
+            definition.Copy(this);
+            return this;
+        }
+
+        public void Copy(StateTimerDefinition other)
+        {
+            EGameState = other.EGameState;
+            TimerDefinition.Copy(other.TimerDefinition);
         }
 
         public void ToPacket(Packet packet)
         {
             packet.Write(EGameState)
                 .Write(TimerDefinition);
-        }
-
-        public StateTimerDefinition Clone()
-        {
-            StateTimerDefinition stateDefinition = new StateTimerDefinition();
-            stateDefinition.Copy(this);
-            return stateDefinition;
-        }
-
-        public void Copy(StateTimerDefinition other)
-        {
-            EGameState = other.EGameState;
-            TimerDefinition = other.TimerDefinition.Clone();
         }
     }
 }

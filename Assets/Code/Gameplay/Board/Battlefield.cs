@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class Battlefield : IRuntimeDeserializable, IStateObject<Battlefield>
+    public class Battlefield : IRuntimeDeserializable, IRuntimeStateObject<Battlefield>
     {
         private BoardManager _manager;
         private GameController GameController => _manager.GameController;

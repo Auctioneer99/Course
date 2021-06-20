@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class PlayerInfo : IDeserializable, ICloneable<PlayerInfo>
+    public class PlayerInfo : IDeserializable, IStateObjectCloneable<PlayerInfo>
     {
         public string Name = string.Empty;
 

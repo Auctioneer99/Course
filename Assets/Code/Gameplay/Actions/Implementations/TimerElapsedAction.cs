@@ -33,6 +33,7 @@ namespace Gameplay
 
         protected override void ApplyImplementation()
         {
+            UnityEngine.Debug.Log(GameController.HasAuthority);
             Timer timer = GameController.StateMachine.GetState(GameState).Timer;
             timer.Finish();
         }
