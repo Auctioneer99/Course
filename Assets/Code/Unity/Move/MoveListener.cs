@@ -8,9 +8,9 @@ namespace Gameplay.Unity
     public class MoveListener : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private CardViewManager CardViewManager;
+        private CardViewManager CardViewManager = null;
         [SerializeField]
-        private BoardView BoardView;
+        private BoardView BoardView = null;
 
         private GameController _controller;
 

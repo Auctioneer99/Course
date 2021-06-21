@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public struct CardDefinition : ISerializable
+    public struct CardDefinition : IDeserializable
     {
         public static readonly CardDefinition Unknown = new CardDefinition(0);
 
@@ -17,7 +17,7 @@ namespace Gameplay
             TemplateId = templateId;
         }
 
-        public CardDefinition(Packet packet)
+        public void FromPacket(Packet packet)
         {
             TemplateId = packet.ReadInt();
         }
@@ -35,6 +35,20 @@ namespace Gameplay
         public static bool operator !=(CardDefinition a, CardDefinition b)
         {
             return a.TemplateId != b.TemplateId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is CardDefinition definition)
+            {
+                return this == definition;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public override string ToString()

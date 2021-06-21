@@ -122,9 +122,7 @@ namespace Gameplay
 
                 if (toPosition.IsExist)
                 {
-                    Debug.Log("Trying to get boardside " + toPosition.Player);
                     BoardSide side = GetBoardSide(toPosition.Player);
-                    Debug.Log(side);
                     side.Add(card, toPosition);
                 }
                 else

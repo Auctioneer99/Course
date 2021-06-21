@@ -10,7 +10,7 @@ namespace Gameplay.Unity
     public class PlayersUIController : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private PlayerView _playerViewPrefab;
+        private PlayerView _playerViewPrefab = null;
 
         public Dictionary<EPlayer, PlayerView> Views { get; private set; }
         public GameController Controller { get; private set; }

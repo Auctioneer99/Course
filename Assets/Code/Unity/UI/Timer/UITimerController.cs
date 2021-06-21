@@ -10,7 +10,7 @@ namespace Gameplay.Unity
     public class UITimerController : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private UITimer _timerUI;
+        private UITimer _timerUI = null;
 
         private GameController _controller;
 

@@ -81,7 +81,7 @@ namespace Gameplay
             payload = JsonNet.Deserialize<TokenPayload>(Encoding.UTF8.GetString(Base64UrlDecode(parts[1])));
 
             return true;
-
+            /*
             JsonWebTokenKeyCollection collection = null;
             JsonWebTokenKey key = collection.GetKey(header.kid);
 
@@ -105,7 +105,7 @@ namespace Gameplay
 
             payload = JsonNet.Deserialize<TokenPayload>(Encoding.UTF8.GetString(Base64UrlDecode(parts[1])));
 
-            return true;
+            return true;*/
         }
 
         /*var jwks = { 

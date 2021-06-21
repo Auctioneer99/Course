@@ -8,7 +8,7 @@ namespace Gameplay
     {
         public WebSocket Socket { get; private set; }
 
-        private Logger _logger;
+        private Logger _logger = null;
 
         public OnlineConnector(WebSocket socket, Logger logger)
         {

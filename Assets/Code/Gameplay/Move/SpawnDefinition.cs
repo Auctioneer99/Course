@@ -33,8 +33,8 @@ namespace Gameplay
         public void FromPacket(GameController controller, Packet packet)
         {
             CardId = packet.ReadUShort();
-            Definition = new CardDefinition(packet);
-            Position = new Position(packet);
+            Definition.FromPacket(packet);
+            Position.FromPacket(packet);
             InitialVisibility = packet.ReadECardVisibility();
         }
 

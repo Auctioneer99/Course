@@ -11,7 +11,7 @@ namespace Gameplay.Unity
     public class UITimer : MonoBehaviour
     {
         [SerializeField]
-        private TextMeshProUGUI _text;
+        private TextMeshProUGUI _text = null;
 
         public StateTimer StateTimer { get; set; }
         private bool _active;

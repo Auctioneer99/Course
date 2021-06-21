@@ -8,13 +8,13 @@ namespace Gameplay
     public class ActionDistributor : AManager
     {
         public List<AAction> Actions { get; private set; }
-        private int _nextNetworkActionNumber;
+        //private int _nextNetworkActionNumber;
 
         public bool HasActions => Actions.Count > 0;
 
         public ActionDistributor(GameController controller) : base(controller)
         {
-            _nextNetworkActionNumber = 1;
+            //_nextNetworkActionNumber = 1;
             Actions = new List<AAction>();
         }
 

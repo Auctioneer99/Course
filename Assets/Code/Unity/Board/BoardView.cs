@@ -10,12 +10,12 @@ namespace Gameplay.Unity
     public class BoardView : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private BoardSideView BoadSideViewPrefab;
+        private BoardSideView BoadSideViewPrefab = null;
 
         [SerializeField]
-        private BattlefieldController BattlefieldController;
+        private BattlefieldController BattlefieldController = null;
         [SerializeField]
-        private LocalBoardSideView LocalBoardSideView;
+        private LocalBoardSideView LocalBoardSideView = null;
 
         private GameController _controller;
         private Dictionary<EPlayer, BoardSideView> _boardSideViews;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public struct Position : ISerializable
+    public struct Position : IDeserializable
     {
         public const int 
             UNDEFINED = -4,
@@ -40,14 +40,6 @@ namespace Gameplay
             Index = index;
         }
 
-        public Position(Packet packet)
-        {
-            Id = packet.ReadInt();
-            Player = packet.ReadEPlayer();
-            Location = packet.ReadELocation();
-            Index = packet.ReadInt();
-        }
-
         public Location GetLocation(BoardManager manager)
         {
             if (Location == ELocation.Field)
@@ -60,6 +52,14 @@ namespace Gameplay
                 Location loc = side.GetLocation(Location);
                 return loc;
             }
+        }
+
+        public void FromPacket(Packet packet)
+        {
+            Id = packet.ReadInt();
+            Player = packet.ReadEPlayer();
+            Location = packet.ReadELocation();
+            Index = packet.ReadInt();
         }
 
         public void ToPacket(Packet packet)
@@ -81,6 +81,20 @@ namespace Gameplay
         public static bool operator !=(Position a, Position b)
         {
             return !(a == b);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Position other)
+            {
+                return this == other;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public override string ToString()

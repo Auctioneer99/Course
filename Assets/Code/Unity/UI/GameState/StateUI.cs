@@ -11,7 +11,7 @@ namespace Gameplay.Unity
     public class StateUI : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private TextMeshProUGUI _text;
+        private TextMeshProUGUI _text = null;
 
         private void Start()
         {

@@ -10,11 +10,11 @@ namespace Gameplay.Unity
     public class BattlefieldController : MonoBehaviour, IGameListener
     {
         [SerializeField]
-        private GameObject _tilePrefab;
+        private GameObject _tilePrefab = null;
         [SerializeField]
         private float _distanceBetween = 0;
         [SerializeField]
-        private BoardView _boardView;
+        private BoardView _boardView = null;
 
         private GameController _controller;
         private Dictionary<int, TileView> _tiles;

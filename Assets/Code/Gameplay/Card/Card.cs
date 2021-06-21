@@ -275,8 +275,9 @@ namespace Gameplay
         {
             Id = packet.ReadUShort();
             PlayedBy = packet.ReadEPlayer();
-            Position = new Position(packet);
-            CardDefinition def = new CardDefinition(packet);
+            Position.FromPacket(packet);
+            CardDefinition def = new CardDefinition();
+            def.FromPacket(packet);
             SetDefinition(def, GameController.GameRuntimeData);
             if (def != CardDefinition.Unknown)
             {

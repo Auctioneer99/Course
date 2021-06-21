@@ -9,7 +9,7 @@ namespace Gameplay.Unity
 {
     public class HandView : LocationView
     {
-        private List<CardBattleView> _cards;
+        private List<CardBattleView> _cards = null;
 
         public override ELocation ELocation => ELocation.Hand;
 
