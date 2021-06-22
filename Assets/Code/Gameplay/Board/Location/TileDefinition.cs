@@ -24,9 +24,25 @@ namespace Gameplay
             Player = player;
         }
 
+        public int AbsoluteDistance(TileDefinition destination)
+        {
+            return Math.Abs((X - destination.X) + (Y - destination.Y));
+        }
+
         public override int GetHashCode()
         {
             return 31 * X + Y;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("TileDefinition");
+            sb.AppendLine($"X = {X}");
+            sb.AppendLine($"Y = {Y}");
+            sb.AppendLine($"Player = {Player}");
+            sb.AppendLine($"Id = {Id}");
+            return sb.ToString();
         }
     }
 }

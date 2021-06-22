@@ -10,7 +10,7 @@ namespace Gameplay
     {
         public override EAction EAction => EAction.SyncCards;
 
-        public EPlayer Player { get; private set; }
+        public EPlayer Player => GameController.Network.Manager.GetPlayerTypeFromConnectionId(Connection);
 
         public List<ushort> CardsToReveal { get; private set; }
         public List<ushort> CardsToHide { get; private set; }
@@ -27,11 +27,11 @@ namespace Gameplay
             CardsToHide = new List<ushort>();
         }
 
-        public SyncCardsAction Initialize(EPlayer player, ChangeVisibilityAction action)
+        public SyncCardsAction Initialize(int connectionId, ChangeVisibilityAction action)
         {
             base.Initialize();
 
-            Player = player;
+            Connection = connectionId;
             CardsToRevealData = new Packet();
             foreach(var def in action.Changes)
             {
@@ -107,8 +107,7 @@ namespace Gameplay
             CardsToHide.Copy(other.CardsToHide);
             CardsToReveal = new List<ushort>(other.CardsToReveal.Count);
             CardsToReveal.Copy(other.CardsToReveal);
-            CardsToRevealData = new Packet();
-            CardsToRevealData.Write(other.CardsToRevealData.ToArray());
+            CardsToRevealData = new Packet(other.CardsToRevealData.ToArray());
         }
     }
 }

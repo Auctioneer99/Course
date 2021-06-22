@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gameplay.Unity
 {
-    public class TileView : LocationView
+    public class TileView : LocationView, ILoggable
     {
         public override ELocation ELocation => ELocation.Field;
 
@@ -22,6 +22,8 @@ namespace Gameplay.Unity
             Location = tile;
 
             Renderer renderer = GetComponent<Renderer>();
+
+
             if (sideView == null)
             {
                 renderer.material.color = Color.red;
@@ -43,6 +45,14 @@ namespace Gameplay.Unity
                     renderer.material.color = Color.yellow;
                     break;
             }
+            var c = renderer.material.color;
+            c.a = 0.2f;
+            renderer.material.color = c;
+        }
+
+        public void Log()
+        {
+            Debug.Log(Location.ToString());
         }
     }
 }

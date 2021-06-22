@@ -78,9 +78,10 @@ namespace Gameplay
         {
             if (CanHandleMessage(sender, action) == false)
             {
-                Debug.Log(Manager.ToString());
-                Debug.Log($"[Network Manager] Current Side = { (Instance.HasAuthority ? "server" : "client") }");
-                Debug.Log($"[Network Manager] Cant handle message: sender = {sender.ToString()}");
+                var logger = Instance.Logger;
+                logger.Log(Manager.ToString());
+                logger.Log($"[Network Manager] Cant handle message: sender = {sender.ToString()}");
+                logger.Log($"[Network Manager] Message: {action.ToString()}");
                 return;
             }
             GameController gc = Instance.Controller;

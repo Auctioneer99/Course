@@ -64,10 +64,34 @@ namespace Gameplay
 
         public void Move(Card card, Position toPosition)
         {
+            Position previousPosition = card.Position;
+            bool moved = MoveInternal(card, toPosition);
+            if (moved)
+            {
+                GameController.EventManager.AfterCardMoved.Invoke(card, previousPosition);
+            }
+        }
+
+        public void BattlefieldMove(Card card, List<TileDefinition> path)
+        {
+            Position initialPosition = card.Position;
+
+            foreach (var point in path)
+            {
+                Position pos = new Position(point);
+                bool moved = MoveInternal(card, pos);
+            }
+
+            GameController.EventManager.AfterCardBattlefieldMoved.Invoke(card, initialPosition, path);
+        }
+
+        private bool MoveInternal(Card card, Position toPosition)
+        {
             Location location = GetLocation(toPosition);
+
             if (location != null && location.IsFull)
             {
-                return;
+                return false;
             }
 
             Position previousPosition = card.Position;
@@ -76,6 +100,8 @@ namespace Gameplay
             {
                 GameController.EventManager.CardMoved.Invoke(card, previousPosition);
             }
+
+            return moved;
         }
 
         private bool MoveImplementation(Card card, Position toPosition)

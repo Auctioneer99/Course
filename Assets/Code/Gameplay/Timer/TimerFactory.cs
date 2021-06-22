@@ -5,7 +5,7 @@ namespace Gameplay
     public static class TimerFactory
     {
         public const int AWAITING_DURATION = 60000;
-        public const int MULLIGAN_DURATION = 20000;
+        public const int MULLIGAN_DURATION = 20000000;
         public const int PLAY_CARD_DURATION = 20000;
         public const int TURN_DURATION = 20000;
 

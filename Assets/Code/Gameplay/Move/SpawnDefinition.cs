@@ -9,14 +9,16 @@ namespace Gameplay
     public struct SpawnDefinition : ICensored, IRuntimeDeserializable
     {
         public ushort CardId;
+        public EPlayer Owner;
         public CardDefinition Definition;
         public Position Position;
         public ECardVisibility InitialVisibility;
 
-        public SpawnDefinition(CardManager cardManager, CardDefinition definition, Position position,
+        public SpawnDefinition(CardManager cardManager, CardDefinition definition, Position position, EPlayer owner = EPlayer.Neutral,
              Card spawner = null, ECardVisibility initialVisibility = ECardVisibility.Noone) 
         {
             CardId = cardManager.AllocateCardId();
+            Owner = owner;
             Definition = definition;
             Position = position;
             InitialVisibility = initialVisibility;
@@ -33,6 +35,7 @@ namespace Gameplay
         public void FromPacket(GameController controller, Packet packet)
         {
             CardId = packet.ReadUShort();
+            Owner = packet.ReadEPlayer();
             Definition.FromPacket(packet);
             Position.FromPacket(packet);
             InitialVisibility = packet.ReadECardVisibility();
@@ -41,6 +44,7 @@ namespace Gameplay
         public void ToPacket(Packet packet)
         {
             packet.Write(CardId)
+                .Write(Owner)
                 .Write(Definition)
                 .Write(Position)
                 .Write(InitialVisibility);
@@ -50,6 +54,7 @@ namespace Gameplay
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[SpawnDefinition]");
+            sb.AppendLine($"Owner = {Owner}");
             sb.AppendLine($"CardId = {CardId}");
             sb.AppendLine($"Definition = {Definition.ToString()}");
             sb.AppendLine($"Position = {Position.ToString()}");

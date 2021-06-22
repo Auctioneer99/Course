@@ -108,7 +108,9 @@ namespace Gameplay
 
         public ushort Id { get; private set; }
 
-        public EPlayer PlayedBy { get; private set; }
+        public EPlayer Owner { get; set; }
+
+        public EPlayer PlayedBy { get; set; }
 
         public Position Position { get; set; }
 
@@ -273,6 +275,8 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
+            //var logger = GameController.GameInstance.Logger;
+            //logger.Log("Reading from packet");
             Id = packet.ReadUShort();
             PlayedBy = packet.ReadEPlayer();
             Position.FromPacket(packet);
@@ -287,6 +291,10 @@ namespace Gameplay
 
         public void ToPacket(Packet packet)
         {
+            //var logger = GameController.GameInstance.Logger;
+            //logger.Log("Writing to packet");
+            //logger.Log(this.ToString());
+
             packet.Write(Id)
                 .Write(PlayedBy)
                 .Write(Position);
@@ -303,6 +311,7 @@ namespace Gameplay
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("[Card]");
             sb.AppendLine($"Id = {Id}");
+            sb.AppendLine($"Owner = {Owner}");
             sb.AppendLine($"Position = {Position.ToString()}");
             sb.AppendLine($"Definition = {Definition.ToString()}");
             sb.AppendLine($"Visibility = {EVisibility}");

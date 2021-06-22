@@ -32,11 +32,11 @@ namespace Gameplay
         }
 
 
-        public Position(TileDefinition definition, ELocation location, int index = LAST)
+        public Position(TileDefinition definition, int index = LAST)
         {
             Id = definition.GetHashCode();
             Player = definition.Player;
-            Location = location;
+            Location = ELocation.Field;
             Index = index;
         }
 

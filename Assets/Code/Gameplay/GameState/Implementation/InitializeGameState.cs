@@ -53,8 +53,8 @@ namespace Gameplay
                 var action = GameController.ActionFactory.Create<SpawnCardsAction>().Initialize(0);
 
                 //action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(0, ELocation.Field, 1)));
-                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(new TileDefinition(EPlayer.Neutral, 1, 1), ELocation.Field, 1)));
-                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(new TileDefinition(EPlayer.Neutral, 2, 1), ELocation.Field, 1)));
+                //action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(new TileDefinition(EPlayer.Neutral, 1, 1), ELocation.Field, 1)));
+                action.Spawns.Add(new SpawnDefinition(GameController.CardManager, new CardDefinition(1), new Position(new TileDefinition(EPlayer.Neutral, -2, -2))));
 
                 GameController.ActionDistributor.Add(action);
 

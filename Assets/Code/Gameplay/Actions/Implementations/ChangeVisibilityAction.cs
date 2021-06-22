@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class ChangeVisibilityAction : AAction
+    public class ChangeVisibilityAction : AAction, IAuthorityAction
     {
         public override EAction EAction => EAction.ChangeVisibility;
 
@@ -25,7 +25,7 @@ namespace Gameplay
         {
             if (targetPlayer == EPlayer.Undefined)
             {
-                targetPlayer = card.Position.Player;
+                targetPlayer = card.Owner;
             }
 
             var definition = new VisibilityChangeDefinition(card.Id, targetVisibility, targetPlayer, shouldBeHiddenForClient);

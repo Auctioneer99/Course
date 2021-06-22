@@ -17,6 +17,22 @@ namespace Gameplay
             Definition = definition;
         }
 
+        protected override void UpdateIndexes()
+        {
+            Position position = new Position(Definition);
+            for (int i = 0, count = Cards.Count; i < count; i++)
+            {
+                position.Index = i;
+                Cards[i].Position = position;
+            }
+        }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(base.ToString());
+            sb.AppendLine($"Definition = {Definition.ToString()}");
+            return sb.ToString();
+        }
     }
 }

@@ -26,6 +26,8 @@ namespace Gameplay
         public readonly BattleEvent<List<Card>> CardsSpawned;
 
         public readonly BattleEvent<Card, Position> CardMoved;
+        public readonly BattleEvent<Card, Position> AfterCardMoved;
+        public readonly BattleEvent<Card, Position, List<TileDefinition>> AfterCardBattlefieldMoved;
 
         public readonly BattleEvent<EPauseType, bool> PauseToggled;
 
@@ -50,6 +52,8 @@ namespace Gameplay
             PlayerDisconnected = new BattleEvent<Player>(controller);
 
             CardMoved = new BattleEvent<Card, Position>(controller);
+            AfterCardMoved = new BattleEvent<Card, Position>(controller);
+            AfterCardBattlefieldMoved = new BattleEvent<Card, Position, List<TileDefinition>>(controller);
 
             PauseToggled = new BattleEvent<EPauseType, bool>(controller);
         }

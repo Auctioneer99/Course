@@ -33,7 +33,7 @@ namespace Gameplay
 
             Card spawner = GameController.CardManager.GetCard(SpawnerId);
 
-            MoveAction moveAction = GameController.ActionFactory.Create<MoveAction>().Initialize();
+            //MoveAction moveAction = GameController.ActionFactory.Create<MoveAction>().Initialize();
             foreach (var spawn in Spawns)
             {
                 Location location = GameController.BoardManager.GetLocation(spawn.Position);
@@ -44,15 +44,30 @@ namespace Gameplay
                     Spawns.Remove(spawn);
                     continue;
                 }
-                Card card = GameController.CardManager.Register(spawn.CardId, spawn.Definition);
+                Card card = GameController.CardManager.Register(spawn);
+                
+                if (spawn.Position.Location == ELocation.Field)
+                {
+                    if (spawner != null)
+                    {
+                        card.PlayedBy = spawner.Owner;
+                    }
+                    else
+                    {
+                        card.PlayedBy = spawn.Owner;
+                    }
+                }
+                
+
+
                 spawnedCards.Add(card);
 
-                MoveDefinition move = new MoveDefinition(card, spawn.Position, 0);
-                moveAction.Moves.Add(move);
+                //MoveDefinition move = new MoveDefinition(card, spawn.Position, 0);
+                //moveAction.Moves.Add(move);
             }
 
             GameController.EventManager.CardsSpawned.Invoke(spawnedCards);
-            GameController.ActionDistributor.Add(moveAction);
+            //GameController.ActionDistributor.Add(moveAction);
         }
 
         public void Censor(EPlayer player)

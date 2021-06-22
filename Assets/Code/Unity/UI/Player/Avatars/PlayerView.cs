@@ -66,6 +66,8 @@ namespace Gameplay.Unity
                 {
                     FSM.TransitionTo(EPlayerState.UnpreparedLocal);
                     Player.Prepared.VisualEvent.AddListener(OnLocalPlayerPrepared);
+
+                    Debug.Log(GameController.GameInstance.ToString());
                 }
                 else
                 {

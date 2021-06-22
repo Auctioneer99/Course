@@ -23,7 +23,7 @@ namespace Gameplay
                 {
                     foreach(var player in GameController.PlayerManager.Players)
                     {
-                        SyncCardsAction syncAction = GameController.ActionFactory.Create<SyncCardsAction>().Initialize(player.Key, visibilityAction);
+                        SyncCardsAction syncAction = GameController.ActionFactory.Create<SyncCardsAction>().Initialize(player.Value.ConnectionId, visibilityAction);
                         GameController.ActionDistributor.HandleAction(syncAction);
                     }
                     GameController.ActionDistributor.HandleAction(visibilityAction);

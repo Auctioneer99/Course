@@ -19,5 +19,16 @@ namespace Gameplay
             To = to;
             MovedByPlayer = movedByPlayer;
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[MoveDefinition]");
+            sb.AppendLine($"CardId = {CardId}");
+            sb.Append($"From = {From.ToString()}");
+            sb.Append($"To = {To.ToString()}");
+            sb.AppendLine($"MovedBy = {MovedByPlayer}");
+            return sb.ToString();
+        }
     }
 }

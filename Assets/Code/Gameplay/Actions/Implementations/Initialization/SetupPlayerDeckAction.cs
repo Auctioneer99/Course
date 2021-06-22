@@ -33,24 +33,13 @@ namespace Gameplay
                 .Initialize(0);
 
             CardDefinition cardDef = new CardDefinition(2);
-            Position pos = new Position(0, ELocation.Field);
+            Position pos = new Position(new TileDefinition(0, -2, 2));
 
-            SpawnDefinition def = new SpawnDefinition(GameController.CardManager, cardDef, pos, null, ECardVisibility.All);
+            SpawnDefinition def = new SpawnDefinition(GameController.CardManager, cardDef, pos, Player, null, ECardVisibility.All);
 
             spawnAction.Spawns.Add(def);
 
 
-            ///****
-
-            bool spawnVictory = false;
-
-            if (spawnVictory)
-            {
-                //
-            }
-
-
-            ///
 
             List<CardDefinition> deckCards = new List<CardDefinition>(Deck.Cards);
             List<SpawnDefinition> spawns = new List<SpawnDefinition>(deckCards.Count);
@@ -59,7 +48,7 @@ namespace Gameplay
             {
                 SpawnDefinition spawn = new SpawnDefinition(GameController.CardManager,
                     card,
-                    new Position(Player, ELocation.Deck));
+                    new Position(Player, ELocation.Deck), Player, null, ECardVisibility.Noone);
                 spawns.Add(spawn);
             }
 

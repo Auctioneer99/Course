@@ -53,7 +53,6 @@ namespace Gameplay
             {
                 Cards.Insert(index, card);
             }
-
             UpdateIndexes();
 
             return true;
@@ -114,8 +113,9 @@ namespace Gameplay
             return true;
         }
 
-        private void UpdateIndexes()
+        protected virtual void UpdateIndexes()
         {
+            
             Position position = new Position(Player, ELocation);
             for(int i = 0, count = Cards.Count; i < count; i++)
             {

@@ -55,6 +55,7 @@ namespace Gameplay
 
         public void Censor(EPlayer player)
         {
+            /*
             if (player.Contains(EPlayer.Players))
             {
                 Mode = EGameMode.Client;
@@ -62,7 +63,7 @@ namespace Gameplay
             if (player.Contains(EPlayer.Spectators))
             {
                 Mode = EGameMode.Spectator;
-            }
+            }*/
             Settings.Censor(player);
             Controller.Censor(player);
         }
@@ -77,21 +78,21 @@ namespace Gameplay
         public void Copy(GameInstance other)
         {
             Settings.Copy(other.Settings);
-            Debug.Log(Settings.ToString());
             Controller.Copy(other.Controller);
-            Mode = other.Mode;
+           // Mode = other.Mode;
         }
 
         public void ToPacket(Packet packet)
         {
-            packet.Write(Mode)
+            packet
+                //.Write(Mode)
                 .Write(Settings)
                 .Write(Controller);
         }
 
         public void FromPacket(Packet packet)
         {
-            Mode = packet.ReadEGameMode();
+            //Mode = packet.ReadEGameMode();
             Settings.FromPacket(packet);
             Controller.FromPacket(packet);
         }

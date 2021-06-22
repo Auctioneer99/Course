@@ -42,21 +42,25 @@ namespace Gameplay
             return id < Cards.Length ? Cards[id] : null;
         }
 
-        public Card Register(ushort id, CardDefinition definition)
+        public Card Register(SpawnDefinition definition)
         {
-            Card card = Create(id, definition);//new Position(position.Id, ELocation.Spawn));
+            Card card = Create(definition.CardId, definition.Definition);//new Position(position.Id, ELocation.Spawn));
+
+            card.Owner = definition.Owner;
 
             int cardCount = Cards.Length;
 
-            if (cardCount <= id)
+            if (cardCount <= definition.CardId)
             {
                 Card[] newCards = new Card[cardCount + DEFAULT_BUFFER_INCREMENT];
                 Array.Copy(Cards, newCards, cardCount);
                 Cards = newCards;
             }
 
-            Cards[id] = card;
-            //GameController.BoardManager.Move(card, position);
+            Cards[definition.CardId] = card;
+            card.Position = new Position(definition.Owner, ELocation.Spawn);
+
+            GameController.BoardManager.Move(card, definition.Position);
 
             return card;
         }

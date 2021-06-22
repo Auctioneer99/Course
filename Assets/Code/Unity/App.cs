@@ -19,6 +19,8 @@ namespace Gameplay.Unity
         public GameListenerManager Listener { get; private set; }
         public GameData GameData { get; private set; }
 
+        private bool once = true;
+
         protected override void Awake()
         {
             base.Awake();
@@ -58,6 +60,28 @@ namespace Gameplay.Unity
                     controller.ActionDistributor.HandleAction(action);
                 }
             }
+
+            if (once)
+            {
+                if (Input.GetKey(KeyCode.F3))
+                {
+                    GameController controller = LocalNetwork.Host.Instance.Controller;
+                    //Debug.Log(string.Join(", ", controller.CardManager.Cards.Select(c => c == null ? "" : c.ToString())));
+                    Card card = controller.CardManager.Cards.Where(c => c != null && c.Position.Location == ELocation.Field).First();
+                    //Debug.Log(card);
+
+                    BattlefieldMoveAction action = controller.ActionFactory.Create<BattlefieldMoveAction>().Initialize(card.Id, 0);
+
+                    action.Definition.Add(new TileDefinition(0, 1, 1));
+                    action.Definition.Add(new TileDefinition(0, 1, 2));
+                    action.Definition.Add(new TileDefinition(0, 2, 2));
+                    action.Definition.Add(new TileDefinition(0, 2, 1));
+                    action.Definition.Add(new TileDefinition(0, 1, 1));
+
+                    controller.ActionDistributor.Add(action);
+                    once = false;
+                }
+            }
         }
 
         private void OnGameInitialized(GameController controller)
@@ -71,7 +95,6 @@ namespace Gameplay.Unity
             ServerDefinition serverDef = ServerDefinition.SetupOnline(server, 8000);
             serverDef.Start();
             LocalNetwork = server.Controller.Network.Manager;
-            Debug.Log("<color=green>Creating clients</color>");
 
             //GameInstance client1 = new GameInstance(EGameMode.Client, new Settings(0));
             //ClientDefinition clientdef1 = new ClientDefinition(client1);

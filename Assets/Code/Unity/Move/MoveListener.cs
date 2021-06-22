@@ -23,7 +23,8 @@ namespace Gameplay.Unity
         {
             _controller = game;
 
-            _controller.EventManager.CardMoved.VisualEvent.AddListener(OnCardMoved);
+            _controller.EventManager.AfterCardMoved.VisualEvent.AddListener(OnCardMoved);
+            _controller.EventManager.AfterCardBattlefieldMoved.VisualEvent.AddListener(OnBattlefieldCardMoved);
             _controller.EventManager.CardsSpawned.VisualEvent.AddListener(OnCardsSpawned);
         }
 
@@ -37,9 +38,42 @@ namespace Gameplay.Unity
             
         }
 
+        private void OnBattlefieldCardMoved(Card card, Position from, List<TileDefinition> path)
+        {
+            CardBattleView cardView = CardViewManager.GetCardView(card);
+
+            StartCoroutine(BattlefieldMoveCoroutine(cardView, path));
+        }
+
+        private IEnumerator BattlefieldMoveCoroutine(CardBattleView cardView, List<TileDefinition> path)
+        {
+            //_controller pause
+            var cardTransform = cardView.transform;
+
+            foreach(var point in path)
+            {
+                LocationView locView = BoardView.GetLocationView(new Position(point));
+                var locPosition = locView.transform.position + new Vector3(0, 10, 0);
+
+                Vector3 startPosition = cardTransform.position;
+
+                for (float progress = 0; progress < 1; progress += Time.deltaTime/2)
+                {
+                    cardTransform.position = Vector3.Lerp(startPosition, locPosition, progress);
+                    yield return null;
+                }
+            }
+
+            SetCardPosition(cardView, cardView.Card.Position);
+        }
+
         private void OnCardMoved(Card card, Position from)
         {
             CardBattleView cardView = CardViewManager.GetCardView(card);
+
+            //_controller.Logger.Log("CardMoved");
+            //_controller.Logger.Log($"Card = {card.Id}, From = {from.ToString()}, To = {card.Position.ToString()}");
+
 
             //LocationView locationView = BoardView.GetLocationView(card.Position);
 
@@ -56,6 +90,11 @@ namespace Gameplay.Unity
             foreach (var card in cards)
             {
                 //Debug.Log(card);
+                if (card.Position.Location == ELocation.Field)
+                {
+                    Debug.Log("Card Spawned");
+                    Debug.Log(card);
+                }
                 CardBattleView view = CardViewManager.GetCardView(card);
 
                 view.transform.position = new Vector3(0, 0, 0);
@@ -77,7 +116,8 @@ namespace Gameplay.Unity
             {
                 card.ToggleVisibility(false);
             }
-            Debug.Log("<color=green>Setting position</color>" + "\n" + position.ToString() + "\n" + card.Card.ToString());
+            //_controller.Logger.Log(locView?.ToString());
+            //Debug.Log("<color=green>Setting position</color>" + "\n" + position.ToString() + "\n" + card.Card.ToString());
             locView?.HandleMove(card);
         }
     }

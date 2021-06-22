@@ -31,6 +31,7 @@
         AskDisconnectPlayerAwaitingState,
 
         SpawnCards,
+        BattlefieldMove,
         Move,
         ChangeVisibility,
         SyncCards,

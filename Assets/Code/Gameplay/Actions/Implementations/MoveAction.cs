@@ -24,6 +24,8 @@ namespace Gameplay
         {
             GameController.VisibilityManager.ChangeVisibility(this);
 
+            //GameController.Logger.Log(string.Join(", ", Moves.Select(m => m.ToString())));
+
             foreach (var def in Moves)
             {
                 Card card = GameController.CardManager.GetCard(def.CardId);
@@ -36,9 +38,17 @@ namespace Gameplay
             foreach(var move in Moves)
             {
                 Card card = GameController.CardManager.GetCard(move.CardId);
-                bool shouldHide = move.From.Player == move.To.Player && ELocation.Field.Contains(move.To.Location);
+                bool shouldHide = true;
+                if (move.To.Location.Contains(ELocation.Field | ELocation.Graveyard))
+                {
+                    shouldHide = false;
+                }
+                if (move.To.Location.Contains(ELocation.Hand) && card.Owner == move.To.Player)
+                {
+                    shouldHide = false;
+                }
 
-                action.Add(card, VisibilityManager.GetTargetVisibilityWhenMoving(card, move.From, move.To), move.To.Player, shouldHide);
+                action.Add(card, VisibilityManager.GetTargetVisibilityWhenMoving(card, move.From, move.To), 0, shouldHide);
             }
         }
 

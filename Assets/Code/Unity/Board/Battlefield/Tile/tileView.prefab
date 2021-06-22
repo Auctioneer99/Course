@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5260166494963531429}
   - component: {fileID: 8006039798205024879}
   - component: {fileID: -5975495569680117646}
+  - component: {fileID: 2178598742112329292}
   m_Layer: 0
   m_Name: tileView
   m_TagString: Untagged
@@ -60,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: 7be9ab9417308d140b49e128443e0eeb, type: 3}
+  - {fileID: 2100000, guid: 586bdf0d0c47f0b4286cf3db203007f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,4 +95,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087b999b164dc024696b830bba50c3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ELocation: 16
+--- !u!64 &2178598742112329292
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8366516815899732922}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5208879343037863941, guid: 7be9ab9417308d140b49e128443e0eeb, type: 3}

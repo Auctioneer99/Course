@@ -79,7 +79,7 @@ namespace Gameplay.Unity
         private void OnSnapshotRestored(GameInstance instance)
         {
 
-            Debug.Log("<color=green>Initialize boardView</color>");
+            //Debug.Log("<color=green>Initialize boardView</color>");
 
             _boardSideViews = new Dictionary<EPlayer, BoardSideView>(_controller.PlayerManager.Players.Count + 1);
             foreach(var side in _controller.BoardManager.Sides)

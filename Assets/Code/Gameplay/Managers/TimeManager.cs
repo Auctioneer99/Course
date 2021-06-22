@@ -81,7 +81,6 @@ namespace Gameplay
             TimerSettings settings = GameController.GameInstance.Settings.TimerSettings;
             if (settings.EnableTimers)
             {
-                UnityEngine.Debug.Log("Enabled");
                 foreach(var definition in settings.StateTimers)
                 {
                     StateTimer timer = new StateTimer(this, definition);
@@ -89,11 +88,6 @@ namespace Gameplay
                     AGameState gameState = FiniteGameStateMachine.GetState(timer.EGameState);
                     gameState.SetupTimer(timer);
                 }
-            }
-            else
-            {
-                UnityEngine.Debug.Log("Not Enabled");
-
             }
         }
 
@@ -128,7 +122,6 @@ namespace Gameplay
 
             SetupTimers();
             int count = _stateTimers.Count;
-            UnityEngine.Debug.Log(count);
             for (int i = 0; i < count; i++)
             {
                 _stateTimers[i].Copy(other._stateTimers[i], controller);
