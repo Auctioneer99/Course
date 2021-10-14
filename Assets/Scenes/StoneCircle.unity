@@ -2106,6 +2106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 167627744}
+  _active: 0
 --- !u!1001 &178017725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4975,6 +4976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a6abc0d7ae3d146ba60b3c9031dafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pauseId: -1
+  once: 1
 --- !u!4 &693423108
 Transform:
   m_ObjectHideFlags: 0
@@ -5670,6 +5673,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fa12454bc7c568479dfa382f0d35daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <EPlayer>k__BackingField: 0
+  <BoardView>k__BackingField: {fileID: 0}
   Hand: {fileID: 1388371987}
 --- !u!4 &833790633
 Transform:
@@ -7701,6 +7706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6106d5363bd26c4f80b282594585ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <BattleCardViews>k__BackingField: []
   CardPrefab: {fileID: 2439767371677569544, guid: 91e6de0650914e448a7e982aca4968c2, type: 3}
 --- !u!4 &1080815280
 Transform:
@@ -7815,6 +7821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33373d626fb7e13449b07038d174cf58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
 --- !u!114 &1082631436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10393,6 +10400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463faf138e2614a43883316f92651198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <BoardSideView>k__BackingField: {fileID: 0}
+  _cards: []
 --- !u!4 &1388371988
 Transform:
   m_ObjectHideFlags: 0

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Gameplay
 {
-    public class GetBoolNode : IndependentNode
+    public sealed class GetNode<T> : IndependentNode
     {
-        private IIndependentSource<bool> _boolVar;
+        private IIndependentSource<T> _source;
 
-        public GetBoolNode(IIndependentSource<bool> source)
+        public GetNode(IIndependentSource<T> source)
         {
-            _boolVar = source;
+            _source = source;
         }
 
         protected override void PopulateInputs(List<InputVariable> list)
@@ -19,7 +19,7 @@ namespace Gameplay
 
         protected override void PopulateOutputs(List<IIndependentSource> list)
         {
-            list.Add(_boolVar);
+            list.Add(_source);
         }
     }
 }

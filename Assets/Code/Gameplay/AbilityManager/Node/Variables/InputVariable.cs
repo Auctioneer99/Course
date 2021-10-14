@@ -8,6 +8,8 @@ namespace AbilitySystem.Variables
 
         public abstract IIndependentSource RawValueSource { get; set; }
 
+        public bool HasSource => RawValueSource != null;
+
         public object RawValue => RawValueSource.RawValue;
 
         public InputVariable(string name)
@@ -36,22 +38,14 @@ namespace AbilitySystem.Variables
 
         public T Value => ValueSource.Value;
 
+        public InputVariable(string name) : base(name)
+        {
+
+        }
+
         public InputVariable(string name, IIndependentSource<T> variableSource) : base(name)
         {
             ValueSource = variableSource;
-        }
-
-        public bool CanConnectTo<Y>(IVarSource<Y> other)
-        {
-            return GetVarType().IsAssignableFrom(other.GetVarType());
-        }
-
-        public void Disconnect(IVarSource<T> source)
-        {
-            if (source == ValueSource)
-            {
-                ValueSource = null;
-            }
         }
 
         public override Type GetVarType()

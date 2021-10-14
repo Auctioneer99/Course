@@ -21,6 +21,8 @@ namespace AbilitySystem.Variables
 
         public object RawValue => Value;
 
+        public string Name => string.Empty;
+
         private NullVarSource()
         {
 

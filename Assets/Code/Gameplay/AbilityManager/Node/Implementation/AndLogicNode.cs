@@ -15,7 +15,7 @@ namespace Gameplay
             _first = new InputVariable<bool>("1", NullVarSource<bool>.Instance);
             _second = new InputVariable<bool>("2", NullVarSource<bool>.Instance);
 
-            _output = new DynamicVariable<bool>(Calculate);
+            _output = new DynamicVariable<bool>("AND", Calculate);
         }
 
         private bool Calculate()

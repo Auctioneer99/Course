@@ -4,6 +4,8 @@ namespace AbilitySystem.Variables
 {
     public interface IVarSource
     {
+        string Name { get; }
+
         object RawValue { get; }
 
         Type GetVarType();

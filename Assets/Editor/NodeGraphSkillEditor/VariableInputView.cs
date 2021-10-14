@@ -20,7 +20,9 @@ namespace Assets.Editor.NodeGraphSkillEditor
             }
         }
 
-        public GUIStyle Style => GraphStyle.VariableInputStyle;
+        public GUIStyle Style => Variable.HasSource ? 
+            GraphStyle.VariableInputStyle : 
+            GraphStyle.VariableInputStyle;
 
         public InputVariable Variable { get; private set; }
 

@@ -16,15 +16,16 @@ namespace Assets.Editor.NodeGraphSkillEditor
         public IEnumerable<VariableInputView> InputsView => _inputsView;
         public IEnumerable<VariableOutputView> OutputsView => _outputsView;
 
-        public GUIStyle Style => GraphStyle.NodeStyle;
+        public GUIStyle Style { get; private set; }
 
         private ANode _node;
         private VariableInputView[] _inputsView;
         private VariableOutputView[] _outputsView;
         private Rect _rect;
 
-        public NodeView(ANode node, Vector2 position, Vector2 size)
+        public NodeView(ANode node, GUIStyle style, Vector2 position, Vector2 size)
         {
+            Style = style;
             _node = node;
             _rect = new Rect(position, size);
         }

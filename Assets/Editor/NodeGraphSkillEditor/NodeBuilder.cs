@@ -16,6 +16,13 @@ namespace Assets.Editor.NodeGraphSkillEditor
 
         private NodeView _draggable;
 
+        private VariableMenu _varMenu;
+
+        public NodeBuilder(VariableMenu variableMenu)
+        {
+            _varMenu = variableMenu;
+        }
+
         public void Initialize()
         {
             _nodes = new List<NodeView>();
@@ -89,34 +96,40 @@ namespace Assets.Editor.NodeGraphSkillEditor
         private void ProcessContextMenu(Vector2 position)
         {
             GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Add GetBool"),
-                false,
-                () => OnClickAddNode(position));
+            PopulateMenuWithGetters(menu, position);
             menu.AddItem(new GUIContent("Add AndGate"),
                 false,
                 () => OnClickAndNode(position));
             menu.ShowAsContext();
         }
 
-        private Variable<bool> var = new Variable<bool>(true);
-
-        private void OnClickAddNode(Vector2 position)
+        private void PopulateMenuWithGetters(GenericMenu menu, Vector2 targetPosition)
         {
-            var node = new GetBoolNode(var);
-            node.Initialize();
-            var nodeView = new NodeView(node, position, new Vector2(200, 50));
-            InitializeNode(nodeView);
+            string folder = "Getters/";
+            foreach(var variable in _varMenu.Variables)
+            {
+                menu.AddItem(new GUIContent(folder + variable.Variable.Name),
+                    false,
+                    () => AddGetterNode(variable, targetPosition));
+            }
+        }
+
+        private void AddGetterNode(VariableView variable, Vector2 position)
+        {
+            var node = variable.CreateGetterNode();
+            var nodeView = new NodeView(node, GraphStyle.GetterNodeStyle, position, new Vector2(200, 70));
+            InitializeNodeView(nodeView);
         }
 
         private void OnClickAndNode(Vector2 position)
         {
             var node = new AndLogicNode();
             node.Initialize();
-            var nodeView = new NodeView(node, position, new Vector2(200, 50));
-            InitializeNode(nodeView);
+            var nodeView = new NodeView(node, GraphStyle.NodeStyle, position, new Vector2(200, 50));
+            InitializeNodeView(nodeView);
         }
 
-        private void InitializeNode(NodeView node)
+        private void InitializeNodeView(NodeView node)
         {
             node.Initialize();
             _nodes.Add(node);

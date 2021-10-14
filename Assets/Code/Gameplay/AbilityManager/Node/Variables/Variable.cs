@@ -2,19 +2,32 @@
 
 namespace AbilitySystem.Variables
 {
-    public sealed class Variable<T> : IIndependentSource<T>
+    public abstract class Variable : IIndependentSource
     {
-        public T Value => _value;
-        public object RawValue => _value;
+        public string Name { get; set; }
 
-        private T _value;
-
-        public Variable(T value)
+        public Variable(string name)
         {
-            _value = value;
+            Name = name;
         }
 
-        public Type GetVarType()
+        public abstract object RawValue { get; }
+
+        public abstract Type GetVarType();
+    }
+
+
+    public sealed class Variable<T> : Variable, IIndependentSource<T>
+    {
+        public T Value { get; set; }
+        public override object RawValue => Value;
+
+        public Variable(string name, T value) : base(name)
+        {
+            Value = value;
+        }
+
+        public override Type GetVarType()
         {
             return typeof(T);
         }
