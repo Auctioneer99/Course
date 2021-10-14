@@ -27,20 +27,16 @@ namespace Gameplay
             user.Initialize(mainsocketid, group);
             Host = user;
             Add(user);
-            //Debug.Log("Host = " + user.ToString());
         }
 
         public int IncomingConnection(AConnector connection)
         {
             int id = InitializeConnection(connection, EPlayer.Spectators);
-            //_logger.Log("[Network Manager] Sending initial packet");
             Snapshot snapshot = Snapshot.Create(Host.Instance, EPlayer.Spectators);
             AAction initialization = Host.Instance.Controller.ActionFactory.Create<ConnectInitializationAction>()
                 .Initialize(id, EPlayer.Spectators, snapshot);
             Host.Instance.Controller.ActionDistributor.HandleAction(initialization);
 
-            //SendToTarget(Host, initialization, id);
-            //Send(Host, initialization, id);
             return id;
         }
 
@@ -50,7 +46,6 @@ namespace Gameplay
             connection.Initialize(id, group);
             ConnectionCounter++;
             Add(connection);
-            //Debug.Log("Client = " + connection.ToString());
             return id;
         }
 
@@ -58,7 +53,6 @@ namespace Gameplay
         {
             connection.Manager = this;
             _connectionPool.Add(connection.ConnectionId, connection);
-            //_logger.Log("[Network Manager] Socket setted up " + connection.ConnectionId);
         }
 
         public void SendToHost(AConnector sender, AAction action)

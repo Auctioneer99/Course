@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 
-namespace Gameplay
+namespace Gameplay.Events
 {
     public class Event : AEvent<Action>
     {

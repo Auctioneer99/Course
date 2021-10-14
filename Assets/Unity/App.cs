@@ -66,9 +66,7 @@ namespace Gameplay.Unity
                 if (Input.GetKey(KeyCode.F3))
                 {
                     GameController controller = LocalNetwork.Host.Instance.Controller;
-                    //Debug.Log(string.Join(", ", controller.CardManager.Cards.Select(c => c == null ? "" : c.ToString())));
                     Card card = controller.CardManager.Cards.Where(c => c != null && c.Position.Location == ELocation.Field).First();
-                    //Debug.Log(card);
 
                     BattlefieldMoveAction action = controller.ActionFactory.Create<BattlefieldMoveAction>().Initialize(card.Id, 0);
 

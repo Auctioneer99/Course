@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gameplay.Events;
 
 namespace Gameplay
 {
@@ -275,8 +276,6 @@ namespace Gameplay
 
         public void FromPacket(GameController controller, Packet packet)
         {
-            //var logger = GameController.GameInstance.Logger;
-            //logger.Log("Reading from packet");
             Id = packet.ReadUShort();
             PlayedBy = packet.ReadEPlayer();
             Position.FromPacket(packet);
@@ -291,10 +290,6 @@ namespace Gameplay
 
         public void ToPacket(Packet packet)
         {
-            //var logger = GameController.GameInstance.Logger;
-            //logger.Log("Writing to packet");
-            //logger.Log(this.ToString());
-
             packet.Write(Id)
                 .Write(PlayedBy)
                 .Write(Position);

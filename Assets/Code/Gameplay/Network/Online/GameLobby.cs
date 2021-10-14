@@ -13,14 +13,13 @@ using WebSocketSharp.Server;
 using WebSocketSharp.Net;
 
 using UnityEngine;
+using System.IO;
 
 namespace Gameplay
 {
     public class GameLobby : WebSocketBehavior
     {
         public NetworkManager Manager { get; private set; }
-
-
 
         public GameLobby(NetworkManager netManager)
         {
@@ -76,13 +75,17 @@ namespace Gameplay
             }
 
             TokenHeader header = JsonNet.Deserialize<TokenHeader>(Encoding.UTF8.GetString(Base64UrlDecode(parts[0])));
-
-
             payload = JsonNet.Deserialize<TokenPayload>(Encoding.UTF8.GetString(Base64UrlDecode(parts[1])));
 
-            return true;
-            /*
-            JsonWebTokenKeyCollection collection = null;
+            string region = "";
+            string userPoolId = "";
+            System.Net.WebRequest req = System.Net.WebRequest.Create($"https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json");
+            System.Net.WebResponse resp = req.GetResponse();
+            Stream stream = resp.GetResponseStream();
+            StreamReader sr = new StreamReader(stream);
+            string Out = sr.ReadToEnd();
+            sr.Close();
+            JsonWebTokenKeyCollection collection = JsonNet.Deserialize<JsonWebTokenKeyCollection>(Out);
             JsonWebTokenKey key = collection.GetKey(header.kid);
 
             RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
@@ -91,21 +94,18 @@ namespace Gameplay
                 Exponent = new BigInteger(Base64UrlDecode(key.e)).ToByteArrayUnsigned(),
                 Modulus = new BigInteger(Base64UrlDecode(key.n)).ToByteArrayUnsigned()
             });
-
             SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
             byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(parts[0] + "." + parts[1]));
 
             RSAPKCS1SignatureDeformatter rsaDeformatter = new RSAPKCS1SignatureDeformatter(provider);
             rsaDeformatter.SetHashAlgorithm("SHA256");
-
             if (rsaDeformatter.VerifySignature(hash, Base64UrlDecode(parts[2])) == false)
             {
                 return false;
             }
 
             payload = JsonNet.Deserialize<TokenPayload>(Encoding.UTF8.GetString(Base64UrlDecode(parts[1])));
-
-            return true;*/
+            return true;
         }
 
         /*var jwks = { 
@@ -151,12 +151,10 @@ namespace Gameplay
             Context.WebSocket.OnMessage += (sender, e) =>
             {
                 Debug.Log("[Server] Message received");
-                //Send(new byte[] { 23, 43, 5, 2 });
             };
 
             OnlineConnector user = new OnlineConnector(Context.WebSocket, payload.sub, new Logger("blue"));
 
-            Debug.Log("[Server] Connection received");
             Manager.IncomingConnection(user);
         }
 
@@ -169,7 +167,7 @@ namespace Gameplay
             Debug.Log("[Server] Connection closed");
         }
 
-        protected override void OnError(ErrorEventArgs e)
+        protected override void OnError(WebSocketSharp.ErrorEventArgs e)
         {
             Debug.Log("[Server] Error");
             Debug.Log(e.Exception.ToString());

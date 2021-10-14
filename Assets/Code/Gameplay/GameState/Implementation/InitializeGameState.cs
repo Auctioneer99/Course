@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Gameplay
 {
@@ -63,7 +64,17 @@ namespace Gameplay
 
         private void DrawInitialCards()
         {
+            int cardsToDrawCount = 4;
 
+            foreach (var player in GameController.PlayerManager.Players)
+            {
+                List<Card> cardsToDraw = new List<Card>(cardsToDrawCount);
+                //BoardSide side = GameController
+
+
+                MoveAction action = GameController.ActionFactory.Create<MoveAction>().Initialize();
+
+            }
         }
 
         protected override void OnFinished()
