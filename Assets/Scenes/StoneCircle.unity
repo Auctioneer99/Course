@@ -2105,8 +2105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b857a7c09fe70434594793aed14846c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 167627744}
-  _active: 0
 --- !u!1001 &178017725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3728,7 +3726,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81dd236bc047dd24da15904737da3519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timerUI: {fileID: 167627746}
 --- !u!4 &453173247
 Transform:
   m_ObjectHideFlags: 0
@@ -4673,7 +4670,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dddc24632afd94eba2a65d50b7a144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 645332443}
 --- !u!222 &645332445
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4976,8 +4972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a6abc0d7ae3d146ba60b3c9031dafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pauseId: -1
-  once: 1
 --- !u!4 &693423108
 Transform:
   m_ObjectHideFlags: 0
@@ -5673,9 +5667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fa12454bc7c568479dfa382f0d35daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <EPlayer>k__BackingField: 0
-  <BoardView>k__BackingField: {fileID: 0}
-  Hand: {fileID: 1388371987}
 --- !u!4 &833790633
 Transform:
   m_ObjectHideFlags: 0
@@ -6146,9 +6137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c6222fd4f310bb4480f1231b87b03a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePrefab: {fileID: 8366516815899732922, guid: cc090a5d6daf98e4c83920dad71347c8, type: 3}
-  _distanceBetween: 200
-  _boardView: {fileID: 1760806452}
 --- !u!4 &888687440
 Transform:
   m_ObjectHideFlags: 0
@@ -7706,8 +7694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6106d5363bd26c4f80b282594585ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BattleCardViews>k__BackingField: []
-  CardPrefab: {fileID: 2439767371677569544, guid: 91e6de0650914e448a7e982aca4968c2, type: 3}
 --- !u!4 &1080815280
 Transform:
   m_ObjectHideFlags: 0
@@ -7821,7 +7807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33373d626fb7e13449b07038d174cf58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
 --- !u!114 &1082631436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9132,7 +9117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3611c05d2c773694e9b7396715fdf7ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerViewPrefab: {fileID: 2860112019337479828, guid: 637eef14cd4c7d34eba6d684eab1aa06, type: 3}
 --- !u!114 &1196935744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10400,8 +10384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463faf138e2614a43883316f92651198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BoardSideView>k__BackingField: {fileID: 0}
-  _cards: []
 --- !u!4 &1388371988
 Transform:
   m_ObjectHideFlags: 0
@@ -13611,9 +13593,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ae25f1b7650554eab227e2ae72c504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoadSideViewPrefab: {fileID: -7885152452245199041, guid: 5e0d5578d021f6a40a711adb2c89ad8d, type: 3}
-  BattlefieldController: {fileID: 888687439}
-  LocalBoardSideView: {fileID: 833790632}
 --- !u!4 &1760806453
 Transform:
   m_ObjectHideFlags: 0
@@ -13641,8 +13620,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344a5b32758a3924a978ffd1fd48b002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardViewManager: {fileID: 1080815279}
-  BoardView: {fileID: 1760806452}
 --- !u!1001 &1765508534
 PrefabInstance:
   m_ObjectHideFlags: 0

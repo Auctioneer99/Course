@@ -1,5 +1,6 @@
 ﻿using AbilitySystem.Variables;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Editor.NodeGraphSkillEditor
@@ -8,14 +9,16 @@ namespace Assets.Editor.NodeGraphSkillEditor
     {
         public event Action<VariableInputView> Click;
 
+        private Texture2D _inputTexture;
+
         public Rect Rect
         {
             get
             {
                 Rect target = _rect;
                 var parent = _parent.Rect;
-                target.x = parent.x + _rect.x - _rect.width;
-                target.y = parent.y + _rect.y - _rect.height;
+                target.x = parent.x + _rect.x - _rect.width / 2;
+                target.y = parent.y + _rect.y - _rect.height / 2;
                 return target;
             }
         }
@@ -31,14 +34,15 @@ namespace Assets.Editor.NodeGraphSkillEditor
 
         public VariableInputView(IPositionProvider parent, Vector2 position, InputVariable variable)
         {
+            _inputTexture = EditorGUIUtility.Load("VariableInput.png") as Texture2D;
             _parent = parent;
-            _rect = new Rect(position.x, position.y, 10, 10);
+            _rect = new Rect(position.x, position.y, 24, 24);
             Variable = variable;
         }
 
         public void Draw()
         {
-            if (GUI.Button(Rect, "", Style))
+            if (GUI.Button(Rect, _inputTexture, GUIStyle.none))
             {
                 Click?.Invoke(this);
             }

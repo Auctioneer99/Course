@@ -13,9 +13,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
                 if (_getterNodeStyle == null)
                 {
                     _getterNodeStyle = new GUIStyle();
-                    var t = new Texture2D(1, 1);
-                    t.SetPixel(0, 0, new Color(1f, 0.7f, 0f, 0f));
-                    _getterNodeStyle.normal.background = new Texture2D(1, 1);
+                    _getterNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
                     _getterNodeStyle.border = new RectOffset(12, 12, 12, 12);
                 }
                 return _getterNodeStyle;
@@ -46,8 +44,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
                 {
                     _variableInput = new GUIStyle();
                     _variableInput.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
-                    _variableInput.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
-                    _variableInput.border = new RectOffset(4, 4, 12, 12);
+                    _variableInput.border = new RectOffset(5, 5, 10, 10);
                 }
                 return _variableInput;
             }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Editor.NodeGraphSkillEditor
@@ -22,12 +23,16 @@ namespace Assets.Editor.NodeGraphSkillEditor
         private VariableInputView[] _inputsView;
         private VariableOutputView[] _outputsView;
         private Rect _rect;
+        private Color _nodeColor = new Color(227 / 255f, 38 / 255f, 54 / 255f);
 
         public NodeView(ANode node, GUIStyle style, Vector2 position, Vector2 size)
         {
+            //Texture2D scaled = new Texture2D((int)position.x, (int)position.y, TextureFormat.RGB24, true);
+            //Graphics.ConvertTexture(image, scaled);
+            //image = scaled;
             Style = style;
             _node = node;
-            _rect = new Rect(position, size);
+            _rect = new Rect(position, new Vector2(300, 0));
         }
 
         public void Initialize()
@@ -37,7 +42,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
             var i = 0;
             foreach(var input in _node.Inputs)
             {
-                var position = new Vector2(0, (i + 2) * 10);
+                var position = new Vector2(0, i * 30 + 30);
                 _inputsView[i] = new VariableInputView(this, position, input);
                 i++;
             }
@@ -46,16 +51,20 @@ namespace Assets.Editor.NodeGraphSkillEditor
             i = 0;
             foreach (var output in _node.Outputs)
             {
-                var position = new Vector2(Rect.width, (i + 2) * 10);
+                var position = new Vector2(Rect.width, i * 30 + 30);
                 _outputsView[i] = new VariableOutputView(this, position, output);
                 i++;
             }
+            _rect.height = 50 + Math.Max(_outputsView.Length, _inputsView.Length) * 30;
         }
 
         public void Draw()
         {
+            EditorGUI.DrawRect(Rect, _nodeColor);
             DrawVariables();
-            GUI.Box(Rect, Title, Style);
+
+            //GUI.DrawTexture(Rect, image, ScaleMode.StretchToFill);
+            //GUI.Box(Rect, new GUIContent(image), Style);
         }
 
         private void DrawVariables()

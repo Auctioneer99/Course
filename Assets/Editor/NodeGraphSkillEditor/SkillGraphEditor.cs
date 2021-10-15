@@ -8,20 +8,26 @@ namespace Assets.Editor.NodeGraphSkillEditor
 {
     public class SkillGraphEditor : EditorWindow
     {
+        private EditorGUISplitView _horizontalSplit;
+
+
         private NodeBuilder _nodeBuilder;
         private ConnectionBuilder _connectionBuilder;
         private VariableMenu _variableMenu;
 
-        [MenuItem("Window/Skill Graph Editor")]
+        private Rect _varsPosition;
+
+        [MenuItem("Custom/Skill Graph Editor")]
         private static void OpenWindow()
         {
-            SkillGraphEditor window = GetWindow<SkillGraphEditor>();
+            SkillGraphEditor window = GetWindow<SkillGraphEditor>("Skill Graph Editor");
             window.Initialize();
-            window.titleContent = new GUIContent("Skill Graph Editor");
         }
 
         private void Initialize()
         {
+            _horizontalSplit = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
+            _varsPosition = new Rect(0, 0, 300, 500);
             _variableMenu = new VariableMenu();
             _variableMenu.Initialize();
             _nodeBuilder = new NodeBuilder(_variableMenu);
@@ -34,10 +40,19 @@ namespace Assets.Editor.NodeGraphSkillEditor
         {
             _nodeBuilder.Draw();
             _connectionBuilder.Draw();
-            _variableMenu.Draw();
 
-            _nodeBuilder.ProcessEvents(Event.current);
-            _connectionBuilder.ProcessEvents(Event.current);
+            BeginWindows();
+            _varsPosition = GUI.Window(1, _varsPosition, (id) => {
+                _variableMenu.Draw();
+                GUI.DragWindow();
+                _variableMenu.SetPosition(_varsPosition);
+            }, "Variable Menu");
+            EndWindows();
+
+            Event e = Event.current;
+            _variableMenu.ProcessEvents(e);
+            _nodeBuilder.ProcessEvents(e);
+            _connectionBuilder.ProcessEvents(e);
 
             if (GUI.changed)
             {

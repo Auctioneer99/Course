@@ -25,11 +25,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
         public override void DrawEditing()
         {
             base.DrawEditing();
-            string value = EditorGUILayout.TextField(_variable.Value.ToString());
-            if (int.TryParse(value, out var intValue))
-            {
-                _variable.Value = intValue;
-            }
+            _variable.Value = EditorGUILayout.IntField(_variable.Value);
         }
     }
 }

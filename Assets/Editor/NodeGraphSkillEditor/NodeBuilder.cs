@@ -108,7 +108,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
             string folder = "Getters/";
             foreach(var variable in _varMenu.Variables)
             {
-                menu.AddItem(new GUIContent(folder + variable.Variable.Name),
+                menu.AddItem(new GUIContent(folder + variable.Variable.Name + $"({variable.Variable.GetVarType().Name})"),
                     false,
                     () => AddGetterNode(variable, targetPosition));
             }

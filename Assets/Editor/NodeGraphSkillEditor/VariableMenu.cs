@@ -9,9 +9,12 @@ using UnityEngine;
 
 namespace Assets.Editor.NodeGraphSkillEditor
 {
-    public class VariableMenu
+    public class VariableMenu : IPositionProvider
     {
         public IEnumerable<VariableView> Variables => _variables;
+
+        public Rect Rect { get; private set; }
+        private Rect _rect;
 
         private List<VariableView> _variables;
         private VariableView _editingVariable;
@@ -24,7 +27,6 @@ namespace Assets.Editor.NodeGraphSkillEditor
 
         public void Draw()
         {
-            GUI.BeginGroup(new Rect(0,0, 300, 800));
             if (GUILayout.Button("Add variable"))
             {
                 GenericMenu menu = new GenericMenu();
@@ -32,8 +34,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
                 menu.ShowAsContext();
             }
 
-            EditorGUILayout.BeginVertical();
-            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.MaxHeight(40));
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.MaxHeight(300));
             foreach(var variable in _variables)
             {
                 if (GUILayout.Button(variable.Variable.Name))
@@ -46,8 +47,6 @@ namespace Assets.Editor.NodeGraphSkillEditor
             {
                 _editingVariable.DrawEditing();
             }
-            EditorGUILayout.EndVertical();
-            GUI.EndGroup();
         }
 
         private void PopulateAddMenu(GenericMenu menu)
@@ -63,7 +62,22 @@ namespace Assets.Editor.NodeGraphSkillEditor
 
         public void ProcessEvents(Event e)
         {
+            switch(e.type)
+            {
+                case EventType.MouseDown:
+                    if (_rect.Contains(e.mousePosition))
+                    {
+                        e.Use();
+                    }
+                    break;
+            }
+        }
 
+        public void SetPosition(Rect position)
+        {
+            if (_rect != position)
+                Debug.Log(position);
+            _rect = position;
         }
     }
 }
