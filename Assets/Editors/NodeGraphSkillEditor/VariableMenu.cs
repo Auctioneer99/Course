@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public class VariableMenu : IPositionProvider
     {
@@ -20,9 +20,13 @@ namespace Assets.Editor.NodeGraphSkillEditor
         private VariableView _editingVariable;
         private Vector2 _scrollPosition;
 
-        public void Initialize()
+        private AbilityContaineer _ability;
+
+        public void Initialize(AbilityContaineer ability)
         {
+            _ability = ability;
             _variables = new List<VariableView>();
+
         }
 
         public void Draw()

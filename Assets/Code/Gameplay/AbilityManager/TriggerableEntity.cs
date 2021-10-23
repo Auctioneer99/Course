@@ -8,8 +8,27 @@ namespace Gameplay
 {
     public interface TriggerableEntity
     {
-        bool TryGetTriggers(ETriggerType type, List<ATrigger> triggers);
+        AbilityData AbilityData { get; }
 
         ELocation Location { get; }
+    }
+
+    public sealed class AbilityData
+    {
+        private HashSet<APassiveTrigger> _passiveTriggers;
+
+        public AbilityData(IEnumerable<APassiveTrigger> triggers)
+        {
+            _passiveTriggers = new HashSet<APassiveTrigger>();
+            foreach(var t in triggers)
+            {
+                _passiveTriggers.Add(t);
+            }
+        }
+
+        public IEnumerable<APassiveTrigger> GetTriggers(ETriggerType type)
+        {
+            return _passiveTriggers.Where(t => t.TriggerType == type);
+        }
     }
 }

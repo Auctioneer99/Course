@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Assets.Editor
+namespace Assets.Editors
 {
 	public class EditorGUISplitView
 	{

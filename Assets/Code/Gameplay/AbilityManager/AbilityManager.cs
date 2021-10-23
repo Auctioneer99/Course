@@ -6,29 +6,16 @@ using System.Threading.Tasks;
 
 namespace Gameplay
 {
-    public class AbilityManager
+    public sealed class AbilityManager : AAbilityManager, IUpdateable
     {
-        private List<TriggerableEntity> _listeners;
-
-        public void ExecuteTrigger<TriggerInfo>(TriggerInfo info) where TriggerInfo : ATriggerInfo
+        public override void Initialize()
         {
-            var triggers = new List<ATrigger>();
-            foreach (var listener in _listeners)
-            {
-                triggers.Clear();
-                if (listener.TryGetTriggers(info.TriggerType, triggers))
-                {
-                    foreach(var trigger in triggers)
-                    {
-
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
 
-        private void AddAbilityInstance(TriggerableEntity entity, ATrigger trigger, ATriggerInfo info)
+        public bool Update()
         {
-
+            throw new NotImplementedException();
         }
     }
 }

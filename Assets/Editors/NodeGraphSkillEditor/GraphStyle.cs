@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Linq;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public static class GraphStyle
     {

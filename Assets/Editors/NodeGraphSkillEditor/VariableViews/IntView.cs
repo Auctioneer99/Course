@@ -2,22 +2,22 @@
 using Gameplay;
 using UnityEditor;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
-    public class BooleanView : VariableView
+    public class IntView : VariableView
     {
         public override Variable Variable => _variable;
 
-        private Variable<bool> _variable;
+        private Variable<int> _variable;
 
-        public BooleanView()
+        public IntView()
         {
-            _variable = new Variable<bool>("New", false);
+            _variable = new Variable<int>("New", 0);
         }
 
         public override ANode CreateGetterNode()
         {
-            var node = new GetNode<bool>(_variable);
+            var node = new GetNode<int>(_variable);
             node.Initialize();
             return node;
         }
@@ -25,7 +25,7 @@ namespace Assets.Editor.NodeGraphSkillEditor
         public override void DrawEditing()
         {
             base.DrawEditing();
-            _variable.Value = EditorGUILayout.Toggle(_variable.Value);
+            _variable.Value = EditorGUILayout.IntField(_variable.Value);
         }
     }
 }

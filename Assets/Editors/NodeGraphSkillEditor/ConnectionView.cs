@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public class ConnectionView
     {

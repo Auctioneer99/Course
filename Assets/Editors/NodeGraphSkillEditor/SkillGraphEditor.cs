@@ -4,36 +4,32 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public class SkillGraphEditor : EditorWindow
     {
-        private EditorGUISplitView _horizontalSplit;
-
-
         private NodeBuilder _nodeBuilder;
         private ConnectionBuilder _connectionBuilder;
         private VariableMenu _variableMenu;
 
         private Rect _varsPosition;
 
-        [MenuItem("Custom/Skill Graph Editor")]
-        private static void OpenWindow()
+        public static SkillGraphEditor OpenWindow(AbilityContaineer ability)
         {
             SkillGraphEditor window = GetWindow<SkillGraphEditor>("Skill Graph Editor");
-            window.Initialize();
+            window.Initialize(ability);
+            return window;
         }
 
-        private void Initialize()
+        private void Initialize(AbilityContaineer ability)
         {
-            _horizontalSplit = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
             _varsPosition = new Rect(0, 0, 300, 500);
             _variableMenu = new VariableMenu();
-            _variableMenu.Initialize();
+            _variableMenu.Initialize(ability);
             _nodeBuilder = new NodeBuilder(_variableMenu);
-            _nodeBuilder.Initialize();
+            _nodeBuilder.Initialize(ability);
             _connectionBuilder = new ConnectionBuilder(_nodeBuilder);
-            _connectionBuilder.Initialize();
+            _connectionBuilder.Initialize(ability);
         }
 
         private void OnGUI()

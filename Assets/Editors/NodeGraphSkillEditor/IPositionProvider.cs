@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public interface IPositionProvider
     {

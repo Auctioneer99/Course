@@ -2,7 +2,7 @@
 using Gameplay;
 using UnityEditor;
 
-namespace Assets.Editor.NodeGraphSkillEditor
+namespace Assets.Editors.NodeGraphSkillEditor
 {
     public abstract class VariableView
     {
